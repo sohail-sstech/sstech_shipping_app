@@ -36,6 +36,29 @@ Route::get('/', function () {
     return view('theme/myHome');
 })->middleware(['auth.shopify'])->name('myHome');
 
+Route::get('shop','ShopifyController@get_shop')->middleware(['auth.shopify']);
+Route::get('products','ShopifyController@get_products')->middleware(['auth.shopify']);
+Route::get('orders','ShopifyController@get_orders')->middleware(['auth.shopify']);
+
+
+Route::get('create','ShopifyController@create_carrierservice')->middleware(['auth.shopify']);
+Route::get('carrierservicelist','ShopifyController@view_carrierservices')->middleware(['auth.shopify']);
+
+/*delete carrier view load*/
+Route::get('/carrierdelete_view', function () {
+    return view('theme/carrierdelete_view');
+})->middleware(['auth.shopify'])->name('carrierdelete_view');
+Route::post('carrierdelete','ShopifyController@delete_carrierservice')->middleware(['auth.shopify']);
+
+//Route::get('shippingrates','ShopifyController@getshipping_rates')->middleware(['auth.shopify']);
+
+Route::get('shippingrates','ShopifyController@getshipping_rates');
+
+
+/*Route::get('/shopdata', function () {
+    return view('theme/shopdata');
+})->middleware(['auth.shopify'])->name('shopdata');*/
+
 /*Route::get('/', function () {
     return view('welcome');
 })->middleware(['auth.shopify'])->name('home');

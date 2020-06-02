@@ -4,16 +4,16 @@
 
   <!-- Fontfaces CSS-->
   <link rel="stylesheet" href="{{ secure_asset('css/font-face.css')}}" media="all"/>
-  <!--<link href="{{ secure_asset('vendor/font-awesome-4.7/css/font-awesome.min.css')}}" rel="stylesheet" media="all">-->
+  <link href="{{ secure_asset('vendor/font-awesome-4.7/css/font-awesome.min.css')}}" rel="stylesheet" media="all">
   <link href="{{ secure_asset('vendor/font-awesome-5/css/fontawesome-all.min.css')}}" rel="stylesheet" media="all">
-  <!--<link href="{{ secure_asset('vendor/mdi-font/css/material-design-iconic-font.min.css')}}" rel="stylesheet" media="all">-->
+  <link href="{{ secure_asset('vendor/mdi-font/css/material-design-iconic-font.min.css')}}" rel="stylesheet" media="all">
   <!-- Bootstrap CSS-->
   <link href="{{ secure_asset('vendor/bootstrap-4.1/bootstrap.min.css')}}" rel="stylesheet" media="all">	
   <!-- Vendor CSS-->
   <link href="{{ secure_asset('vendor/animsition/animsition.min.css')}}" rel="stylesheet" media="all">
-  <!--<link href="{{ secure_asset('vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css')}}" rel="stylesheet" media="all">-->
+  <link href="{{ secure_asset('vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css')}}" rel="stylesheet" media="all">
   <link href="{{ secure_asset('vendor/wow/animate.css" rel="stylesheet')}}" media="all">
-  <!--<link href="{{ secure_asset('vendor/css-hamburgers/hamburgers.min.css')}}" rel="stylesheet" media="all">-->
+  <link href="{{ secure_asset('vendor/css-hamburgers/hamburgers.min.css')}}" rel="stylesheet" media="all">
   <!--<link href="{{ secure_asset('vendor/slick/slick.css')}}" rel="stylesheet" media="all">-->
   <link href="{{ secure_asset('vendor/select2/select2.min.css')}}" rel="stylesheet" media="all">
   <!--<link href="{{ secure_asset('vendor/perfect-scrollbar/perfect-scrollbar.css')}}" rel="stylesheet" media="all">-->
