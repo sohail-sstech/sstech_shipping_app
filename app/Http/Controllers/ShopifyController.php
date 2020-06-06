@@ -122,10 +122,10 @@ class ShopifyController extends Controller
 		 'carrier_service' => array
 			(
 			   "name" => "Sstech Shipping Rate Provider",
-			   "callback_url" => "https://be85a7a699ab.ngrok.io/shippingrates",
+			   "callback_url" => "https://9dcca997e7bd.ngrok.io/api/shippingrates",
 			   "format" => "json",
-			   "active" => "true",
-			   "service_discovery" => "true"
+			   "active" => true,
+			   "service_discovery" => true
 		    )
 		));
 		
@@ -186,21 +186,21 @@ class ShopifyController extends Controller
 		$item = '{
 		   "rates": [
 			   {
-				   "service_name": "canadapost-overnight",
+				   "service_name": "canadapost-overnight-test",
 				   "service_code": "ON",
 				   "total_price": "1295",
 				   "description": "This is the fastest option by far",
 				   "currency": "USD"
 			   },
 			   {
-				   "service_name": "fedex-2dayground",
+				   "service_name": "fedex-2dayground-test",
 				   "service_code": "2D",
 				   "total_price": "2934",
 				   "description": "This is the fastest option by far",
 				   "currency": "USD"
 			   },
 			   {
-				   "service_name": "fedex-priorityovernight",
+				   "service_name": "fedex-priorityovernight-test",
 				   "service_code": "1D",
 				   "total_price": "3587",
 				   "description": "This is the fastest option by far",

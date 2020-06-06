@@ -32,9 +32,16 @@ use Illuminate\Support\Facades\Route;
 
 //Route::get('my-users', 'HomeController@myUsers');
 
+
 Route::get('/', function () {
     return view('theme/myHome');
 })->middleware(['auth.shopify'])->name('myHome');
+
+/*
+Route::get('/', function () {
+    return view('welcome');
+})->middleware(['auth.shopify'])->name('home');
+*/
 
 Route::get('shop','ShopifyController@get_shop')->middleware(['auth.shopify']);
 Route::get('products','ShopifyController@get_products')->middleware(['auth.shopify']);
@@ -52,8 +59,8 @@ Route::post('carrierdelete','ShopifyController@delete_carrierservice')->middlewa
 
 //Route::get('shippingrates','ShopifyController@getshipping_rates')->middleware(['auth.shopify']);
 
-Route::get('shippingrates','ShopifyController@getshipping_rates');
-
+//Route::get('shippingrates','ShopifyController@getshipping_rates');
+//Route::post('shippingrates','ShopifyController@getshipping_rates');
 
 /*Route::get('/shopdata', function () {
     return view('theme/shopdata');
