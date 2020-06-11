@@ -26,6 +26,12 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
     <a href="{{secure_asset('/create')}}" class="w3-bar-item w3-button" target="_blank">Create Carrier Service</a>
     <a href="{{secure_asset('/carrierservicelist')}}" class="w3-bar-item w3-button" target="_blank">List Carrier Service</a>
     <a href="{{secure_asset('/carrierdelete_view')}}" class="w3-bar-item w3-button" target="_blank">Delete Carrier Service</a>
+	
+	<a href="{{secure_asset('/createwebhook')}}" class="w3-bar-item w3-button" target="_blank">Create Webhook</a>
+	<a href="{{secure_asset('/webhooklist')}}" class="w3-bar-item w3-button" target="_blank">List Webhook</a>
+	<a href="{{secure_asset('/webhookdelete')}}" class="w3-bar-item w3-button" target="_blank">Delete Webhook</a>
+	
+	
     <!--<a onclick="myAccFunc()" href="javascript:void(0)" class="w3-button w3-block w3-white w3-left-align" id="myBtn">
       Jeans <i class="fa fa-caret-down"></i>
     </a>

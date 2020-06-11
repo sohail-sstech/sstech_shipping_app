@@ -20,3 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('shippingrates','ShopifyController@getshipping_rates');
 Route::post('shippingrates','ShopifyController@getshipping_rates');
+
+
+Route::get('ordercreate_webhook','ShopifyController@webhook_orderscreates');
+Route::post('ordercreate_webhook','ShopifyController@webhook_orderscreates');

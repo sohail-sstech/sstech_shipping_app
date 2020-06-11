@@ -122,7 +122,7 @@ class ShopifyController extends Controller
 		 'carrier_service' => array
 			(
 			   "name" => "Sstech Shipping Rate Provider",
-			   "callback_url" => "https://fb990bf7bbee.ngrok.io/api/shippingrates",
+			   "callback_url" => "https://e60d4113da23.ngrok.io/api/shippingrates",
 			   "format" => "json",
 			   "active" => true,
 			   "service_discovery" => true
@@ -145,8 +145,9 @@ class ShopifyController extends Controller
 		  }
 		}
 		);*/
+		
+		
 	}
-	
 	
 	/*View all carrier services*/
 	public function view_carrierservices()
@@ -179,65 +180,12 @@ class ShopifyController extends Controller
 		//echo '<pre>';print_r($list_carrierservices);exit;
 	}
 
-	
-	/*Create webhook*/
-	public function create_orderwebhook(){
-		$shop = Auth::user();
-		$webhook = $shop->api()->rest('POST', '/admin/api/' . config('shopify-app.api_version') . '/webhooks.json', 
-		array
-		(
-		 'webhook' => array
-			(
-			   "topic" => "orders/create",
-			   "address" => "https://fb990bf7bbee.ngrok.io/api/ordercreate_webhook",
-			   "format" => "json"
-		    )
-		));
-		if($webhook->status==201){
-			echo 'webhook created succesfully.';
-		}
-		else{
-			echo 'failed to create webhook.';
-		}
-	}
-	
-	/*list of webhook*/
-	public function getlist_webhook(){
-		$shop = Auth::user();
-        $list_webhook = $shop->api()->rest('GET', '/admin/api/' . config('shopify-app.api_version') . '/webhooks.json');
-		echo '<pre>';print_r($list_webhook->body);exit;
-	}
-	
-	/*Delete Webhook*/
-	public function delete_webhook(Request $request)
-	{
-		 //dd($request->all());
-		$shop = Auth::user();
-		$webhookid = $request->webhookid;
-		if(!empty($webhookid)){
-			$delete_wbhk = $shop->api()->rest('DELETE', '/admin/api/' . config('shopify-app.api_version') . '/webhooks/'.$webhookid.'.json');	
-			if($delete_wbhk->status==200){
-				echo 'Webhook deleted succesfully';
-			}
-		}
-		else{
-			echo 'Carrier Id is Rquired Field';
-		}
-		/* echo '<pre>'; 
-        print_r($carrierid); 
-        echo '</pre>';
-		exit;*/
-		
-		//echo '<pre>';print_r($list_carrierservices);exit;
-	}
-	
-	public function webhook_orderscreates(Request $request){
-		
-		
-	}
+
+
 	
 	public function getshipping_rates(Request $request)
-	{	
+	{		
+
 		$shopify_request = file_get_contents('php://input');
 		$request_data = json_decode($shopify_request,true);
 		//print_r($request_data);exit;
@@ -252,14 +200,11 @@ class ShopifyController extends Controller
 			$AccessKey = $header['Access_Key'];
 			$ContentType = $header['Content-Type'];
 		}*/
-		
-		if($shopify_request)
-		{
-			
 		$AccessKey = '00BF47B1559899C7F6ED19CF40914841A9D0B8BC7C95C59C25';
 		$ContentType = 'application/json';
 		$url = 'https://api.omniparcel.com/labels/availablerateswithvalidation';
-		$header =array('Access_Key:'.$AccessKey,'Content-Type:'.$ContentType,'charset:utf-8');
+		$header =array('Access_Key:'.$AccessKey,'Content-Type:'.$ContentType,'charset:utf-8'); 
+		
 		
 		$commodities=array();
 		foreach($request_data['rate']['items'] as $item){
@@ -282,8 +227,8 @@ class ShopifyController extends Controller
 				  'Type'=> 'BOX'
 			);
 		
-		$shopifyrequest_data = array
-		(
+		
+		$shopifyrequest_data = array(
 			'DeliveryReference'=>'123',
 			'Origin'=> array(
 						'Name'=>$request_data['rate']['origin']['company_name'],
@@ -315,45 +260,59 @@ class ShopifyController extends Controller
 									'PostCode'=>$request_data['rate']['destination']['postal_code'],
 									'CountryCode'=>$request_data['rate']['destination']['country']
 									)
-						),
 						
+						),
 			'Packages'=>$packages,
+				
 			'Commodities'=>$commodities,
 			
-			'issignaturerequired'=> false,
-			'PrintToPrinter'=> false,
-			'Carrier'=> '',
-			'Service'=> '',
-			'outputs'=> '',
-			'IncludeLineDetails'=> true,
-			'ShipType'=> 'INBOUND',
-			'SendTrackingEmail'=> false,
-			'CostCentreName'=>''
+			 'issignaturerequired'=> false,
+			  'PrintToPrinter'=> false,
+			  'Carrier'=> '',
+			  'Service'=> '',
+			  'outputs'=> '',
+			  'IncludeLineDetails'=> true,
+			  'ShipType'=> 'INBOUND',
+			  'SendTrackingEmail'=> false,
+			  'CostCentreName'=>'' 	
 		);
+	
 		$attachment = json_encode($shopifyrequest_data);
-		/*$attachment = json_encode($shopifyrequest_data);
 		$header_logdata =$header;
 		$attachment_logdata = json_encode($shopifyrequest_data);
 		$request_parameter['Parameteres']['Header'] =  $header;				
 		$request_parameter['Parameteres']['Body'] =  json_decode($attachment_logdata);//array($attachment);
+		//$apirequest = json_encode($request_parameter);
 		$apirequest = json_encode($request_parameter);
 		$response='Success';
 		$responsecode='1';
+		/*$currentdt= date('Y-m-d h:i:s');
+		$starttime = new DateTime($currentdt);*/
 		$getorigin=$_SERVER['REMOTE_ADDR'];
 		$originip=$getorigin;
 		$requestby = $AccessKey;
-		
+		/*$endtime= date('Y-m-d h:i:s');
+		$endtime = new DateTime($endtime);
+		$dtendtime = $endtime->format('Y-m-d h:i:s');
+		$dtstarttime = $starttime->format('Y-m-d h:i:s');
+		$dteStart = new DateTime($dtstarttime); 
+		$dteEnd   = new DateTime($dtendtime); 
+		$dteDiff  = $dteStart->diff($dteEnd); 
+		$response_time = $dteDiff->format("%H:%I:%S"); */
 		$apilog_insert_array=array(
-				   'Api_Url'=>$url,
-				   'Request_Type'=>'Shipping Rate Api Rquest',
-				   'Request'=> $apirequest,
-				   'Response'=>$response,
-				   'Response_Code'=>$responsecode,
-				   'Origin_IP'=>$originip,
-				   'Request_By'=>$requestby
+				   'apiurl'=>$url,
+				   'requesttype'=>'Shipping Rate Api Rquest',
+				   'request'=> $apirequest,
+				   'response'=>$response,
+				   'responsecode'=>$responsecode,
+				   'originip'=>$originip,
+				   'requestby'=>$requestby
+				   //'responsetime'=>$response_time,
+				   //'CreatedAt'=>$dtstarttime,
 			  ); 
 			  
-	    /*DB::table('api_logs')->insert($apilog_insert_array);*/
+		/*insert request into api_log table*/	  
+	    DB::table('api_logs')->insert($apilog_insert_array);
 		
 		//print_r($attachment);exit;
 		//$AccessKey = '00BF47B1559899C7F6ED19CF40914841A9D0B8BC7C95C59C25';
@@ -439,39 +398,10 @@ class ShopifyController extends Controller
 		//curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
 
 		$resp = curl_exec($curl);
-		//print_r($validationerror->ValidationErrors);exit;
 		
-		/*store api log of omni parcel rate request*/
-		$apirequest = $attachment;
-		$response=$resp;
-		
-		$validationerror = json_decode($resp);
-		if(empty($validationerror->ValidationErrors))
-		{
-			$responsecode='Success';
-		}
-		else
-		{
-			$responsecode='Failed';	
-		}
-		$getorigin=$_SERVER['REMOTE_ADDR'];
-		$originip=$getorigin;
-		$requestby = $AccessKey;
-		$apilog_insert_array=array(
-				   'Api_Url'=>$url,
-				   'Request_Type'=>'omni parcel request/response',
-				   'Request'=> $apirequest,
-				   'Response'=>$response,
-				   'Response_Code'=>$responsecode,
-				   'Origin_IP'=>$originip,
-				   'Request_By'=>$requestby
-				   //'responsetime'=>$response_time,
-				   //'CreatedAt'=>$dtstarttime,
-			  ); 
-	    DB::table('api_logs')->insert($apilog_insert_array);
-		
+			
 		/*store response from omni parcel api */
-		/*$request_parameter['Parameteres']['Header'] =  $header;				
+		$request_parameter['Parameteres']['Header'] =  $header;				
 		$request_parameter['Parameteres']['Body'] =  json_decode($resp);//array($attachment);
 		$apirequest = json_encode($request_parameter);
 		$response='Success';
@@ -480,19 +410,19 @@ class ShopifyController extends Controller
 		$originip=$getorigin;
 		$requestby = $AccessKey;
 		$apilog_insert_array=array(
-				   'Api_Url'=>$url,
-				   'Request_Type'=>'Omni Shipping Rate Response',
-				   'Request'=> $apirequest,
-				   'Response'=>$response,
-				   'Response_Code'=>$responsecode,
-				   'Origin_IP'=>$originip,
-				   'Request_By'=>$requestby
+				   'apiurl'=>$url,
+				   'requesttype'=>'Omni Shipping Rate Response',
+				   'request'=> $apirequest,
+				   'response'=>$response,
+				   'responsecode'=>$responsecode,
+				   'originip'=>$originip,
+				   'requestby'=>$requestby
 				   //'responsetime'=>$response_time,
 				   //'CreatedAt'=>$dtstarttime,
 			  ); 
 			  
-		  
-	    DB::table('api_logs')->insert($apilog_insert_array);*/
+		/*insert request into api_log table*/	  
+	    DB::table('api_logs')->insert($apilog_insert_array);
 		
 		$jsondata = json_decode($resp);
 		//$myarray = array();
@@ -510,28 +440,12 @@ class ShopifyController extends Controller
 		}
 		
 		//print_r($myarray);exit;
+		
 		/*shipping rate api response set */
 		//$store_response = json_encode($myarray);
-		//$store_response = json_encode($myarray);
+		$store_response = json_encode($myarray);
 		
-		$apirequest = $shopify_request;
-		$response=json_encode($myarray);
-		$responsecode='Success';
-		$getorigin=$_SERVER['REMOTE_ADDR'];
-		$originip=$getorigin;
-		$requestby = $AccessKey;
-		$apilog_insert_array=array(
-				   'Api_Url'=>$url,
-				   'Request_Type'=>'shopify request/response',
-				   'Request'=> $apirequest,
-				   'Response'=>$response,
-				   'Response_Code'=>$responsecode,
-				   'Origin_IP'=>$originip,
-				   'Request_By'=>$requestby
-			  ); 
-	    DB::table('api_logs')->insert($apilog_insert_array);
-		
-		/*$request_parameter['Parameteres']['Header'] =  $header;				
+		$request_parameter['Parameteres']['Header'] =  $header;				
 		$request_parameter['Parameteres']['Body'] =  json_decode($store_response);//array($attachment);
 		$apirequest = json_encode($request_parameter);
 		$response='Success';
@@ -540,23 +454,25 @@ class ShopifyController extends Controller
 		$originip=$getorigin;
 		$requestby = $AccessKey;
 		$apilog_insert_array=array(
-				   'Api_Url'=>$url,
-				   'Request_Type'=>'Omni Shipping Rate Response',
-				   'Request'=> $apirequest,
-				   'Response'=>$response,
-				   'Response_Code'=>$responsecode,
-				   'Origin_IP'=>$originip,
-				   'Request_By'=>$requestby
+				   'apiurl'=>$url,
+				   'requesttype'=>'Omni Shipping Rate Response',
+				   'request'=> $apirequest,
+				   'response'=>$response,
+				   'responsecode'=>$responsecode,
+				   'originip'=>$originip,
+				   'requestby'=>$requestby
+				   //'responsetime'=>$response_time,
+				   //'CreatedAt'=>$dtstarttime,
 			  ); 
-	    DB::table('api_logs')->insert($apilog_insert_array);*/
-		
+			  
+		/*insert request into api_log table*/	  
+	    DB::table('api_logs')->insert($apilog_insert_array);
 		
 		//$response_arr = json_decode($item);
 		$response = \Response::json($myarray, 200);
+		
 		//echo '<pre>';print_r($response);exit;
 		return $response;
-		}
-		
 	}
 	
 	
