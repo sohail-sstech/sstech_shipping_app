@@ -22,5 +22,8 @@ Route::get('shippingrates','ShopifyController@getshipping_rates');
 Route::post('shippingrates','ShopifyController@getshipping_rates');
 
 
-Route::get('ordercreate_webhook','ShopifyController@webhook_orderscreates');
-Route::post('ordercreate_webhook','ShopifyController@webhook_orderscreates');
+Route::get('generatelabel','ShopifyController@create_labels');
+Route::post('generatelabel','ShopifyController@create_labels');
+
+
+//Route::post('/test', 'ShopifyController@shopdata')->middleware(['auth.shopify']);

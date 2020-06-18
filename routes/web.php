@@ -17,8 +17,9 @@ use Illuminate\Support\Facades\Route;
 //    return view('welcome');
 //});
 //Route::get('/', 'ShopifyController@index');
-//Route::get('/', 'ShopifyController@get_shop')->middleware(['auth.shopify']);
-
+//Route::get('/test', 'ShopifyController@get_shop')->middleware(['auth.shopify']);
+//Route::get('/mydata', 'ShopifyController@dummydata')->middleware(['auth.shopify']);
+//Route::post('/mydata', 'ShopifyController@dummydata')->middleware(['auth.shopify']);
 //Route::get('/my-home', 'HomeController@myHome');
 
 /*Route::get('/', function () {
