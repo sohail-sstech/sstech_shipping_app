@@ -1,6 +1,6 @@
 ## SSTech Shipping App
 
-# Basic Process
+### Basic Process
 - Shopify store owner goto the Shopify App store and installed SSTech Shipping App.
 - The customer comes to the shopify store and browses the list of products. Select product and add to the card and goto check out page. At the time of shipping selection on the checkout page, this App will display different rates as per origin address, destination address and selected products.
 - The customer selects our shipping rates. (Those shipping rates calculation at App end)
