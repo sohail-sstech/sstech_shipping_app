@@ -18,12 +18,20 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('shippingrates','ShopifyController@getshipping_rates');
-Route::post('shippingrates','ShopifyController@getshipping_rates');
+//Rest Controller Routes
+Route::get('shippingrates','RestController@getshipping_rates');
+Route::post('shippingrates','RestController@getshipping_rates');
 
+//Webhook Controller Routes
+Route::get('orders_create','WebhookController@orders_create');
+Route::post('orders_create','WebhookController@orders_create');
 
-Route::get('generatelabel','ShopifyController@create_labels');
-Route::post('generatelabel','ShopifyController@create_labels');
+/*for test purpose*/
+Route::post('createlabel','CronController@create_labels');
 
+Route::get('app_uninstalled','WebhookController@app_uninstalled');
+Route::post('app_uninstalled','WebhookController@app_uninstalled');
 
-//Route::post('/test', 'ShopifyController@shopdata')->middleware(['auth.shopify']);
+//Test controller
+Route::get('test_constants','TestController@test_constants');
+Route::post('test_constants','TestController@test_constants');

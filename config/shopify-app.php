@@ -109,7 +109,7 @@ return [
     |
     */
 
-    'api_key' => env('SHOPIFY_API_KEY', 'f1c10d774205650ff9a0d0f7a1a89020'),
+    'api_key' => env('SHOPIFY_API_KEY', '0b89183687007d76f6c3adc4101618cf'),
 
     /*
     |--------------------------------------------------------------------------
@@ -120,7 +120,7 @@ return [
     |
     */
 
-    'api_secret' => env('SHOPIFY_API_SECRET', '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'),
+    'api_secret' => env('SHOPIFY_API_SECRET', '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'),
 
     /*
     |--------------------------------------------------------------------------
@@ -280,7 +280,11 @@ return [
         */
         [
             'topic' => env('SHOPIFY_WEBHOOK_1_TOPIC', 'app/uninstalled'),
-            'address' => env('SHOPIFY_WEBHOOK_1_ADDRESS', 'https://e9bb7e5e.ngrok.io/webhook/app-uninstalled')
+            'address' => env('SHOPIFY_WEBHOOK_1_ADDRESS', 'https://sstechshippingapp.driver007.com/api/app_uninstalled')
+        ],
+        [
+            'topic' => env('SHOPIFY_WEBHOOK_1_TOPIC', 'orders/create'),
+            'address' => env('SHOPIFY_WEBHOOK_1_ADDRESS', 'https://sstechshippingapp.driver007.com/api/orders_create')
         ],
     ],
 
