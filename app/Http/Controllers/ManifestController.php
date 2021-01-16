@@ -9,14 +9,14 @@ use Log;
 
 class ManifestController extends Controller
 {
-	
     /**
      * Index action
      *
      * @param  Request  $request
      * @return Response
      */
-    public function index(Request $request) {
+    public function index(Request $request)
+	{
 		$end_date = date("d-m-Y");
 		$start_date = date("d-m-Y",strtotime("-1 month"));
 		return view('theme.manifest_view',array('start_date' => $start_date,'end_date' => $end_date));
@@ -26,25 +26,25 @@ class ManifestController extends Controller
 	{
 		$where = '';
 		$searchkey_filter='';
-		if(isset($_POST['search_key']) && !empty($_POST['search_key'])){
+		if(isset($_POST['search_key']) && !empty($_POST['search_key']))
+		{
 			$searchkey_filter = 'AND lbldt.consignment_no like ("%'.$_POST['search_key'].'%")';
 		}
-		if (isset($_POST['startdate']) && isset($_POST['enddate'])) {
+		if (isset($_POST['startdate']) && isset($_POST['enddate'])) 
+		{
 			//$search_limit = "LIMIT ".intval( $_GET['start'] ).", ".intval( $_GET['length']);
 			$startdate = date("Y-m-d",strtotime($_POST['startdate']));
 			$startdate = $startdate. ' 00:00:01';
-			
 			$enddate = date("Y-m-d",strtotime($_POST['enddate']));	
 			$enddate =  $enddate. ' 23:59:59';
-			
 			$where .= ' AND lbldt.created_at between "'.$startdate.'" and "'.$enddate.'"';
 		}
 		$manifestdata_query = DB::select('select SQL_CALC_FOUND_ROWS lbldt.* from label_details as lbldt where lbldt.is_manifested=0 '.$where.' '.$searchkey_filter.' ');
 		//echo '<pre>';print_r($where);exit;
 		
-		if($manifestdata_query){
+		if($manifestdata_query)
+		{
 			$query2 = DB::select('SELECT FOUND_ROWS() as totalcount');
-			
 			$total_count = $query2[0]->totalcount;
 			$table_data = array('data_found'=>$manifestdata_query,'total_count'=>$total_count);
 			
@@ -63,16 +63,16 @@ class ManifestController extends Controller
 				$output['aaData'][] = $raw;
 			}
 		}
-		else{
+		else
+		{
 			$output = array(
-					"sEcho" => intval($_POST['draw']),
-					"iTotalRecords" => '0',
-					"iTotalDisplayRecords" => '0',
-					"aaData" => array()
-				);
+						"sEcho" => intval($_POST['draw']),
+						"iTotalRecords" => '0',
+						"iTotalDisplayRecords" => '0',
+						"aaData" => array()
+					 );
 		}
-		echo json_encode( $output );
-		
+		echo json_encode($output);
 	}
 	
 	

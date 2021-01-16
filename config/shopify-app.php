@@ -109,7 +109,7 @@ return [
     |
     */
 
-    'api_key' => env('SHOPIFY_API_KEY', '0b89183687007d76f6c3adc4101618cf'),
+    'api_key' => env('SHOPIFY_API_KEY', '675cd25b6dbb54255775f0811deaa12a'),
 
     /*
     |--------------------------------------------------------------------------
@@ -120,7 +120,7 @@ return [
     |
     */
 
-    'api_secret' => env('SHOPIFY_API_SECRET', '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'),
+    'api_secret' => env('SHOPIFY_API_SECRET', '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'),
 
     /*
     |--------------------------------------------------------------------------
@@ -131,7 +131,7 @@ return [
     |
     */
 
-    'api_scopes' => env('SHOPIFY_API_SCOPES', 'read_products,write_products,read_orders,write_orders,read_customers,read_script_tags,write_script_tags,read_shipping,write_shipping'),
+    'api_scopes' => env('SHOPIFY_API_SCOPES', 'read_products,write_products,read_orders,write_orders,read_customers,read_shipping,write_shipping,read_script_tags,write_script_tags'),
 
     /*
     |--------------------------------------------------------------------------

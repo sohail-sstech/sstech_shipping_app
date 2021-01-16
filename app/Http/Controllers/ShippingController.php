@@ -15,7 +15,8 @@ class ShippingController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function index(Request $request) {
+    public function index(Request $request) 
+	{
 		$end_date = date("d-m-Y");
 		$start_date = date("d-m-Y",strtotime("-1 month"));
 		return view('theme.orderlabel_view',array('start_date' => $start_date,'end_date' => $end_date));
@@ -45,7 +46,8 @@ class ShippingController extends Controller
 		$orderlabel_query = DB::select('select SQL_CALC_FOUND_ROWS lbldt.* from label_details as lbldt where lbldt.status=1 '.$where.' '.$searchkey_filter.' '.$ismanifest_filter.' ');
 		//echo '<pre>';print_r($where);exit;
 		
-		if($orderlabel_query){
+		if($orderlabel_query)
+		{
 			$query2 = DB::select('SELECT FOUND_ROWS() as totalcount');
 			
 			$total_count = $query2[0]->totalcount;
@@ -59,33 +61,33 @@ class ShippingController extends Controller
 				);
 			$table = $table_data['data_found'];
 			//$AccessKey = '00BF47B1559899C7F6ED19CF40914841A9D0B8BC7C95C59C25';
-			for($a=0; $a<count($table); $a++){
+			for($a=0; $a<count($table); $a++)
+			{
 				
-				if($table[$a]->is_manifested=='1'){
+				if($table[$a]->is_manifested=='1')
+				{
 					$ismanifest = 'Yes';
 				}
-				else{
+				else
+				{
 					$ismanifest = 'No';
 				}
-				
 				if(!empty($table[$a]->consignment_no))
 				{
 					//$tackingurl =  '<a href="http://track.omniparcel.com/'.$table[$a]->consignment_no.'" target="_blank">Tracking ConsignmentNo</a>'; 
 					$tackingurl =  '<a href="http://track.omniparcel.com/'.$table[$a]->consignment_no.'" target="_blank" style="cursor:pointer;"><img src="images/tracking_icon.png" alt="Track Consignment" style="height:auto;width:64%;"></a>'; 
 					//$pdf_label =  '<a href="javascript:void(0);" target="_blank" onclick=get_pdf_label('.$table[$a]->id.')>Download Label</a>';
-					
 					$pdf_label =  '<span style="cursor:pointer;" onclick=get_pdf_label('.$table[$a]->id.')><img src="images/pdf_icon.png" alt="Download Label" style="height:auto;width:64%;"></span>';
 				}
-				else{
+				else
+				{
 					$pdf_label = 'Not available';
 					$tackingurl = 'Not available';
 				}
-				
 				//$checkbox = '<label class="au-checkbox" ><input type="checkbox" data-id="'.$table[$a]->id.'"  data-ConsignmentNo="'.$table[$a]->consignment_no.'" data-accesstoken="'.$AccessKey.'"><span class="au-checkmark"></span></label>';
 				//$raw = array(table[$a]->shopify_order_no,$table[$a]->consignment_no,$table[$a]->carrier_name,$pdf_label,$tackingurl,$ismanifest);
 				$raw = array($table[$a]->shopify_order_no,$table[$a]->consignment_no,$table[$a]->carrier_name,$pdf_label,$tackingurl,$ismanifest);
 				$output['aaData'][] = $raw;
-				
 			}
 		}
 		else{

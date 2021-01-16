@@ -20,5 +20,11 @@ return [
 
     //Omni Label URL
     'omni_label_url' => 'https://api.omniparcel.com/labels/printcheapestcourier',
+	
+	//create manifest consignment api url
+    'create_manifest_url' => 'https://api.omniparcel.com/v2/publishmanifestv4',
+	
+	//omni delete manifest consignment api url
+    'delete_manifest_url' => 'https://api.omniparcel.com/labels/delete',
 
 ];

@@ -20,7 +20,12 @@
   
  <!-- Main CSS-->
   <link href="{{ secure_asset('css/theme.css') }}" rel="stylesheet" media="all">
-	
+  
+  <!-- datatable -->
+  <!--<link href="{{ secure_asset('css/dataTables.bootstrap.css') }}" rel="stylesheet" media="all">
+  <link href="{{ secure_asset('css/dataTables.responsive.css') }}" rel="stylesheet" media="all">-->
+  <link href="{{ secure_asset('css/daterangepicker.css') }}" rel="stylesheet" media="all">
+<link href="{{ secure_asset('css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" media="all">
   <!--<script type="text/javascript" src="{{{ URL::asset('js/jquery.2.1.1.min.js')}}}"></script>
   <script src="{{{ URL::asset('js/bootstrap.min.js')}}}"></script>
   <script src="{{{ URL::asset('js/theme.min.js')}}}"></script>-->

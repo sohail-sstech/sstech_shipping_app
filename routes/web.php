@@ -107,3 +107,66 @@ Route::post('get_orderlabeldata','ShippingController@preload_orderlabeldata');
 Route::post('pdflabeldetails','ShippingController@get_pdf_labeldetails');
 //Route::get('/pdflabeldetails','ShippingController@get_pdf_labeldetails')->middleware(['auth.shopify']);
 
+
+
+/*Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+/*Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');*/
+
+
+/*This is all routes for super admin panel goes here*/
+//Route::get('/admin/home','/HomeController@index')->middleware(['auth']);
+Auth::routes();
+Route::get('/admin/home', 'Admin\HomeController@index')->name('home');
+
+Route::get('/admin/country', 'Admin\CountryController@index')->name('country');
+
+/*For country grid route goes here*/
+Route::post('/admin/get_countrylist','Admin\CountryController@preload_countrylist');
+//Route::get('/get_countrylist','Admin\CountryController@preload_countrylist')->middleware(['auth']);
+/*Country Insert route goes here*/
+Route::get('/admin/country/insert_form','Admin\CountryController@insert_view')->name('/admin/insert_form');
+Route::post('/admin/country/insert','Admin\CountryController@insert_data');
+/*Country Edit Form Data*/
+Route::get('/admin/country/edit/{id}','Admin\CountryController@edit_data')->name('/admin/Edit/{id}');
+/*Country Update Data*/
+Route::post('/admin/country/update','Admin\CountryController@update_data');
+/*Country Delete Data*/
+Route::get('/admin/country/delete/{id}','Admin\CountryController@delete_data');
+
+/*For update profile form route goes here*/
+Route::get('/admin/profile', 'Admin\ProfileController@index')->name('profile');
+Route::post('/admin/updateprofile','Admin\ProfileController@update_profile');
+
+/*For change profile password form route goes here*/
+Route::get('/admin/changepassword', 'Admin\ProfileController@changepassword_view')->name('changepassword');
+Route::post('/admin/updatechangepassword','Admin\ProfileController@update_changepassword');
+

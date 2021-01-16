@@ -18,3 +18,14 @@
 
     <!-- Main JS-->
     <script src="{{ secure_asset('js/main.js')}}"></script>
+	
+	<!-- datatable -->
+	 <script src="{{ secure_asset('js/jquery.dataTables.min.js')}}"></script>
+	 <script src="{{ secure_asset('js/dataTables.bootstrap.min.js')}}"></script>
+	 <script src="{{ secure_asset('js/dataTables.responsive.js')}}"></script>
+	 <script src="{{ secure_asset('js/dataTables.bootstrap4.min.js')}}"></script>
+	 
+	 <script src="{{ secure_asset('js/moment.js')}}"></script>
+	 <script src="{{ secure_asset('js/daterangepicker.js')}}"></script>
+	
+	

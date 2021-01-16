@@ -1,3 +1,12 @@
+ <?php 
+							/*$shop = Auth::user();
+							$shop_request = $shop->api()->rest('GET', '/admin/shop.json');
+							$shop_domain = $shop_request->body->shop->domain;
+							$shopify_shopurl =  'https://'.$shop_domain.'/admin';
+							*/
+							$shopify_shopurl ='';
+							
+						?>
  <!-- MENU SIDEBAR-->
         <aside class="menu-sidebar d-none d-lg-block">
             <div class="logo">
@@ -8,7 +17,7 @@
             <div class="menu-sidebar__content js-scrollbar1">
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
-                        <li class="active has-sub">
+                        <!--<li class="active has-sub">
                             <a class="js-arrow" href="#">
                                 <i class="fas fa-tachometer-alt"></i>Dashboard</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list">
@@ -25,43 +34,58 @@
                                     <a href="index4.html">Dashboard 4</a>
                                 </li>
                             </ul>
+                        </li>-->
+						<li>
+                            <a href="{{secure_asset('/')}}"><i class="fas fa-chart-bar"></i>Dashboard</a>
                         </li>
                         <li>
-                            <a href="chart.html">
-                                <i class="fas fa-chart-bar"></i>Charts</a>
+                            <a href="{{secure_asset('/orderlabel')}}"><i class="fas fa-chart-bar"></i>Order Labels</a>
+                        </li>
+						
+                        <li>
+                            <a href="{{$shopify_shopurl}}" target="_blank"><i class="fas fa-table"></i>Store Admin</a>
                         </li>
                         <li>
-                            <a href="table.html">
-                                <i class="fas fa-table"></i>Tables</a>
+                            <a href="#"><i class="far fa-check-square"></i>Tax</a>
                         </li>
                         <li>
-                            <a href="form.html">
-                                <i class="far fa-check-square"></i>Forms</a>
+                            <a href="{{secure_asset('/manifest')}}"><i class="fas fa-calendar-alt"></i>Manifest</a>
                         </li>
                         <li>
-                            <a href="calendar.html">
-                                <i class="fas fa-calendar-alt"></i>Calendar</a>
-                        </li>
-                        <li>
-                            <a href="map.html">
-                                <i class="fas fa-map-marker-alt"></i>Maps</a>
+                            <a href="{{secure_asset('/settingview')}}"><i class="fas fa-map-marker-alt"></i>Settings</a>
                         </li>
                         <li class="has-sub">
-                            <a class="js-arrow" href="#">
-                                <i class="fas fa-copy"></i>Pages</a>
+                            <a class="js-arrow" href="#"><i class="fas fa-copy"></i>Carrier Service</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list">
                                 <li>
-                                    <a href="login.html">Login</a>
+                                    <a href="{{secure_asset('/create')}}">Create Carrier Service</a>
                                 </li>
                                 <li>
-                                    <a href="register.html">Register</a>
+                                    <a href="{{secure_asset('/carrierdelete_view')}}">Delete Carrier Service</a>
                                 </li>
                                 <li>
-                                    <a href="forget-pass.html">Forget Password</a>
+                                    <a href="{{secure_asset('/carrierservicelist')}}">List Carrier Service</a>
                                 </li>
                             </ul>
                         </li>
-                        <li class="has-sub">
+						 <li class="has-sub">
+                            <a class="js-arrow" href="#"><i class="fas fa-copy"></i>Webhook</a>
+							<ul class="list-unstyled navbar__sub-list js-sub-list">
+								<li>
+									<a href="{{secure_asset('/createwebhook')}}">Create Webhook</a>
+								</li>
+								<li>
+									<a href="{{secure_asset('/webhookdelete')}}">Delete Webhook</a>
+								</li>
+								<li>
+									<a href="{{secure_asset('/webhooklist')}}">List Webhook</a>
+								</li>
+							</ul>
+                        </li>
+						<li>
+                            <a href="{{secure_asset('shopdetails')}}"><i class="fas fa-map-marker-alt"></i>Shop Data</a>
+                        </li>
+                        <!--<li class="has-sub">
                             <a class="js-arrow" href="#">
                                 <i class="fas fa-desktop"></i>UI Elements</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list">
@@ -99,9 +123,9 @@
                                     <a href="typo.html">Typography</a>
                                 </li>
                             </ul>
-                        </li>
+                        </li>-->
                     </ul>
                 </nav>
             </div>
         </aside>
-        <!-- END MENU SIDEBAR-->
+        <!-- END MENU SIDEBAR-->	
