@@ -4,6 +4,7 @@
                 <div class="container">
                     <div class="row">
 				        <div class="col-md-12">
+							<div id="custommsg"></div>
 							@if(session()->has('message'))
 								<div class="alert alert-success">
 									{{ session()->get('message') }}
@@ -101,28 +102,7 @@
 #recentmanifest_details tr td {text-align:center;}-->
 </style>
 
-<div class="modal fade" id="countryModalpopup" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true"
-			 data-backdrop="static">
-				<div class="modal-dialog modal-sm" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="staticModalLabel">Confirm</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<p>
-								Are You sure want to delete !
-							</p>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-							<button type="button" class="btn btn-primary">Confirm</button>
-						</div>
-					</div>
-				</div>
-			</div>
+
 <script>
 
 function reload_table(table){
@@ -130,6 +110,7 @@ function reload_table(table){
 }
 
 $(function(){
+	$("#success").hide();
 $('#countrygrid_dt').DataTable({
 		serverSide:true,
 		processing: true,
@@ -152,40 +133,46 @@ $.fn.dataTable.ext.errMode = 'none';
 //$('body').on('click', '#delete-product', function () 
 //{
 //$('#country_modal').click(function(){
-function del_confrim(id) {
-  alert(id);return false;
-}	
+
  $('body').on('click', '#country_modal', function () {	
-		$('#countryModalpopup').modal('show');
         var product_id = $(this).data("id");
-		//alert(product_id);return false;
-		$.ajax({
-              type: "get",
-              //url: SITEURL + "admin/country/delete/"+product_id,
-			  url: "admin/country/delete/"+product_id,
-              success: function (data) {
-              var oTable = $('#countrygrid_dt').dataTable(); 
-				oTable.fnDraw(false);
-              },
-              error: function (data) {
-                  console.log('Error:', data);
-              }
-          });
-        /*if(confirm("Are You sure want to delete !"))
+        if(confirm("Are You sure want to delete !"))
 		{
           $.ajax({
               type: "get",
               //url: SITEURL + "admin/country/delete/"+product_id,
 			  url: "admin/country/delete/"+product_id,
               success: function (data) {
+				  if(data.success==1)
+				  {
+						$("#custommsg").html('<div class="alert alert-success" id="success">Selected Country Data Deleted Succesfully.</div>');
+						  setTimeout(function(){ 
+								$(".alert-success").fadeTo(5000, 500).slideUp(500, function()
+								{
+										$(".alert-success").slideUp(500);		
+										$("#custommsg").html('');
+								});	
+						  }, 500);
+							
+				  }
+				  else{
+					  $("#custommsg").html('<div class="alert alert-success" id="success">Error Occured in Delete Data.</div>');
+					   setTimeout(function(){ 
+								$(".alert-danger").fadeTo(5000, 500).slideUp(500, function()
+								{
+									$(".alert-danger").slideUp(500);
+									$("#custommsg").html('');									
+								});	
+						  }, 500);
+				  }
               var oTable = $('#countrygrid_dt').dataTable(); 
 				oTable.fnDraw(false);
-              },
-              error: function (data) {
-                  console.log('Error:', data);
               }
+              /*error: function (data) {
+                  //console.log('Error:', data);
+              }*/
           });
-        }*/
+        }
 }); 		
 	/*Date Picker*/	
 /*	if ($('#startdate').val()) {
@@ -240,7 +227,8 @@ function del_confrim(id) {
 });
 
 $(document).ready(function(){
-	$('#countryModalpopup').modal('hide');
+	$("#success").hide();
+	//$('#countryModalpopup').modal('hide');
 	slideupslidedown_event();
 });
 /*trigger function slide up and slide down*/

@@ -174,7 +174,7 @@ class CountryController extends Controller
 		//DB::enableQueryLog();
 		//$country_list->where('name','like', '%'.$filter.'%');
 		//$country_list = Country::select('countries.*')->where('name', 'like', '%'.$filter.'%')->take($_POST['length'])->skip(intval($_POST['start']))->get();
-		$country_list_arr = Country::select('countries.*')->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
+		$country_list_arr = Country::select('countries.*')->where('is_deleted',1)->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
 		//$queries = DB::getQueryLog();
 		//print_r($queries);exit;
 		//$country_list_arr = $country_list->toArray();
@@ -211,7 +211,7 @@ class CountryController extends Controller
 			   <a href="admin/country/edit/'.$cntdata['id'].'" class="item" data-toggle="tooltip" data-placement="top">
 				<i class="zmdi zmdi-edit"></i>
 			   </a>
-			   <a onclick="del_confrim(/admin/Country/123);" class="item" data-placement="top">
+			  <a href="#" data-id="'.$cntdata['id'].'" data-toggle="modal" data-target="#countryModalpopup" id="country_modal" class="item" data-placement="top">
 				<i class="zmdi zmdi-delete"></i>
 			   </a>
 			</div>';
@@ -300,17 +300,33 @@ class CountryController extends Controller
 	
 	public function delete_data(Request $request,$id)
 	{
-		$delete = Country::where('id',$id)->delete();
+		$delete_arr = array(
+				'is_deleted'=>0
+		);
+		//DB::enableQueryLog();
+		$delete = Country::where('id',$id)->update($delete_arr); 
+		//$queries = DB::getQueryLog();
+		//$delete = Country::where('id',$id)->delete();
 		if($delete==1){
-			return redirect('/admin/country')->with('message', 'Selected Country Data Deleted Succesfully.');	
+			//return redirect('/admin/country')->with('message', 'Selected Country Data Deleted Succesfully.');	
+			$Response   = array(
+            'success' => '1'
+			//'message'=>'Selected Country Data Deleted Succesfully.'
+			);
 		}
+		else{
+			$Response   = array(
+            'success' => '0'
+            //'message' => 'Error in Delete Data'
+            );
+		}
+		return $Response;
 	}
 	
 	/*public function testmodalcall(){
 		//First Way	
 		 $post = User::all()->toArray();
-         dd($post);
-		 
+          dd($post);
 		 //Second Way
 		  $data = User::get(array('name'))->toArray(); // Or Main::all(['title']);
 		  dd($data);
