@@ -143,7 +143,6 @@ Route::get('/home', 'HomeController@index')->name('home');*/
 
 
 /*This is all routes for super admin panel goes here*/
-//Route::get('/admin/home','/HomeController@index')->middleware(['auth']);
 Auth::routes();
 Route::get('/admin/home', 'Admin\HomeController@index')->name('home');
 
@@ -170,3 +169,15 @@ Route::post('/admin/updateprofile','Admin\ProfileController@update_profile');
 Route::get('/admin/changepassword', 'Admin\ProfileController@changepassword_view')->name('changepassword');
 Route::post('/admin/updatechangepassword','Admin\ProfileController@update_changepassword');
 
+/*For Role Master routes goes here*/
+Route::get('/admin/role', 'Admin\RoleController@index')->name('role');
+Route::post('/admin/role/get_rolelist','Admin\RoleController@preload_rolelist');
+Route::get('/admin/role/edit/{id}','Admin\RoleController@edit_data')->name('/admin/Edit/{id}');
+Route::post('/admin/role/update','Admin\RoleController@update_data');
+
+/*For User Master routes goes here*/
+Route::get('/admin/user', 'Admin\UserController@index')->name('user');
+Route::post('/admin/user/get_userlist','Admin\UserController@preload_userlist');
+Route::get('/admin/user/insert_form','Admin\UserController@insert_view')->name('/admin/user/insert_form');
+Route::post('/admin/user/insert','Admin\UserController@insert_data');
+Route::get('/admin/user/edit/{id}','Admin\UserController@edit_data')->name('/admin/Edit/{id}');

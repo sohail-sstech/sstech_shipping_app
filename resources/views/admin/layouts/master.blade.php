@@ -27,6 +27,8 @@
   <link href="{{ asset('css/daterangepicker.css') }}" rel="stylesheet" media="all">
    
 <link href="{{ asset('css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" media="all">
+<link href="{{ asset('css/sstechshippingapp.css') }}" rel="stylesheet" media="all">
+
 <!--<link href="{{ asset('css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" media="all">-->
   <!--<script type="text/javascript" src="{{{ URL::asset('js/jquery.2.1.1.min.js')}}}"></script>
   <script src="{{{ URL::asset('js/bootstrap.min.js')}}}"></script>

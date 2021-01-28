@@ -3,7 +3,7 @@
             <div class="section__content section__content--p35">
                 <div class="header3-wrap">
                     <div class="header__logo" style="width:156px;height:52px;">
-                        <a href="#">
+                        <a href="{{asset('/admin/home')}}">
                             <img src="images/logo2.png" alt="CoolAdmin" />
                         </a>
                     </div>
@@ -38,11 +38,15 @@
                             </li>
 							
 						
-						
-                            <li>
-                                <a href="table.html">
+							<li>
+                                <a href="{{asset('/admin/user')}}">
                                     <i class="fas fa-trophy"></i>
-                                    <span class="bot-line"></span>Features</a>
+                                    <span class="bot-line"></span>User</a>
+                            </li>
+                            <li>
+                                <a href="{{asset('/admin/role')}}">
+                                    <i class="fas fa-trophy"></i>
+                                    <span class="bot-line"></span>Role</a>
                             </li>
                             <li class="has-sub">
                                 <a href="#">

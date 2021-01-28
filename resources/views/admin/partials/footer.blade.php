@@ -24,6 +24,9 @@
     <!-- Main JS-->
     <script src="{{ asset('js/main.js')}}"></script>
 	
+	<!-- Custom JS-->
+    <script src="{{ asset('js/sstechshippingapp.js')}}"></script>
+	
 	<!-- datatable -->
 	<!-- <script src="{{ asset('js/jquery.dataTables.min.js')}}"></script>
 	 <script src="{{ asset('js/dataTables.bootstrap.min.js')}}"></script>
@@ -47,7 +50,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="copyright">
-                                <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+                                <p>Copyright © 2021 SStech Shipping App. All rights reserved.</p>
                             </div>
                         </div>
                     </div>

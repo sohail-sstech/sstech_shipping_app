@@ -164,67 +164,73 @@ class CountryController extends Controller
 	
 	public function preload_countrylist(Request $request)
 	{
-		$search_limit = "";
-		if (isset($_POST['start']) && $_POST['length'] != '-1') 
+		
+		/*if (isset($_POST['start']) && $_POST['length'] != '-1') 
 		{
 			//$search_limit = "LIMIT ".intval($_POST['start']).", ".intval($_POST['length']);
 			$search_limit = " ".intval($_POST['start']).", ".intval($_POST['length']);
+		}*/
+		
+		$search_limit = "";
+		$countryname ='';
+		if(isset($_POST['country_name']) && !empty($_POST['country_name'])){
+			$countryname = $_POST['country_name'];
 		}
 		
-		//DB::enableQueryLog();
-		//$country_list->where('name','like', '%'.$filter.'%');
-		//$country_list = Country::select('countries.*')->where('name', 'like', '%'.$filter.'%')->take($_POST['length'])->skip(intval($_POST['start']))->get();
-		$country_list_arr = Country::select('countries.*')->where('is_deleted',1)->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
-		//$queries = DB::getQueryLog();
-		//print_r($queries);exit;
-		//$country_list_arr = $country_list->toArray();
-		$record_total = Country::all();
-		$total_count = $record_total->count();
-		$output = array(
-				"sEcho" => intval($_POST['draw']),
-				"iTotalRecords" => $total_count,
-				"iTotalDisplayRecords" => $total_count,
-				"aaData" => array()
-			);
-		foreach($country_list_arr as $cntdata)
+		//$country_list_arr = Country::select('countries.*')->where('name','like', '%' .$countryname. '%')->where('is_deleted',1)->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
+		$country_list_arr = Country::select('countries.*')->where('name','like', '%' .$countryname. '%')->where('is_deleted',1)->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
+	
+		//$total_count = Country::select('countries.*')->where('name','like', '%' .$countryname. '%')->where('is_deleted',1)->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->count();
+		//$country_list_arr = Country::select('countries.*')->where('name','')->where('is_deleted',1)->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
+		/*DB::enableQueryLog();
+		$queries = DB::getQueryLog();
+		print_r($queries);exit;*/
+		
+		//$record_total = Country::all();
+		//print_r($count_query);exit;
+		
+		/*$record_total = Country::all();
+		$total_count = $record_total->count();*/
+		
+		if($country_list_arr)
 		{
-			if($cntdata['phone_code'])
+			/*Query for to get total record count*/
+			$record_total = Country::where('name','like', '%' .$countryname. '%')->where('is_deleted',1)->get()->toArray();
+			$total_count = count($record_total);
+			
+			$output = array(
+					"sEcho" => intval($_POST['draw']),
+					"iTotalRecords" => $total_count,
+					"iTotalDisplayRecords" => $total_count,
+					"aaData" => array()
+				);
+			foreach($country_list_arr as $cntdata)
 			{
-				$cntdata['phone_code'] = '+'.$cntdata['phone_code'];
+				if($cntdata['phone_code'])
+				{
+					$cntdata['phone_code'] = '+'.$cntdata['phone_code'];
+				}
+				if($cntdata['status']==1)
+				{
+					$cntdata['status'] = "Active";
+				}
+				else
+				{
+					$cntdata['status'] = "Deactive";
+				}
+				$cntdata['Action'] = '
+				<div class="table-data-feature">
+				   <a href="admin/country/edit/'.$cntdata['id'].'" class="item" data-toggle="tooltip" data-placement="top">
+					<i class="zmdi zmdi-edit"></i>
+				   </a>
+				  <a href="#" data-id="'.$cntdata['id'].'" data-toggle="modal" data-target="#countryModalpopup" id="country_modal" class="item" data-placement="top">
+					<i class="zmdi zmdi-delete"></i>
+				   </a>
+				</div>';
+				$raw = array($cntdata['name'],$cntdata['iso'],$cntdata['phone_code'],$cntdata['num_code'],$cntdata['status'],$cntdata['created_at'],$cntdata['Action']);
+				$output['aaData'][] = $raw;
 			}
-			if($cntdata['status']==1)
-			{
-				$cntdata['status'] = "Active";
-			}
-			else
-			{
-				$cntdata['status'] = "Deactive";
-			}
-			if($cntdata['is_deleted']==1){
-				$cntdata['is_deleted'] = "Yes";
-			}
-			else{
-				$cntdata['is_deleted'] = "No";
-			}
-			$cntdata['Action'] = '
-			<div class="table-data-feature">
-			   <a href="admin/country/edit/'.$cntdata['id'].'" class="item" data-toggle="tooltip" data-placement="top">
-				<i class="zmdi zmdi-edit"></i>
-			   </a>
-			  <a href="#" data-id="'.$cntdata['id'].'" data-toggle="modal" data-target="#countryModalpopup" id="country_modal" class="item" data-placement="top">
-				<i class="zmdi zmdi-delete"></i>
-			   </a>
-			</div>';
-			/* <a href="#" data-id="'.$cntdata['id'].'" onclick="del_confrim('.$cntdata['id'].');" data-toggle="modal" data-target="#countryModalpopup" id="country_modal" class="item" data-placement="top">
-				<i class="zmdi zmdi-delete"></i>
-			   </a>*/
-			/*<a href="admin/country/delete/'.$cntdata['id'].'" data-id="{{ '.$cntdata['id'].' }}" data-toggle="modal" data-target="#staticModal" id="delete-product" class="item" data-placement="top">
-				<i class="zmdi zmdi-delete"></i>
-			   </a>*/
-			$raw = array($cntdata['name'],$cntdata['iso'],$cntdata['phone_code'],$cntdata['num_code'],$cntdata['status'],$cntdata['is_deleted'],$cntdata['created_at'],$cntdata['Action']);
-			$output['aaData'][] = $raw;
 		}
-		
 		return $output;
 	}
 	
@@ -242,8 +248,6 @@ class CountryController extends Controller
 		$country_iso = $request->input('country_iso');
 		$country_code = $request->input('country_code');
 		$country_numcode = $request->input('country_numcode');
-		
-		
 		Country::create(
 			array(
 			'name' => $request->input('country_name'),
@@ -253,29 +257,13 @@ class CountryController extends Controller
 			'phone_code' => $request->input('country_code'),
 			'num_code' => $request->input('country_numcode')
 			));
-		//echo '<pre>';print_r($car->name);exit;
-		/*$country_array = array(
-					   'name'=>"'$country_name'",
-					   'iso'=>"'$country_shortname'",
-					   'status'=> $country_status,
-					   'iso3'=> "'$country_iso'",
-					   'phone_code'=> $country_code,
-					   'num_code'=> $country_numcode
-					); */
-				
-		//Country::insert($country_array);
-		//return response()->json(['success'=>' Data Vendor Berhasil Disimpan.']);
-		//return view('admin.theme.country_view')->with('profiledata',$Authentication_data);
 		return redirect('/admin/country')->with('message', 'Data inserted successfully.');	
-		//return view('admin.theme.country_view')->with('message', 'Data inserted successfully.');
 	}
 	
 	/*Country Form Edit Data function*/
 	public function edit_data(Request $request,$id)
 	{
-		//echo $id;exit;
 		$edit_data = Country::where('id',$id)->get()->toArray(); 
-		//dd($edit_data);
 		return view('admin.theme.countryedit_view')->with('countryeditdata',$edit_data[0]);	
 	}
 	/*Country Form Update Data function*/
@@ -295,7 +283,6 @@ class CountryController extends Controller
 				Country::where('id',$countryedit_id)->update($update_country_array); 
 			}
 		return redirect('/admin/country')->with('message', 'Country Data Update.');	
-		  //return redirect()->back()->with('message', 'Country Data Update!');
 	}
 	
 	public function delete_data(Request $request,$id)
@@ -308,16 +295,13 @@ class CountryController extends Controller
 		//$queries = DB::getQueryLog();
 		//$delete = Country::where('id',$id)->delete();
 		if($delete==1){
-			//return redirect('/admin/country')->with('message', 'Selected Country Data Deleted Succesfully.');	
 			$Response   = array(
             'success' => '1'
-			//'message'=>'Selected Country Data Deleted Succesfully.'
 			);
 		}
 		else{
 			$Response   = array(
             'success' => '0'
-            //'message' => 'Error in Delete Data'
             );
 		}
 		return $Response;

@@ -23,12 +23,12 @@
                                         <li class="list-inline-item">Dashboard</li>
                                     </ul>
                                 </div>
-                                <form class="au-form-icon--sm" action="" method="post">
+                                <!--<form class="au-form-icon--sm" action="" method="post">
                                     <input class="au-input--w300 au-input--style2" type="text" placeholder="Search for datas &amp; reports...">
                                     <button class="au-btn--submit2" type="submit">
                                         <i class="zmdi zmdi-search"></i>
                                     </button>
-                                </form>
+                                </form>-->
                             </div>
                         </div>
                     </div>
@@ -49,11 +49,13 @@
                     </div>
                 </div>
             </section>
+			<section class="statistic statistic2">
 			
+			</section>
             <!-- END WELCOME-->
 
             <!-- STATISTIC-->
-            <section class="statistic statistic2">
+            <!--<section class="statistic statistic2">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-6 col-lg-3">
@@ -94,11 +96,11 @@
                         </div>
                     </div>
                 </div>
-            </section>
+            </section>-->
             <!-- END STATISTIC-->
 
             <!-- STATISTIC CHART-->
-            <section class="statistic-chart">
+            <!--<section class="statistic-chart">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
@@ -107,7 +109,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-lg-4">
-                            <!-- CHART-->
+                            
                             <div class="statistic-chart-1">
                                 <h3 class="title-3 m-b-30">chart</h3>
                                 <div class="chart-wrap">
@@ -118,10 +120,10 @@
                                     <span>/ 16220 items sold</span>
                                 </div>
                             </div>
-                            <!-- END CHART-->
+                           
                         </div>
                         <div class="col-md-6 col-lg-4">
-                            <!-- TOP CAMPAIGN-->
+                            
                             <div class="top-campaign">
                                 <h3 class="title-3 m-b-30">top campaigns</h3>
                                 <div class="table-responsive">
@@ -151,10 +153,10 @@
                                     </table>
                                 </div>
                             </div>
-                            <!-- END TOP CAMPAIGN-->
+                            
                         </div>
                         <div class="col-md-6 col-lg-4">
-                            <!-- CHART PERCENT-->
+                            
                             <div class="chart-percent-2">
                                 <h3 class="title-3 m-b-30">chart by %</h3>
                                 <div class="chart-wrap">
@@ -174,15 +176,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- END CHART PERCENT-->
+                          
                         </div>
                     </div>
                 </div>
-            </section>
+            </section>-->
             <!-- END STATISTIC CHART-->
 
             <!-- DATA TABLE-->
-            <section class="p-t-20">
+            <!--<section class="p-t-20">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
@@ -386,7 +388,7 @@
                         </div>
                     </div>
                 </div>
-            </section>
+            </section>-->
             <!-- END DATA TABLE-->
 
           
