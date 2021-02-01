@@ -26,7 +26,6 @@ class CronController extends Controller
 	 */
 	public function create_labels(Request $request)
 	{
-
 		$labeldetails_results = DB::select('select * from webhook_queues where status=0 ORDER BY id ASC LIMIT 2');
 		if(!empty($labeldetails_results)){
 			//$i=0;
@@ -43,7 +42,8 @@ class CronController extends Controller
 					$shipping_method = !empty($webhook_data['shipping_lines'][0]['title'])? $webhook_data['shipping_lines'][0]['title']:NULL;
 					//$shipping_method = !empty($webhook_data['shipping_lines'][$i]['title'])? $webhook_data['shipping_lines'][$i]['title']:NULL;
 					$carrier_methodname="SSTech Shipping";
-					if(strpos($shipping_method, $carrier_methodname) !== FALSE) {
+					if(strpos($shipping_method, $carrier_methodname) !== FALSE) 
+					{
 						$AccessKey = Config::get('constants.default_access_token'); //'00BF47B1559899C7F6ED19CF40914841A9D0B8BC7C95C59C25';
 						$ContentType = 'application/json';
 						$url = Config::get('constants.omni_label_url'); //'https://api.omniparcel.com/labels/printcheapestcourier';
@@ -165,11 +165,11 @@ class CronController extends Controller
 						/*label details table insert data*/
 						$labeldetails_insert_array=array(
 						   'shopify_order_id'=>$webhook_data['id'],
-						   //'shopify_order_id'=>'123',
 						   'shopify_order_no'=>$webhook_data['name'],
 						   'carrier_name'=>$available_rate_response_obj->CarrierName,
 						   'consignment_no'=> $consignmentno,
 						   'is_manifested'=> '0',
+						   'user_id'=>$userid,
 						   'status'=>'1',
 						   'created_by'=>$userid,
 						   'is_deleted'=>'0'
@@ -181,13 +181,10 @@ class CronController extends Controller
 						DB::table('webhook_queues')->where('id',$webhookid)->update(['status' => $status]);
 						
 					}
-					
 				}
-				
 			}
-			
 		}
-	}	
+	}
 	
 		 
 	/*
