@@ -200,21 +200,43 @@ $('#apiloggrid_dt').DataTable({
 	}
 });
 
+/*label details js goes here*/
 $('#lbldetailsgrid_dt').DataTable({
 		serverSide:true,
 		processing: true,
 		"paging":true,
 		"bFilter": false,
 	"ajax": {
-		"url": "/admin/store/get_storelist",
+		"url": "/admin/label/get_labellist",
 		type: "POST",
 		serverSide:true,
 		"processing": true,
 		"data": function(d) {
-			d.store_name = $('#store_name').val();
+			d.search_data = $('#search_data').val();
+			d.store = $('#store option:selected').val();
+			d.is_manifest = $('#is_manifest option:selected').val();
 		}
 	}
 });
+
+/*label details js goes here*/
+$('#manifestgrid_dt').DataTable({
+		serverSide:true,
+		processing: true,
+		"paging":true,
+		"bFilter": false,
+	"ajax": {
+		"url": "/admin/manifest/get_manifestlist",
+		type: "POST",
+		serverSide:true,
+		"processing": true,
+		"data": function(d) {
+			d.search_data = $('#search_data').val();
+			d.store = $('#store option:selected').val();
+		}
+	}
+});
+
 
 });
 

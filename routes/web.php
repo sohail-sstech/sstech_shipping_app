@@ -196,5 +196,10 @@ Route::get('/admin/apilog/getrowdata/{id}','Admin\ApiLogController@get_row_log_d
 
 /*For Label Details routes goes here*/
 Route::get('/admin/label', 'Admin\LabelController@index')->name('label');
-Route::post('/admin/apilog/get_apiloglist','Admin\ApiLogController@preload_apiloglist');
-Route::get('/admin/apilog/getrowdata/{id}','Admin\ApiLogController@get_row_log_details');
+Route::post('/admin/label/get_labellist','Admin\LabelController@preload_labellist');
+Route::get('/admin/label/getrowdata/{id}','Admin\LabelController@get_row_log_details');
+
+/*For Manifest Details routes goes here*/
+Route::get('/admin/manifest', 'Admin\ManifestController@index')->name('manifest');
+Route::post('/admin/manifest/get_manifestlist','Admin\ManifestController@preload_manifestlist');
+Route::get('/admin/manifest/getrowdata/{id}','Admin\ManifestController@get_row_log_details');

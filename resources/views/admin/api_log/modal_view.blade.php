@@ -13,33 +13,45 @@
 ?>
 <div class="col-md-12">
 	<div class="col-md-12">
-		<table class="popup_view" >  
+		<table class="table">  
 			<tr> 
 				<td><b> URL  </b></td>
-				<td> : &nbsp</td>
+				<td align="center"> : </td>
 				<td><?php echo $api_url; ?></td>
 			</tr>
 			<tr> 
 				<td><b> Time  </b></td>
-				<td> : &nbsp</td>
+				<td align="center"> : </td>
 				<td><?php echo $created_at; ?></td>
 			</tr>
 			<tr> 
 				<td><b> Type  </b></td>
-				<td> : &nbsp</td>
+				<td align="center"> : </td>
 				<td><?php echo $request_type; ?></td>
 			</tr>
 			<tr> 
 				<td><b> Status  </b></td>
-				<td> : &nbsp</td>
+				<td align="center"> : </td>
 				<td><?php echo $response_code; ?></td>
 			</tr>
 		</table>
 		<br>
 	</div>
 
-	
-	<div class="col-md-12">
+	<table class="table table-striped table-bordered  table-bordered table-dark">
+		<tr><td>Request Headers :</td></tr>
+		<tr><td><textarea name="peoplevox_request_header" style="width:100%;" rows="3"><?php echo $request_headers; ?></textarea></td></tr>
+		
+		<tr><td>Request Body :</td></tr>
+		<tr><td><textarea name="peoplevox_request_attachment" style="width:100%;" rows="3"><?php echo $request; ?></textarea></td></tr>
+		
+		<tr><td>Response Headers :</td></tr>
+		<tr><td><textarea name="peoplevox_request_header" style="width:100%;" rows="3"><?php echo $response_headers; ?></textarea></td></tr>
+		
+		<tr><td>Response Body :</td></tr>
+		<tr><td><textarea name="peoplevox_request_attachment" style="width:100%;" rows="3"><?php echo $response; ?></textarea></td></tr>
+	</table>
+	<!--<div class="col-md-12">
 		<h4><span style="font-weight:bold;">Request Headers :</span></h4>	
 		<div style="width:98%;overflow:auto;background:rgb(245,245,245);width:100%;border:2px solid #cccccc;padding:5px;">
 			<textarea name="peoplevox_request_header" style="width:100%;" rows="3"><?php echo $request_headers; ?></textarea>
@@ -62,6 +74,6 @@
 		<div style="width:98%;overflow:auto;background:rgb(245,245,245);width:100%;border:2px solid #cccccc;padding:5px;">
 			<textarea name="peoplevox_request_attachment" style="width:100%;" rows="3"><?php echo $response; ?></textarea>
 		</div>
-	</div>
+	</div> -->
 	
 </div>

@@ -10,3 +10,8 @@
     word-wrap: break-word;
     word-break: break-all;
 }
+#lbldetailsgrid_dt.table.dataTable tbody tr td {
+    word-wrap: break-word;
+    word-break: break-all;
+}
+

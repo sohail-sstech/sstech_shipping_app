@@ -66,6 +66,11 @@
 											<i class="fas fa-trophy"></i>
 											<span class="bot-line"></span>Label Details</a>
 									</li>
+									<li>
+										<a href="{{asset('/admin/manifest')}}">
+											<i class="fas fa-trophy"></i>
+											<span class="bot-line"></span>Manifest Details</a>
+									</li>
                                 </ul>
                             </li>
 							
