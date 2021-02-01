@@ -16,7 +16,7 @@ class CountryController extends Controller
 	public function index()
     {
 		
-        return view('admin/theme/country_view');
+        return view('admin/country/view');
     }
 	/*country master load data*/
 	/*public function preload_countrylist_oldbkp(Request $request)

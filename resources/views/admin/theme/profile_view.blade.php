@@ -1,6 +1,5 @@
 @extends('admin.layouts.master')
 @section('content')
-
 <section class="p-t-20">
                 <div class="container">
                     <div class="row">
@@ -24,7 +23,6 @@
                                                 </div>
                                                 <div class="col-12 col-md-5">
                                                     <input type="text" id="hf-name" name="profile_name" autocomplete="new-profile_name" placeholder="Enter Name..." class="form-control" value="{{$profiledata['name']}}" required>
-                                                    <!--<span class="help-block">Please enter your name</span>-->
                                                 </div>
                                             </div>
                                     </div>
@@ -45,36 +43,3 @@
 
 @endsection
 <script src="{{ asset('js/jquery-3.5.1.js')}}"></script>
-<style>
-.error {
-      color: #a81515;
-}
-</style>
-<script>
-$(function(){
-	$('#updateprofileform').validate({ // initialize the plugin
-		rules: {
-            profile_name: {
-				required: true,
-			},
-        }
-    });
-});	
-
-$(document).ready(function(){
-	slideupslidedown_event();
-});
-/*trigger function slide up and slide down*/
-function slideupslidedown_event()
-{
-	$(".alert-success").fadeTo(5000, 500).slideUp(500, function()
-	{
-		$(".alert-success").slideUp(500);		
-	});	
-
-	$(".alert-danger").fadeTo(5000, 500).slideUp(500, function()
-	{
-		$(".alert-danger").slideUp(500);		
-	});
-}
-</script>

@@ -15,6 +15,7 @@
                                     <i class="fas fa-tachometer-alt"></i>Dashboard
                                     <span class="bot-line"></span>
                                 </a>
+								
                                 <!--<ul class="header3-sub-list list-unstyled">
                                     <li>
                                         <a href="index.html">Dashboard 1</a>
@@ -37,17 +38,51 @@
 								</a>
                             </li>
 							
-						
-							<li>
-                                <a href="{{asset('/admin/user')}}">
-                                    <i class="fas fa-trophy"></i>
-                                    <span class="bot-line"></span>User</a>
+							<li class="has-sub">
+                                <a href="#">
+                                    <i class="fas fa-copy"></i>
+                                    <span class="bot-line"></span>Manage
+									</a>
+                                <ul class="header3-sub-list list-unstyled">
+                                    @if(Auth::user()->role_id==1 || Auth::user()->role_id==2)
+									<li>
+										<a href="{{asset('/admin/user')}}">
+											<i class="fas fa-trophy"></i>
+											<span class="bot-line"></span>User</a>
+									</li>
+									@endif
+									<li>
+										<a href="{{asset('/admin/role')}}">
+											<i class="fas fa-trophy"></i>
+											<span class="bot-line"></span>Role</a>
+									</li>
+									<li>
+										<a href="{{asset('/admin/apilog')}}">
+											<i class="fas fa-trophy"></i>
+											<span class="bot-line"></span>Api Logs</a>
+									</li>
+									<li>
+										<a href="{{asset('/admin/label')}}">
+											<i class="fas fa-trophy"></i>
+											<span class="bot-line"></span>Label Details</a>
+									</li>
+                                </ul>
                             </li>
-                            <li>
-                                <a href="{{asset('/admin/role')}}">
-                                    <i class="fas fa-trophy"></i>
-                                    <span class="bot-line"></span>Role</a>
+							
+							 <li class="has-sub">
+                                <a href="#">
+                                    <i class="fas fa-copy"></i>
+                                    <span class="bot-line"></span>List
+									</a>
+                                <ul class="header3-sub-list list-unstyled">
+                                   <li>
+										<a href="{{asset('/admin/store')}}">
+											<i class="fas fa-trophy"></i>
+											<span class="bot-line"></span>Stores</a>
+									</li>
+                                </ul>
                             </li>
+							
                             <li class="has-sub">
                                 <a href="#">
                                     <i class="fas fa-copy"></i>

@@ -5,8 +5,15 @@ use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Support\Facades\DB;
 
-class User extends Authenticatable
-{
+use Illuminate\Notifications\Notifiable;
+use Osiset\ShopifyApp\Contracts\ShopModel as IShopModel;
+use Osiset\ShopifyApp\Traits\ShopModel;
+
+class User extends Authenticatable implements IShopModel
+{ 
+	use Notifiable;
+    use ShopModel;
+
      protected $table = 'users';
 	 
 	 /**
@@ -15,7 +22,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','role_id',
     ];
 	
 	 /**

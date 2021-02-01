@@ -181,3 +181,20 @@ Route::post('/admin/user/get_userlist','Admin\UserController@preload_userlist');
 Route::get('/admin/user/insert_form','Admin\UserController@insert_view')->name('/admin/user/insert_form');
 Route::post('/admin/user/insert','Admin\UserController@insert_data');
 Route::get('/admin/user/edit/{id}','Admin\UserController@edit_data')->name('/admin/Edit/{id}');
+Route::post('/admin/user/update','Admin\UserController@update_data');
+Route::get('/admin/user/delete/{id}','Admin\UserController@delete_data');
+
+
+/*For Store Master routes goes here*/
+Route::get('/admin/store', 'Admin\StoreController@index')->name('store');
+Route::post('/admin/store/get_storelist','Admin\StoreController@preload_storelist');
+
+/*For Api Logs routes goes here*/
+Route::get('/admin/apilog', 'Admin\ApiLogController@index')->name('apilog');
+Route::post('/admin/apilog/get_apiloglist','Admin\ApiLogController@preload_apiloglist');
+Route::get('/admin/apilog/getrowdata/{id}','Admin\ApiLogController@get_row_log_details');
+
+/*For Label Details routes goes here*/
+Route::get('/admin/label', 'Admin\LabelController@index')->name('label');
+Route::post('/admin/apilog/get_apiloglist','Admin\ApiLogController@preload_apiloglist');
+Route::get('/admin/apilog/getrowdata/{id}','Admin\ApiLogController@get_row_log_details');

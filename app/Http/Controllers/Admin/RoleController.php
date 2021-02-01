@@ -15,7 +15,7 @@ class RoleController extends Controller
     }
 	public function index()
     {
-        return view('admin/theme/role_view');
+        return view('admin/role/view');
     }
 	
 	/*this is preload role grid*/
@@ -39,11 +39,11 @@ class RoleController extends Controller
 				
 				if($cntdata['status']==1)
 				{
-					$cntdata['status'] = "Active";
+					$cntdata['status'] = "<span class='status--process'>Active</span>";
 				}
 				else
 				{
-					$cntdata['status'] = "Deactive";
+					$cntdata['status'] = "<span class='status--denied'>Deactive</span>";
 				}
 				if($cntdata['is_deleted']==1)
 				{
@@ -70,7 +70,7 @@ class RoleController extends Controller
 	public function edit_data(Request $request,$id)
 	{
 		$edit_data = Role::where('id',$id)->get()->toArray(); 
-		return view('admin.theme.roleedit_view')->with('roleeditdata',$edit_data[0]);	
+		return view('admin.role.edit')->with('roleeditdata',$edit_data[0]);	
 	}
 	/*Country Form Update Data function*/
 	public function update_data(Request $request)

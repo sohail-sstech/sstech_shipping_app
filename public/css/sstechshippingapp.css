@@ -2,3 +2,11 @@
 .dt-body-center{
 	text-align:center;
 }
+/*#apiloggrid_dt.table.dataTable thead tr th {
+   word-wrap: break-word;
+    word-break: break-all;
+}*/
+#apiloggrid_dt.table.dataTable tbody tr td {
+    word-wrap: break-word;
+    word-break: break-all;
+}

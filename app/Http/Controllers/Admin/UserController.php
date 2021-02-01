@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Admin\User;
 use App\Models\Admin\Role;
 
+
+use Illuminate\Support\Facades\Hash;
+
 use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
@@ -16,7 +19,7 @@ class UserController extends Controller
     }
 	public function index()
     {
-        return view('admin/theme/user_view');
+        return view('admin/user/view');
     }	
 	public function preload_userlist(Request $request)
 	{
@@ -45,22 +48,22 @@ class UserController extends Controller
 			
 				if($cntdata['role_id']==1)
 				{
-					$cntdata['role_id'] = "Super Admin";
+					$cntdata['role_id'] = "<span class='role admin'>Super Admin</span>";
 				}
 				else if($cntdata['role_id']==2)
 				{
-					$cntdata['role_id'] = "Customer Service";
+					$cntdata['role_id'] = "<span class='role member'>Customer Service</span>";
 				}
 				else if($cntdata['role_id']==3)
 				{
-					$cntdata['role_id'] = "Shopify App User";
+					$cntdata['role_id'] = "<span class='role user'>Shopify App User</span>";
 				}
 				if($cntdata['status']==1)
 				{
-					$cntdata['status'] = "Active";
+					$cntdata['status'] = "<span class='status--process'>Active</span>";
 				}
 				else{
-					$cntdata['status'] = "Deactive";
+					$cntdata['status'] = "<span class='status--denied'>Deactive</span>";
 				}
 				if($cntdata['is_deleted']==1)
 				{
@@ -74,7 +77,7 @@ class UserController extends Controller
 				   <a href="admin/user/edit/'.$cntdata['id'].'" class="item" data-toggle="tooltip" data-placement="top">
 					<i class="zmdi zmdi-edit"></i>
 				   </a>
-				  <a href="#" data-id="'.$cntdata['id'].'" data-toggle="modal" data-target="#countryModalpopup" id="country_modal" class="item" data-placement="top">
+				  <a href="#" data-id="'.$cntdata['id'].'" data-toggle="modal" data-target="#countryModalpopup" onclick=delete_data('.$cntdata['id'].',"admin/user/delete/","usergrid_dt") id="user_modaltest" class="item" data-placement="top">
 					<i class="zmdi zmdi-delete"></i>
 				   </a>
 				</div>';
@@ -92,56 +95,73 @@ class UserController extends Controller
 		//$queries = DB::getQueryLog();
 		//echo '<pre>';print_r($role_list);exit;
 		
-		return view('admin.theme.userinsert_view',array('rolelist' => $role_list));
+		return view('admin.user.insert',array('rolelist' => $role_list));
 		//return view('admin/theme/userinsert_view');
 	}
 	
 	/*Insert data for country master*/
 	public function insert_data(Request $request)
 	{
-		Country::create(
+		$userExists = User::where('email', '=',$request->input('user_email'))->first();
+		if ($userExists === null) {
+			User::create(
 			array(
 			'name' => $request->input('user_name'),
 			'email' => $request->input('user_email'),
-			'role_id' => $request->input('user_role')
+			'role_id' => $request->input('user_role'),
+			'password' => Hash::make($request->input('user_password'))
 			));
-		return redirect('/admin/user')->with('message', 'Data inserted successfully.');	
+			return redirect('/admin/user')->with('message', 'Data inserted successfully.');	
+		}
+		else{
+			return redirect()->back()->with('message_failed', 'This User already exist.Please try again.');
+		}
+		//echo '<pre>';print_r($userExists);exit;
+		
 	}
 	
 	/*Country Form Edit Data function*/
 	public function edit_data(Request $request,$id)
 	{
-		$edit_data = Country::where('id',$id)->get()->toArray(); 
-		return view('admin.theme.countryedit_view')->with('countryeditdata',$edit_data[0]);	
+		$role_list = Role::where('is_deleted',0)->where('status',1)->get()->toArray();
+		$edit_data = User::where('id',$id)->get()->toArray(); 
+		return view('admin.user.edit')->with(array('usereditdata'=>$edit_data[0],'rolelist' => $role_list));	
 	}
 	/*Country Form Update Data function*/
 	public function update_data(Request $request)
 	{
-		$countryedit_id = $request->input('countryedit_id');
-			if(isset($countryedit_id))
-			{
-				$update_country_array = array(
-				   'name'=>$request->input('country_name'),
-				   'iso'=>$request->input('country_shortname'),
-				   'status'=>$request->input('country_status'),
-				   'iso3'=>$request->input('country_iso'),
-				   'phone_code'=>$request->input('country_code'),
-				   'num_code'=>$request->input('country_numcode'),
-				); 
-				Country::where('id',$countryedit_id)->update($update_country_array); 
+		$useredit_id = $request->input('useredit_id');
+			if(isset($useredit_id))
+			{ 
+				if(!empty($request->input('user_password')))
+				{
+					$update_user_array = array(
+					   'name'=>$request->input('user_name'),
+					   'email'=>$request->input('user_email'),
+					   'role_id'=>$request->input('user_role'),
+					   'password'=> Hash::make($request->input('user_password')),
+					); 
+				}
+				else
+				{
+					$update_user_array = array(
+					   'name'=>$request->input('user_name'),
+					   'email'=>$request->input('user_email'),
+					   'role_id'=>$request->input('user_role'),
+					); 
+				}
+				User::where('id',$useredit_id)->update($update_user_array); 
 			}
-		return redirect('/admin/country')->with('message', 'Country Data Update.');	
+		return redirect('/admin/user')->with('message', 'User Data Update.');	
 	}
 	
 	public function delete_data(Request $request,$id)
 	{
 		$delete_arr = array(
-				'is_deleted'=>0
+				'is_deleted'=>1
 		);
 		//DB::enableQueryLog();
-		$delete = Country::where('id',$id)->update($delete_arr); 
-		//$queries = DB::getQueryLog();
-		//$delete = Country::where('id',$id)->delete();
+		$delete = User::where('id',$id)->update($delete_arr); 
 		if($delete==1){
 			$Response   = array(
             'success' => '1'
