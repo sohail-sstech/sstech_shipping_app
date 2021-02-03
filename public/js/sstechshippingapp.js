@@ -79,6 +79,45 @@ $('#changepassword_form').validate({
         }
     });
 
+/*Settings Form jQuery Validation*/
+$('#settings_form').validate({ 
+		rules: {
+            store_name: {
+				required: true,
+			},
+		
+			accesstoken: {
+				required: true,
+			},
+			recevieremail: {
+				required: true,
+			},
+			Name: {
+				required: true,
+			},
+			contactperson: {
+				required: true,
+			},
+			fromaddress1: {
+				required: true,
+			},
+			countryname: {
+				required: true,
+			},
+			province: {
+				required: true,
+			},
+			city: {
+				required: true,
+			},
+			zipcode: {
+				required: true,
+			},
+			phone: {
+				required: true,
+			}
+        }
+    });
 });
 
 /*dynamic function for delete data*/
@@ -134,14 +173,14 @@ $('#rolegrid_dt').DataTable({
 		"columnDefs": [
            {className: "dt-body-center", "targets": [5]}
         ],
-	"ajax": {
-		"url": "/admin/role/get_rolelist",
-		type: "POST",
-		serverSide:true,
-		"processing": true,
-		"data": function(d) {
+		"ajax": {
+			"url": "/admin/role/get_rolelist",
+			type: "POST",
+			serverSide:true,
+			"processing": true,
+			"data": function(d) {
+			}
 		}
-	}
 });
 $.fn.dataTable.ext.errMode = 'none';
 $("#success").hide();
@@ -153,15 +192,15 @@ $('#usergrid_dt').DataTable({
 		"columnDefs": [
           {className: "dt-body-center", "targets": [5]}
         ],
-	"ajax": {
-		"url": "/admin/user/get_userlist",
-		type: "POST",
-		serverSide:true,
-		"processing": true,
-		"data": function(d) {
-			d.user_name = $('#user_name').val();
+		"ajax": {
+			"url": "/admin/user/get_userlist",
+			type: "POST",
+			serverSide:true,
+			"processing": true,
+			"data": function(d) {
+				d.user_name = $('#user_name').val();
+			}
 		}
-	}
 });
 $.fn.dataTable.ext.errMode = 'none';
 $('#storegrid_dt').DataTable({
@@ -169,15 +208,17 @@ $('#storegrid_dt').DataTable({
 		processing: true,
 		"paging":true,
 		"bFilter": false,
-	"ajax": {
-		"url": "/admin/store/get_storelist",
-		type: "POST",
-		serverSide:true,
-		"processing": true,
-		"data": function(d) {
-			d.store_name = $('#store_name').val();
+		"ajax": {
+			"url": "/admin/store/get_storelist",
+			type: "POST",
+			serverSide:true,
+			"processing": true,
+			"data": function(d) {
+				d.store_name = $('#store_name').val();
+				d.startdate = $('#startdate').val();
+				d.enddate = $('#enddate').val();
+			}
 		}
-	}
 });
 
 $('#apiloggrid_dt').DataTable({
@@ -185,19 +226,20 @@ $('#apiloggrid_dt').DataTable({
 		processing: true,
 		"paging":true,
 		"bFilter": false,
-	"ajax": {
-		"url": "/admin/apilog/get_apiloglist",
-		type: "POST",
-		serverSide:true,
-		"processing": true,
-		"data": function(d) {
-			d.search_data = $('#search_data').val();
-			d.request_type = $('#request_type option:selected').val();
-			d.response_code = $('#response_code option:selected').val();
-			d.store = $('#store option:selected').val();
+		"ajax": {
+			"url": "/admin/apilog/get_apiloglist",
+			type: "POST",
+			serverSide:true,
+			"processing": true,
+			"data": function(d) {
+				d.search_data = $('#search_data').val();
+				d.startdate = $('#startdate').val();
+				d.enddate = $('#enddate').val();
+				d.request_type = $('#request_type option:selected').val();
+				d.response_code = $('#response_code option:selected').val();
+				d.store = $('#store option:selected').val();
+			}
 		}
-		
-	}
 });
 
 /*label details js goes here*/
@@ -206,17 +248,19 @@ $('#lbldetailsgrid_dt').DataTable({
 		processing: true,
 		"paging":true,
 		"bFilter": false,
-	"ajax": {
-		"url": "/admin/label/get_labellist",
-		type: "POST",
-		serverSide:true,
-		"processing": true,
-		"data": function(d) {
-			d.search_data = $('#search_data').val();
-			d.store = $('#store option:selected').val();
-			d.is_manifest = $('#is_manifest option:selected').val();
+		"ajax": {
+			"url": "/admin/label/get_labellist",
+			type: "POST",
+			serverSide:true,
+			"processing": true,
+			"data": function(d) {
+				d.search_data = $('#search_data').val();
+				d.startdate = $('#startdate').val();
+				d.enddate = $('#enddate').val();
+				d.store = $('#store option:selected').val();
+				d.is_manifest = $('#is_manifest option:selected').val();
+			}
 		}
-	}
 });
 
 /*label details js goes here*/
@@ -225,18 +269,64 @@ $('#manifestgrid_dt').DataTable({
 		processing: true,
 		"paging":true,
 		"bFilter": false,
-	"ajax": {
-		"url": "/admin/manifest/get_manifestlist",
-		type: "POST",
-		serverSide:true,
-		"processing": true,
-		"data": function(d) {
-			d.search_data = $('#search_data').val();
-			d.store = $('#store option:selected').val();
+		"ajax": {
+			"url": "/admin/manifest/get_manifestlist",
+			type: "POST",
+			serverSide:true,
+			"processing": true,
+			"data": function(d) {
+				d.search_data = $('#search_data').val();
+				d.startdate = $('#startdate').val();
+				d.enddate = $('#enddate').val();
+				d.store = $('#store option:selected').val();
+			}
 		}
-	}
 });
 
+/*process queue details js goes here*/
+$('#processqueuegrid_dt').DataTable({
+		serverSide:true,
+		processing: true,
+		"paging":true,
+		"bFilter": false,
+		"ajax": {
+			"url": "/admin/processqueue/get_processqueuelist",
+			type: "POST",
+			serverSide:true,
+			"processing": true,
+			"data": function(d) {
+				d.search_data = $('#search_data').val();
+				d.startdate = $('#startdate').val();
+				d.enddate = $('#enddate').val();
+				d.store = $('#store option:selected').val();
+				d.processqueue_status = $('#processqueue_status option:selected').val();
+				d.processqueue_type = $('#processqueue_type option:selected').val();
+			}
+		}
+});
+
+
+/*settings details js goes here*/
+$('#settingsgrid_dt').DataTable({
+		serverSide:true,
+		processing: true,
+		"paging":true,
+		"bFilter": false,
+		"ajax": {
+			"url": "/admin/settings/get_settingslist",
+			type: "POST",
+			serverSide:true,
+			"processing": true,
+			"data": function(d) {
+				d.search_data = $('#search_data').val();
+				d.startdate = $('#startdate').val();
+				d.enddate = $('#enddate').val();
+				d.store = $('#store option:selected').val();
+				d.isfromaddress = $('#isfromaddress option:selected').val();
+				
+			}
+		}
+});
 
 });
 
@@ -262,8 +352,35 @@ function reload_table(table)
 
 $(document).ready(function()
 {
+	$('form').attr('autocomplete','off');
+	 var editradiobutton_values = $("input[name='fromaddress']:checked").val();
+	 if(editradiobutton_values==1){
+		 $('.customformaddressfields').css('display','block');
+		 $('.customformaddressfields').find("input[type=text],input[type=number],textarea,select").attr('required', 'required');
+	 }
+	else{
+		$('.customformaddressfields').find("input[type=text],input[type=number],textarea,select").removeAttr('required');
+	} 
+	
 	slideupslidedown_event();
 });
+
+$(function(){
+$('#radioButtonsdiv').on('change', 'input[name=fromaddress]:radio', function (e) {
+$('form').attr('autocomplete','off');	
+var radioscurrent_values = $(this).val();
+	if(radioscurrent_values==1){
+		$('.customformaddressfields').css('display','block');
+		//$('.customformaddressfields').find("input[type=text],input[type=number],textarea,select").attr('required', 'required');
+	}
+	else{
+		$('.customformaddressfields').css('display','none');
+		$('.customformaddressfields').find("input[type=text],input[type=number],textarea,select").val("");
+		//$('.customformaddressfields').find("input[type=text],input[type=number],textarea,select").removeAttr('required');
+	}
+});	
+});
+
 function slideupslidedown_event()
 {
 	$(".alert-success").fadeTo(5000, 500).slideUp(500, function()
@@ -276,3 +393,40 @@ function slideupslidedown_event()
 		$(".alert-danger").slideUp(500);		
 	});
 }
+$(function(){
+/*Date Picker*/	
+	if ($('#startdate').val()) {
+        var startdate = $('#startdate').val();
+    } else { //var startdate = new Date(); 
+        var date = new Date();
+        //var last = new Date(date.getTime() - (7 * 24 * 60 * 60 * 1000));
+        //var startdate = last.getDate() + '-' + (last.getMonth() + 1) + '-' + last.getFullYear();
+		var startdate = date;
+    }
+
+    if ($('#enddate').val()) {
+        var enddate = $('#enddate').val();
+    } else {
+        var enddate = new Date();
+    }
+
+    $('#startdate').daterangepicker({
+        singleDatePicker: true,
+        locale: {
+            format: 'DD-MM-YYYY'
+        },
+        startDate: startdate,
+        maxDate: new Date()
+    }).on('apply.daterangepicker', function(ev, picker) {
+    });
+    $('#enddate').daterangepicker({
+        singleDatePicker: true,
+        locale: {
+            format: 'DD-MM-YYYY'
+        },
+        startDate: enddate,
+        maxDate: new Date()
+    });
+	
+	
+});	

@@ -13,7 +13,7 @@
 							@endif
 						    <div class="row">
 							  <div class="col-md-10">
-								<h3 class="title-5 m-b-35">Manifest Details</h3>
+								<h3 class="title-5 m-b-35">Process Queue Details</h3>
 							  </div>
 							</div>
 							<div class="card">
@@ -21,11 +21,11 @@
                                         <strong>Filter</strong> Form
                                     </div>
                                     <div class="card-body card-block">
-                                        <form name="manifest_filter_data" class="" id="manifest_filter_data" >
+                                        <form name="processqueue_filter_data" class="" id="processqueue_filter_data" >
                                           <div class="row form-group">
 												<div class="col-sm-3">
 													<label for="search_data" class="col-sm-9 col-form-label">Search</label>
-													 <input type="text" class="form-control" id="search_data" autocomplete="new-search_data" name="search_data" placeholder="ManifestNo,ManifestFile.">
+													 <input type="text" class="form-control" id="search_data" autocomplete="new-search_data" name="search_data" placeholder="Header,Body.">
 												</div>
 												<div class="col-sm-3">
 													<label for="search_data" class="col-sm-9 col-form-label">Start Date</label>
@@ -45,16 +45,31 @@
 													<label for="store" class="col-sm-9 col-form-label">Store</label>
 													<select name="store" id="store" class="form-control">
                                                         <option value="0">Please select</option>
-														 @if(!empty($store_details))
-															@foreach($store_details as $store_data) 
-																<option value="{{$store_data['storename']}}"> {{$store_data['storename']}} </option>
+														 @if(!empty($user_details))
+															@foreach($user_details as $user_data) 
+																<option value="{{$user_data['storename']}}"> {{$user_data['storename']}} </option>
 															@endforeach    
 														@endif
                                                     </select> 
 												</div>
-												
 												<div class="col-sm-3">
-												<button type="button" onclick="reload_table('manifestgrid_dt')" class="col-sm-6 btn btn-success btn-bg" style="margin-top:40px;">
+													<label for="status" class="col-sm-9 col-form-label">Status</label>
+													<select name="processqueue_status" id="processqueue_status" class="form-control">
+                                                        <option value="">Please select</option>
+														<option value='0'>Pending</option>
+														<option value='1'>Completed</option>
+														<option value='2'>Failed</option>
+                                                    </select>
+												</div>
+												<div class="col-sm-3">
+													<label for="processqueue_type" class="col-sm-9 col-form-label">Status</label>
+													<select name="processqueue_type" id="processqueue_type" class="form-control">
+                                                        <option value="">Please select</option>
+														<option value='1'>Create Order Webhook</option>
+                                                    </select>
+												</div>
+												<div class="col-sm-3">
+												<button type="button" onclick="reload_table('processqueuegrid_dt')" class="col-sm-6 btn btn-success btn-bg" style="margin-top:40px;">
 													<i class="fa fa-dot-circle-o"></i> Filter
 												</button>
 												</div>
@@ -63,13 +78,12 @@
                                     </div>
                             </div>
                             <div class="table-responsive table-responsive-data2">
-                                <table class="table table-data2" id="manifestgrid_dt" width="100%" cellspacing="0">
+                                <table class="table table-data2" id="processqueuegrid_dt" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th class="card-header" style="min-width: 100px">Manifest No</th>
-											<th class="card-header" style="min-width: 100px">Manifest File</th>
-											<th class="card-header" style="min-width: 100px">Store Name</th>
-                                            <th class="card-header" style="min-width: 100px">Status</th>
+                                            <th class="card-header" style="min-width: 100px">Type</th>
+											<th class="card-header" style="min-width: 100px">Shop Domain</th>
+											<th class="card-header" style="min-width: 100px">Status</th>
                                             <th class="card-header" style="min-width: 50px">Is Deleted</th>
 											<th class="card-header" style="min-width: 50px">Action</th>
                                         </tr>

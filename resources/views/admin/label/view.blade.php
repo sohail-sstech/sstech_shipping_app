@@ -25,9 +25,22 @@
                                           <div class="row form-group">
 												<div class="col-sm-3">
 													<label for="search_data" class="col-sm-9 col-form-label">Search</label>
-													 <input type="text" class="form-control" id="search_data" autocomplete="new-search_data" name="search_data" placeholder="OrderId,OrderNo,Consignment,Carrier.">
+													 <input type="text" class="form-control" id="search_data" autocomplete="new-search_data" name="search_data" placeholder="Header,Body,Consignment,Carrier.">
 												</div>
-												
+												<div class="col-sm-3">
+													<label for="search_data" class="col-sm-9 col-form-label">Start Date</label>
+													<div class="input-group date">
+													<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+														<input id="startdate" class="form-control pull-right" name="startdate"  value="{{!empty($start_date) ? $start_date : ''}}" type="text">
+													</div>
+												</div>
+												<div class="col-sm-3">
+													<label for="search_data" class="col-sm-9 col-form-label">End Date</label>
+													<div class="input-group date">
+													<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+														<input id="enddate" class="form-control pull-right"  name="enddate" value="{{!empty($end_date) ? $end_date : ''}}" type="text">
+													</div>
+												</div>
 												<div class="col-sm-3">
 													<label for="store" class="col-sm-9 col-form-label">Store</label>
 													<select name="store" id="store" class="form-control">

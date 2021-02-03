@@ -34,15 +34,12 @@
   <script src="{{{ URL::asset('js/bootstrap.min.js')}}}"></script>
   <script src="{{{ URL::asset('js/theme.min.js')}}}"></script>-->
 </head>
-<body class="animsition">
+<body class="animsition1">
 <div class="page-wrapper">
   @include('admin.partials.header')
    <!--<div class="page-container">
 	<div class="main-content">
     <div class="section__content section__content--p30">-->
-      
-        
-      
       @yield('content') 
     <!--</div>
 	</div>

@@ -90,18 +90,14 @@ class UserController extends Controller
 	
 	/*Insert view load for country master*/
 	public function insert_view(){
-		//DB::enableQueryLog();
 		$role_list = Role::where('is_deleted',0)->where('status',1)->get()->toArray();
-		//$queries = DB::getQueryLog();
-		//echo '<pre>';print_r($role_list);exit;
-		
 		return view('admin.user.insert',array('rolelist' => $role_list));
-		//return view('admin/theme/userinsert_view');
 	}
 	
 	/*Insert data for country master*/
 	public function insert_data(Request $request)
 	{
+		
 		$userExists = User::where('email', '=',$request->input('user_email'))->first();
 		if ($userExists === null) {
 			User::create(
@@ -116,8 +112,6 @@ class UserController extends Controller
 		else{
 			return redirect()->back()->with('message_failed', 'This User already exist.Please try again.');
 		}
-		//echo '<pre>';print_r($userExists);exit;
-		
 	}
 	
 	/*Country Form Edit Data function*/

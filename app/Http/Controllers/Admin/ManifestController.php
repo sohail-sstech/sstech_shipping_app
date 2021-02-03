@@ -17,22 +17,23 @@ class ManifestController extends Controller
     }
 	public function index()
     {
+		$end_date = date("d-m-Y");
+		$start_date = date("d-m-Y",strtotime("-1 month"));
 		$storedetails = Manifest::select('manifest_details.*','us.name as storename')->join('users as us', 'manifest_details.user_id', '=','us.id')->orderBy('id', 'desc')->get()->toArray();
-        return view('admin/manifest/view',array('store_details' => $storedetails));
+        return view('admin/manifest/view',array('store_details' => $storedetails,'start_date' => $start_date,'end_date' => $end_date));
     }	
 	public function preload_manifestlist(Request $request)
 	{
 	
 		$store = !empty($_POST['store']) ? $_POST['store'] : '';
+		$startdate = !empty(date("Y-m-d",strtotime($_POST['startdate']))) ? date("Y-m-d",strtotime($_POST['startdate'])) : '';
+		$enddate = !empty(date("Y-m-d",strtotime($_POST['enddate']))) ? date("Y-m-d",strtotime($_POST['enddate'])) : '';
 		
 		$label_list_arr = Manifest::select('manifest_details.*','us.name as storename')->join('users as us', 'manifest_details.user_id', '=','us.id')
 			->where(function($query)
 			{
 				$query->where('manifest_no','=',$_POST['search_data'])->orWhere('manifest_file', 'like', '%'.$_POST['search_data'].'%');
-			})->where('us.name','like', '%' .$store. '%')->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
-		
-		//$queries = DB::getQueryLog();
-		//print_r($queries);exit;
+			})->where('us.name','like', '%' .$store. '%')->whereBetween('manifest_details.created_at', ["$startdate 00:00:00","$enddate 23:59:59"])->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
 		if($label_list_arr)
 		{
 			/*Query for to get total record count*/
@@ -40,7 +41,7 @@ class ManifestController extends Controller
 			->where(function($query)
 			{
 				$query->where('manifest_no','=',$_POST['search_data'])->orWhere('manifest_file', 'like', '%'.$_POST['search_data'].'%');
-			})->where('us.name','like', '%' .$store. '%')->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
+			})->where('us.name','like', '%' .$store. '%')->whereBetween('manifest_details.created_at', ["$startdate 00:00:00","$enddate 23:59:59"])->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
 			$total_count = count($record_total);
 			$output = array(
 					"sEcho" => intval($_POST['draw']),

@@ -79,7 +79,7 @@
 			<tr> 
 				<td><b> Created At  </b></td>
 				<td align="center"> : </td>
-				<td><?php echo $created_at; ?></td>
+				<td><?php echo date('F d Y  h:i A',strtotime($created_at)); ?></td>
 			</tr>
 		</table>
 		<br>

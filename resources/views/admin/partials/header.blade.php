@@ -31,64 +31,77 @@
                                     </li>
                                 </ul>-->
                             </li>
-                            <li>
+                            
+							<!--<li>
                                 <a href="{{asset('/admin/country')}}">
                                     <i class="fas fa-shopping-basket"></i>
                                     <span class="bot-line"></span>Country
 								</a>
-                            </li>
+                            </li>-->
 							
 							<li class="has-sub">
                                 <a href="#">
-                                    <i class="fas fa-copy"></i>
+                                    <i class="fas fa-tasks"></i>
                                     <span class="bot-line"></span>Manage
 									</a>
                                 <ul class="header3-sub-list list-unstyled">
                                     @if(Auth::user()->role_id==1 || Auth::user()->role_id==2)
 									<li>
 										<a href="{{asset('/admin/user')}}">
-											<i class="fas fa-trophy"></i>
+											<i class="fas fa-users"></i>
 											<span class="bot-line"></span>User</a>
 									</li>
 									@endif
 									<li>
 										<a href="{{asset('/admin/role')}}">
-											<i class="fas fa-trophy"></i>
+											<i class="fas fa-user"></i>
 											<span class="bot-line"></span>Role</a>
 									</li>
 									<li>
 										<a href="{{asset('/admin/apilog')}}">
-											<i class="fas fa-trophy"></i>
+											<i class="fas fa-history"></i>
 											<span class="bot-line"></span>Api Logs</a>
 									</li>
 									<li>
 										<a href="{{asset('/admin/label')}}">
-											<i class="fas fa-trophy"></i>
+											<i class="fas fa-info-circle"></i>
 											<span class="bot-line"></span>Label Details</a>
 									</li>
 									<li>
 										<a href="{{asset('/admin/manifest')}}">
-											<i class="fas fa-trophy"></i>
+											<i class="fas fa-info"></i>
 											<span class="bot-line"></span>Manifest Details</a>
 									</li>
                                 </ul>
                             </li>
 							
-							 <li class="has-sub">
+							<li class="has-sub">
                                 <a href="#">
-                                    <i class="fas fa-copy"></i>
+                                    <i class="fas fa-list"></i>
                                     <span class="bot-line"></span>List
 									</a>
                                 <ul class="header3-sub-list list-unstyled">
                                    <li>
 										<a href="{{asset('/admin/store')}}">
-											<i class="fas fa-trophy"></i>
+											<i class="fas fa-building"></i>
 											<span class="bot-line"></span>Stores</a>
 									</li>
+									<li>
+										<a href="{{asset('/admin/processqueue')}}">
+											<i class="fas fa-sync"></i>
+											<span class="bot-line"></span>Process Queues</a>
+									</li>
+									<li>
+										<a href="{{asset('/admin/settings')}}">
+											<i class="fas fa-cog"></i>
+											<span class="bot-line"></span>Settings</a>
+									</li>
+									
                                 </ul>
                             </li>
 							
-                            <li class="has-sub">
+							
+                            <!--<li class="has-sub">
                                 <a href="#">
                                     <i class="fas fa-copy"></i>
                                     <span class="bot-line"></span>Pages
@@ -96,6 +109,7 @@
                                 <ul class="header3-sub-list list-unstyled">
                                     <li>
                                         <a href="login.html">Login</a>
+										
                                     </li>
                                     <li>
                                         <a href="register.html">Register</a>
@@ -144,7 +158,7 @@
                                         <a href="typo.html">Typography</a>
                                     </li>
                                 </ul>
-                            </li>
+                            </li>-->
                         </ul>
                     </div>
                     <div class="header__tool">
@@ -226,7 +240,7 @@
                         <div class="account-wrap">
                             <div class="account-item account-item--style2 clearfix js-item-menu">
                                 <div class="image">
-                                    <img src="images/icon/avatar-01.jpg" alt="John Doe" />
+                                    <img src="images/small_logo2.png" alt="John Doe" />
                                 </div>
                                 <div class="content">
                                     <a class="js-acc-btn" href="#">{{ Auth::user()->name }}</a>
@@ -235,7 +249,7 @@
                                     <div class="info clearfix">
                                         <div class="image">
                                             <a href="#">
-                                                <img src="images/icon/avatar-01.jpg" alt="John Doe" />
+                                                <img src="images/small_logo2.png" alt="Profile Image" />
                                             </a>
                                         </div>
                                         <div class="content">
@@ -516,3 +530,5 @@
             </div>
         </div>
         <!-- END HEADER MOBILE -->
+		
+	

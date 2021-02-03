@@ -17,8 +17,10 @@ class ApiLogController extends Controller
     }
 	public function index()
     {
+		$end_date = date("d-m-Y");
+		$start_date = date("d-m-Y",strtotime("-1 month"));
 		$storedetails = ApiLog::select('api_logs.*','us.name as storename')->join('users as us', 'api_logs.user_id', '=','us.id')->orderBy('id', 'desc')->get()->toArray();
-        return view('admin/api_log/view',array('store_details' => $storedetails));
+        return view('admin/api_log/view',array('store_details' => $storedetails,'start_date' => $start_date,'end_date' => $end_date));
     }	
 	public function preload_apiloglist(Request $request)
 	{
@@ -26,12 +28,14 @@ class ApiLogController extends Controller
 		$request_type = !empty($_POST['request_type']) ? $_POST['request_type'] : '';
 		$response_code = !empty($_POST['response_code']) ? $_POST['response_code'] : '';
 		$store = !empty($_POST['store']) ? $_POST['store'] : '';
+		$startdate = !empty(date("Y-m-d",strtotime($_POST['startdate']))) ? date("Y-m-d",strtotime($_POST['startdate'])) : '';
+		$enddate = !empty(date("Y-m-d",strtotime($_POST['enddate']))) ? date("Y-m-d",strtotime($_POST['enddate'])) : '';
 		
 		$ApiLog_list_arr = ApiLog::select('api_logs.*','us.name as storename')->join('users as us', 'api_logs.user_id', '=','us.id')
 			->where(function($query)
 			{
 				$query->where('api_url','like', '%' .$_POST['search_data']. '%')->orWhere('request_headers', 'like', '%'.$_POST['search_data'].'%')->orWhere('request', 'like', '%'.$_POST['search_data'].'%')->orWhere('response_headers', 'like', '%'.$_POST['search_data'].'%')->orWhere('response', 'like', '%'.$_POST['search_data'].'%');
-			})->where('request_type','like', '%' .$request_type. '%')->where('response_code','like', '%' .$response_code. '%')->where('us.name','like', '%' .$store. '%')->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
+			})->where('request_type','like', '%' .$request_type. '%')->where('response_code','like', '%' .$response_code. '%')->where('us.name','like', '%' .$store. '%')->whereBetween('api_logs.created_at', ["$startdate  00:00:00","$enddate 23:59:59"])->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
 		
 		$queries = DB::getQueryLog();
 		if($ApiLog_list_arr)
@@ -41,7 +45,7 @@ class ApiLogController extends Controller
 			->where(function($query)
 			{
 				$query->where('api_url','like', '%' .$_POST['search_data']. '%')->orWhere('request_headers', 'like', '%'.$_POST['search_data'].'%')->orWhere('request', 'like', '%'.$_POST['search_data'].'%')->orWhere('response_headers', 'like', '%'.$_POST['search_data'].'%')->orWhere('response', 'like', '%'.$_POST['search_data'].'%');
-			})->where('request_type','like', '%' .$request_type. '%')->where('response_code','like', '%' .$response_code. '%')->where('us.name','like', '%' .$store. '%')->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
+			})->where('request_type','like', '%' .$request_type. '%')->where('response_code','like', '%' .$response_code. '%')->where('us.name','like', '%' .$store. '%')->whereBetween('api_logs.created_at', ["$startdate 00:00:00","$enddate 23:59:59"])->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
 			$total_count = count($record_total);
 			$output = array(
 					"sEcho" => intval($_POST['draw']),

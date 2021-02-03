@@ -75,7 +75,6 @@ class RoleController extends Controller
 	/*Country Form Update Data function*/
 	public function update_data(Request $request)
 	{
-		
 		$roleedit_id = $request->input('roleedit_id');
 			if(isset($roleedit_id))
 			{

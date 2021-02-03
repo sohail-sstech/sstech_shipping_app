@@ -26,7 +26,7 @@ class CronController extends Controller
 	 */
 	public function create_labels(Request $request)
 	{
-		$labeldetails_results = DB::select('select * from webhook_queues where status=0 ORDER BY id ASC LIMIT 2');
+		$labeldetails_results = DB::select('select * from process_queues where status=0 ORDER BY id ASC LIMIT 2');
 		if(!empty($labeldetails_results)){
 			//$i=0;
 			foreach($labeldetails_results as $label_obj){
@@ -178,7 +178,7 @@ class CronController extends Controller
 						
 						$status = empty($available_rate_response_obj->Errors)? '1':'2';
 						$webhookid = !empty($label_obj->id) ? $label_obj->id : null;
-						DB::table('webhook_queues')->where('id',$webhookid)->update(['status' => $status]);
+						DB::table('process_queues')->where('id',$webhookid)->update(['status' => $status]);
 						
 					}
 				}

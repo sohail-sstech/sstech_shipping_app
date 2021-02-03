@@ -28,6 +28,13 @@ class WebhookController extends Controller
 		$apache_request_headers = apache_request_headers();
 		$shop_domain = (isset($apache_request_headers['X-Shopify-Shop-Domain'])) ? $apache_request_headers['X-Shopify-Shop-Domain'] : NULL;
 		$headers_json = json_encode($apache_request_headers);
+		
+		/*get user id*/
+		$userid = '';
+		$userid = DB::table('users')->where('name',$shop_domain)->select('id')->pluck('id')->first();
+		if(!empty($userid)){
+			$userid = !empty($userid)?$userid:null;
+		}
 		//Load Variable
 		$create_order_json = NULL;
 		// Get webhook content from the POST
@@ -46,9 +53,10 @@ class WebhookController extends Controller
 			'headers' => $headers_json,
 			'body' => $create_order_json,
 			'status' => $status,
+			'created_by' => $userid,
 			'is_deleted' => $is_deleted
 		); 
-		DB::table('webhook_queues')->insert($create_order_webhook_insert_array);
+		DB::table('process_queues')->insert($create_order_webhook_insert_array);
 	}
 
 	/**

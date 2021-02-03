@@ -22,11 +22,6 @@ class ProfileController extends Controller
 	public function index()
     {
 		$Authentication_data = Auth::User()->toArray();
-		//$Userdata = $Authentication_data->toArray();
-		/*if(isset($Userdata)){
-				$current_userlist = User::select('*')->where('id',$Userdata['id'])->get()->toArray();
-		}*/
-		
 		if(isset($Authentication_data))
 		{
 			return view('admin.theme.profile_view')->with('profiledata',$Authentication_data);	
@@ -34,7 +29,6 @@ class ProfileController extends Controller
 		else{
 			return view('admin/theme/profile_view');
 		}
-        //return view('admin/theme/profile_view');
     }
 	
 	/*update profile data*/
@@ -42,7 +36,6 @@ class ProfileController extends Controller
     {
 		$profile_name = $request->input('profile_name');
 		$profile_id = $request->input('profile_id');
-		//print_r($profile_id);exit;
 			if(isset($profile_id))
 			{
 				$update_profile_array = array(
@@ -52,7 +45,6 @@ class ProfileController extends Controller
 			}
 		
 		  return redirect()->back()->with('message', 'Profile Data Update!');
-		  //return redirect('/admin/profile');
     }
 	
 	/*change password view load*/

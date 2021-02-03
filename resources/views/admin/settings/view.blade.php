@@ -13,7 +13,14 @@
 							@endif
 						    <div class="row">
 							  <div class="col-md-10">
-								<h3 class="title-5 m-b-35">Manifest Details</h3>
+								<h3 class="title-5 m-b-35">Settings Details</h3>
+							  </div>
+							   <div class="col-md-2">
+								<p style="float:right;">
+									<a href="{{asset('/admin/settings/insert_form')}}" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                                           <i class="zmdi zmdi-plus"></i> add item
+                                    </a>		
+								</p>	
 							  </div>
 							</div>
 							<div class="card">
@@ -21,11 +28,11 @@
                                         <strong>Filter</strong> Form
                                     </div>
                                     <div class="card-body card-block">
-                                        <form name="manifest_filter_data" class="" id="manifest_filter_data" >
+                                        <form name="processqueue_filter_data" class="" id="processqueue_filter_data" >
                                           <div class="row form-group">
 												<div class="col-sm-3">
 													<label for="search_data" class="col-sm-9 col-form-label">Search</label>
-													 <input type="text" class="form-control" id="search_data" autocomplete="new-search_data" name="search_data" placeholder="ManifestNo,ManifestFile.">
+													 <input type="text" class="form-control" id="search_data" autocomplete="new-search_data" name="search_data" placeholder="Store,Token,Name,Email,Address.">
 												</div>
 												<div class="col-sm-3">
 													<label for="search_data" class="col-sm-9 col-form-label">Start Date</label>
@@ -52,9 +59,16 @@
 														@endif
                                                     </select> 
 												</div>
-												
 												<div class="col-sm-3">
-												<button type="button" onclick="reload_table('manifestgrid_dt')" class="col-sm-6 btn btn-success btn-bg" style="margin-top:40px;">
+													<label for="status" class="col-sm-9 col-form-label">Is From Address</label>
+													<select name="isfromaddress" id="isfromaddress" class="form-control">
+                                                        <option value="">Please select</option>
+														<option value='1'>Yes</option>
+														<option value='0'>No</option>
+                                                    </select>
+												</div>
+												<div class="col-sm-3">
+												<button type="button" onclick="reload_table('settingsgrid_dt')" class="col-sm-6 btn btn-success btn-bg" style="margin-top:40px;">
 													<i class="fa fa-dot-circle-o"></i> Filter
 												</button>
 												</div>
@@ -63,15 +77,15 @@
                                     </div>
                             </div>
                             <div class="table-responsive table-responsive-data2">
-                                <table class="table table-data2" id="manifestgrid_dt" width="100%" cellspacing="0">
+                                <table class="table table-data2" id="settingsgrid_dt" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th class="card-header" style="min-width: 100px">Manifest No</th>
-											<th class="card-header" style="min-width: 100px">Manifest File</th>
-											<th class="card-header" style="min-width: 100px">Store Name</th>
-                                            <th class="card-header" style="min-width: 100px">Status</th>
-                                            <th class="card-header" style="min-width: 50px">Is Deleted</th>
-											<th class="card-header" style="min-width: 50px">Action</th>
+											<th class="card-header" style="min-width: 0px">Store</th>
+											<th class="card-header" style="min-width: 0px">Label Receiver Email</th>
+                                            <th class="card-header" style="min-width: 0px">Is From Address</th>
+                                            <th class="card-header" style="min-width: 0px">Status</th>
+                                            <th class="card-header" style="min-width: 0px">Is Deleted</th>
+											<th class="card-header" style="min-width: 0px;text-align:center!Important;">Action</th>
                                         </tr>
                                     </thead>
                                 </table>

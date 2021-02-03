@@ -203,3 +203,18 @@ Route::get('/admin/label/getrowdata/{id}','Admin\LabelController@get_row_log_det
 Route::get('/admin/manifest', 'Admin\ManifestController@index')->name('manifest');
 Route::post('/admin/manifest/get_manifestlist','Admin\ManifestController@preload_manifestlist');
 Route::get('/admin/manifest/getrowdata/{id}','Admin\ManifestController@get_row_log_details');
+
+/*For Process Queue Details routes goes here*/
+Route::get('/admin/processqueue', 'Admin\ProcessQueueController@index')->name('processqueue');
+Route::post('/admin/processqueue/get_processqueuelist','Admin\ProcessQueueController@preload_processqueuelist');
+Route::get('/admin/processqueue/getrowdata/{id}','Admin\ProcessQueueController@get_row_detail');
+
+/*For Settings Details routes goes here*/
+Route::get('/admin/settings', 'Admin\SettingsController@index')->name('settings');
+Route::post('/admin/settings/get_settingslist','Admin\SettingsController@preload_settingslist');
+Route::get('/admin/settings/getrowdata/{id}','Admin\SettingsController@get_row_detail');
+Route::get('/admin/settings/insert_form','Admin\SettingsController@insert_view')->name('/admin/settings/insert_form');
+Route::post('/admin/settings/insert','Admin\SettingsController@insert_data');
+Route::get('/admin/settings/edit/{id}','Admin\SettingsController@edit_data')->name('/settings/edit/{id}');
+Route::post('/admin/settings/update','Admin\SettingsController@update_data');
+Route::get('/admin/settings/delete/{id}','Admin\SettingsController@delete_data');

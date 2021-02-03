@@ -83,7 +83,7 @@
 										<label for="phone" class=" form-control-label">Phone</label>
 										<input type="number" id="phone" name="phone" value="{{$settingdata->phone}}" class="form-control">
 									</div>
-								</div>
+							</div>
 							
 								
 					</div>
