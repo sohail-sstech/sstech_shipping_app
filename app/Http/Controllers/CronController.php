@@ -27,11 +27,13 @@ class CronController extends Controller
 	public function create_labels(Request $request)
 	{
 		$labeldetails_results = DB::select('select * from process_queues where status=0 ORDER BY id ASC LIMIT 2');
+		
 		if(!empty($labeldetails_results)){
 			//$i=0;
-			foreach($labeldetails_results as $label_obj){
-			//for($i=0;$i<count($labeldetails_results);$i++){
-				
+			foreach($labeldetails_results as $label_obj)
+			{
+				//for($i=0;$i<count($labeldetails_results);$i++){
+				$shop_domain = !empty($label_obj->shop_domain) ? $label_obj->shop_domain : '';
 				$userid = DB::table('users')->where('name',$label_obj->shop_domain)->select('id')->pluck('id')->first();
 				$settingdata = DB::table('settings')->where(array('user_id'=>$userid,'is_from_address'=>1))->get();
 				
@@ -121,7 +123,8 @@ class CronController extends Controller
 						$webhook_request_data['outputs'] = array('LABEL_PDF');
 						$webhook_request_data['issignaturerequired'] = 'false';
 						$webhook_request_data['DeliveryReference'] =  rand(100000, 999999);
-						$webhook_request_data['Reference3'] = 'RETAILER PAID';
+						//$webhook_request_data['Reference3'] = 'RETAILER PAID';
+						$webhook_request_data['Reference3'] = $shop_domain;
 						$webhook_request_data['IncludeLineDetails'] = 'true';
 						//$webhook_request_data['ShipType'] = 'INBOUND';
 						$webhook_request_data['SendTrackingEmail'] = 'false';
@@ -145,29 +148,60 @@ class CronController extends Controller
 						$available_rate_response_obj = json_decode($available_rate_response);
 						unset($available_rate_response_obj->Consignments[0]->OutputFiles);
 						$responsecode = empty($available_rate_response_obj->Errors)? 'Success':'Failed';
+						$status = empty($available_rate_response_obj->Errors)? '1':'0';
 						//echo '<pre>';print_r($available_rate_response_obj->Consignments[0]);exit;
 						$originip=$_SERVER['REMOTE_ADDR'];
 						$apilog_insert_array=array(
 						   'api_url'=>$url,
 						   'user_id'=>$userid,
-						   'request_type'=>'Label Rate',
+						   'request_type'=>'3',
 						   'request_headers'=> json_encode($header),
 						   'request'=> $attachment,
 						   'response'=> json_encode($available_rate_response_obj),
 						   'response_code'=>$responsecode,
 						   'origin_ip'=>$originip,
+						   'status'=>$status,
 						   'created_by'=>$userid
 						); 
 						DB::table('api_logs')->insert($apilog_insert_array);
 						
 						$consignmentno = !empty($available_rate_response_obj->Consignments[0]->Connote)? $available_rate_response_obj->Consignments[0]->Connote:NULL; 
-						
+						$charges = !empty($available_rate_response_obj->Consignments[0]->Items[0]->Charge) ? $available_rate_response_obj->Consignments[0]->Items[0]->Charge : null;
 						/*label details table insert data*/
 						$labeldetails_insert_array=array(
 						   'shopify_order_id'=>$webhook_data['id'],
 						   'shopify_order_no'=>$webhook_data['name'],
+						   'sender_country'=> $origin['CountryCode'],
+						   'sender_name'=>$origin['Name'],
+						   'sender_building'=>$origin['BuildingName'],
+						   'sender_street'=>$origin['StreetAddress'],
+						   'sender_suburb'=>$origin['Suburb'],
+						   'sender_state_or_city'=>$origin['City'],
+						   'sender_postcode'=>$origin['PostCode'],
+						   'sender_contact'=>$origin['ContactPerson'],
+						   'sender_phone'=>$origin['phonenumber'],
+						   'sender_email'=>$origin['email'],
+						   'receiver_country'=> $destinationAddress['CountryCode'],
+						   'receiver_name'=>$destination['Name'],
+						   'receiver_building'=>$destinationAddress['BuildingName'],
+						   'receiver_street'=>$destinationAddress['StreetAddress'],
+						   'receiver_suburb'=>$destinationAddress['Suburb'],
+						   'receiver_state_or_city'=>$destinationAddress['City'],
+						   'receiver_postcode'=>$destinationAddress['PostCode'],
+						   'receiver_contact'=>$destination['ContactPerson'],
+						   'receiver_phone'=>$destination['phonenumber'],
+						   'receiver_email'=>$destination['email'],
+						   'delivery_instructions'=>$destination['DeliveryInstructions'],
+						   'commodities'=> json_encode($webhook_request_data['Commodities']),
+						   'packages'=> json_encode($webhook_request_data['Packages']),
+						   'is_signature_required'=> $webhook_request_data['issignaturerequired'],
+						   'delivery_reference'=> $webhook_request_data['DeliveryReference'],
+						   'reference3'=> $webhook_request_data['Reference3'],
+						   'reference2'=> $webhook_request_data['Reference3'],
+						   'charge'=> $charges,
 						   'carrier_name'=>$available_rate_response_obj->CarrierName,
 						   'consignment_no'=> $consignmentno,
+						   'service_name'=> $webhook_request_data['Service'],
 						   'is_manifested'=> '0',
 						   'user_id'=>$userid,
 						   'status'=>'1',
@@ -179,7 +213,6 @@ class CronController extends Controller
 						$status = empty($available_rate_response_obj->Errors)? '1':'2';
 						$webhookid = !empty($label_obj->id) ? $label_obj->id : null;
 						DB::table('process_queues')->where('id',$webhookid)->update(['status' => $status]);
-						
 					}
 				}
 			}

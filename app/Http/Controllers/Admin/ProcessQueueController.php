@@ -29,26 +29,36 @@ class ProcessQueueController extends Controller
 		$startdate = !empty(date("Y-m-d",strtotime($_POST['startdate']))) ? date("Y-m-d",strtotime($_POST['startdate'])) : '';
 		$enddate = !empty(date("Y-m-d",strtotime($_POST['enddate']))) ? date("Y-m-d",strtotime($_POST['enddate'])) : '';
 		
-		DB::enableQueryLog();
+		
 		/*$processqueue_list_arr = ProcessQueue::where(function($query)
 			{
 				$query->where('headers','like',"%".$_POST['search_data']."%")->orWhere('body', 'like', "%".$_POST['search_data']."%");
 			})->where('shop_domain','like', '%' .$store. '%')->where('status','like','%'.$_POST['processqueue_status'].'%')->where('type','like','%'.$_POST['processqueue_type'].'%')->whereBetween('created_at', ["$startdate 00:00:00","$enddate 23:59:59"])->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
 		*/
+		
+		DB::enableQueryLog();
 		$processqueue_list_arr = ProcessQueue::where(function($query)
-			{
-				$query->where('headers','like',"%".$_POST['search_data']."%")->orWhere('body', 'like', "%".$_POST['search_data']."%");
+		{
+				//$headerdata = json_decode($_POST['search_data']);
+				//$query->whereRaw('JSON_CONTAINS(headers, \'{"Host": "test.com"}\')');
+				//$query->whereRaw('json_contains(headers, \'[" {"Host":"test.com"} "]\')');
+				//$query->where('headers','like',"%".$_POST['search_data']."%");
+				$query->where('headers','like','%'.$_POST['search_data'].'%');
+				//$query->where('headers','like','%'.$_POST['search_data'].'%' );
 				//$query->where('headers','REGEXP',''.$_POST['search_data'].'')->orWhere('body', 'REGEXP', ''.$_POST['search_data'].'');
-			})->where('shop_domain','like', '%' .$store. '%')->where('status','like','%'.$_POST['processqueue_status'].'%')->where('type','like','%'.$_POST['processqueue_type'].'%')->whereBetween('created_at', ["$startdate 00:00:00","$enddate 23:59:59"])->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();		
+		})->where('shop_domain','like', '%' .$store. '%')->where('status','like','%'.$_POST['processqueue_status'].'%')->where('type','like','%'.$_POST['processqueue_type'].'%')->whereBetween('created_at', ["$startdate 00:00:00","$enddate 23:59:59"])->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
 		$queries = DB::getQueryLog();
 		//print_r($queries);exit;
+		
 		if($processqueue_list_arr)
 		{
 			/*Query for to get total record count*/
 			$record_total = ProcessQueue::where(function($query)
 			{
+			
 				//$query->where('headers','REGEXP',''.$_POST['search_data'].'')->orWhere('body', 'REGEXP', ''.$_POST['search_data'].'');
-				$query->where('headers','like','%'.$_POST['search_data'].'%')->orWhere('body', 'like', '%'.$_POST['search_data'].'%');
+				//$query->where('headers','like','%'.$_POST['search_data'].'%')->orWhere('body', 'like', '%'.$_POST['search_data'].'%');
+				$query->where("headers","like",'%'.$_POST['search_data'].'%' );
 			})->where('shop_domain','like', '%' .$store. '%')->where('status','like','%'.$_POST['processqueue_status'].'%')->where('type','like','%'.$_POST['processqueue_type'].'%')->whereBetween('created_at', ["$startdate 00:00:00","$enddate 23:59:59"])->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
 			$total_count = count($record_total);
 			$output = array(

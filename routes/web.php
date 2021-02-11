@@ -218,3 +218,5 @@ Route::post('/admin/settings/insert','Admin\SettingsController@insert_data');
 Route::get('/admin/settings/edit/{id}','Admin\SettingsController@edit_data')->name('/settings/edit/{id}');
 Route::post('/admin/settings/update','Admin\SettingsController@update_data');
 Route::get('/admin/settings/delete/{id}','Admin\SettingsController@delete_data');
+
+

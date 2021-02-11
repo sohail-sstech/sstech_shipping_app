@@ -58,7 +58,7 @@ class ManifestController extends Controller
 			//$AccessKey = '00BF47B1559899C7F6ED19CF40914841A9D0B8BC7C95C59C25';
 			$AccessKey = Config::get('constants.default_access_token');
 			for($a=0; $a<count($table); $a++){
-				$checkbox = '<label class="au-checkbox" ><input type="checkbox" data-id="'.$table[$a]->id.'"  data-ConsignmentNo="'.$table[$a]->consignment_no.'" data-accesstoken="'.$AccessKey.'"><span class="au-checkmark"></span></label>';
+				$checkbox = '<label class="au-checkbox" ><input type="checkbox" data-userid="'.$table[$a]->user_id.'" data-id="'.$table[$a]->id.'"  data-ConsignmentNo="'.$table[$a]->consignment_no.'" data-accesstoken="'.$AccessKey.'"><span class="au-checkmark"></span></label>';
 				$raw = array($checkbox,$table[$a]->consignment_no,$table[$a]->carrier_name,$table[$a]->created_at);
 				$output['aaData'][] = $raw;
 			}
@@ -112,8 +112,10 @@ class ManifestController extends Controller
 	    $manifest_api_response = call_curl($url,$header,$attachment);
 	    $manifest_resp=json_decode($manifest_api_response['response']);
 	    $res_result=array();
-	   if(!empty($manifest_resp->OutboundManifest) && $manifest_resp->OutboundManifest!=''){
-	       foreach($manifest_resp->OutboundManifest as $val){
+	   if(!empty($manifest_resp->OutboundManifest) && $manifest_resp->OutboundManifest!='')
+	   {
+	       foreach($manifest_resp->OutboundManifest as $val)
+		   {
 	           $manifest_number[$val->ManifestNumber]=$val->ManifestedConnotes;
 	           $path =  public_path().'/uploads/manifest/';
 	           $unique = substr(uniqid(rand(), true), 4,4);
@@ -130,17 +132,57 @@ class ManifestController extends Controller
 							'user_id'=>$userid,
 							'manifest_no'=>$val->ManifestNumber,
 							'manifest_file'=>$filepath,
+							'Error'=>$manifest_resp->Error,
+							'manifest_status_code'=>$manifest_resp->StatusCode,
+							'un_manifested_connotes'=> json_encode($manifest_resp->UnManifestedConnotes),
 							'created_by'=>$userid
 							);
-						DB::table('manifest_details')->insert($manifest_details);
+						//DB::table('manifest_details')->insert($manifest_details);
+						$manifestdetails_id = DB::table('manifest_details')->insert($manifest_details)->lastInsertId();
+						
+						foreach($val->ManifestedConnotes as $key_mc=>$val_mc)
+						{
+							/*Get label detals through the consignment no*/
+							$label_detailsid = DB::table('label_details')->where('consignment_no', $val_mc)->select('id')->pluck('id')->first();
+							/*Add details in manifest label details table*/
+							$manifest_label_details = array(
+							'user_id'=>$userid,
+							'manifest_detail_id'=>$manifestdetails_id,
+							'label_detail_id'=>$label_detailsid,
+							'consignment_no'=>$val_mc,
+							'created_by'=>$userid
+							);
+							DB::table('manifest_label_details')->insert($manifest_label_details)
+							/*label details update*/
+							DB::table('label_details')->where('consignment_no',$val_mc)->update(['is_manifested' => 1]);
+						}
 						
 						/*label details update*/
-						DB::table('label_details')->where('consignment_no',$val->ManifestedConnotes)->update(['is_manifested' => 1]);
+						//DB::table('label_details')->where('consignment_no',$val->ManifestedConnotes)->update(['is_manifested' => 1]);
         				//$update_export_manifest = $this->reprint_manifest_model->update_manifest_details($update_manifest_details,$val->ManifestedConnotes);
 				}
 				$res_result['ManifestedConnotes'][$val->ManifestNumber]=$val->ManifestedConnotes;
 				$res_result['UnManifestedConnotes'][]=$manifest_resp->UnManifestedConnotes;
+				
+				/*api log insert data*/
+				$responsecode = empty($manifest_resp->Errors)? 'Success':'Failed';
+				$status = empty($manifest_resp->Errors)? '1':'0';
+				$originip=$_SERVER['REMOTE_ADDR'];
+				$apilog_insert_array=array(
+					'api_url'=>$url,
+					'user_id'=>$userid,
+					'request_type'=>'4',
+					'request_headers'=> json_encode($header),
+					'request'=> $attachment,
+					'response'=> json_encode($manifest_resp),
+					'response_code'=>$responsecode,
+					'origin_ip'=>$originip,
+					'status'=>$status,
+					'created_by'=>$userid
+				);
+				DB::table('api_logs')->insert($apilog_insert_array);
 	       }
+			
 	   }
 	   else{
 	      $res_result['UnManifestedConnotes'][]=$manifest_resp->UnManifestedConnotes;
@@ -169,11 +211,13 @@ class ManifestController extends Controller
 	
 
 	/*delete consignment functionality*/
-	function delete_consignment(){
+	function delete_consignment()
+	{
 	    //$data = $this->general->check_currrent_session();
 	    //echo "<pre>";print_r($data);exit();
 	    $connote=$_POST['connote_list'];
 	    $accesstoken=$_POST['token'];
+	    $userid=$_POST['userid'];
 	    $attachment=json_encode($connote);
 	    //$attachment=json_encode(array("WRX1004265"));
 	    ///// Call Reprint API of OmniParcel ///
@@ -184,14 +228,41 @@ class ManifestController extends Controller
 	    $delete_api_response = call_curl($url,$header,$attachment);
 		//echo '<pre>';print_r($delete_api_response);exit();
 	    ///// Delete consolidated connote from export_details and create_export_consignment if the delete API is success///
+		$responsecode ='';
+		$status ='';
 	    foreach(json_decode($delete_api_response['response']) as $key=>$val){
 			
-	       if($val=='Deleted'){
-			   
+	       if($val=='Deleted')
+		   {
 			    DB::table('label_details')->where('consignment_no', $key)->update(['is_deleted' => 1]);
 	           //$del_consignment=$this->reprint_manifest_model->del_consignment($key);
+			   $responsecode = 'Success';
+			   $status = '1';
 	       }
+		   else
+		   {
+			   $responsecode = 'Failed';	
+			   $status = '0';
+		   }	
+		   
+		    /*api log insert data when label delete api call*/
+				$originip=$_SERVER['REMOTE_ADDR'];
+				$apilog_insert_array=array(
+					'api_url'=>$url,
+					'user_id'=>$userid,
+					'request_type'=>'5',
+					'request_headers'=> json_encode($header),
+					'request'=> $attachment,
+					'response'=> json_encode($delete_api_response['response']),
+					'response_code'=>$responsecode,
+					'origin_ip'=>$originip,
+					'status'=>$status,
+					'created_by'=>$userid
+				);
+				DB::table('api_logs')->insert($apilog_insert_array);
 	    }
+		
+				
 	    echo $delete_api_response;
 	}
 

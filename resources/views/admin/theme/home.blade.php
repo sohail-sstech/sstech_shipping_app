@@ -49,19 +49,17 @@
                     </div>
                 </div>
             </section>
-			<section class="statistic statistic2">
 			
-			</section>
             <!-- END WELCOME-->
 
             <!-- STATISTIC-->
-            <!--<section class="statistic statistic2">
+            <section class="statistic statistic2">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-6 col-lg-3">
                             <div class="statistic__item statistic__item--green">
-                                <h2 class="number">10,368</h2>
-                                <span class="desc">members online</span>
+                                <h2 class="number">{{$User_Counts['ShopifyAppUser']}}</h2>
+                                <span class="desc">Total Store</span>
                                 <div class="icon">
                                     <i class="zmdi zmdi-account-o"></i>
                                 </div>
@@ -69,8 +67,8 @@
                         </div>
                         <div class="col-md-6 col-lg-3">
                             <div class="statistic__item statistic__item--orange">
-                                <h2 class="number">388,688</h2>
-                                <span class="desc">items sold</span>
+                                <h2 class="number">{{$User_Counts['SuperAdmin']}}</h2>
+                                <span class="desc">Total Super Admin</span>
                                 <div class="icon">
                                     <i class="zmdi zmdi-shopping-cart"></i>
                                 </div>
@@ -78,8 +76,8 @@
                         </div>
                         <div class="col-md-6 col-lg-3">
                             <div class="statistic__item statistic__item--blue">
-                                <h2 class="number">1,086</h2>
-                                <span class="desc">this week</span>
+							  <h2 class="number">{{$User_Counts['CustomerService']}}</h2>
+                                <span class="desc">Total Customer Service User</span>
                                 <div class="icon">
                                     <i class="zmdi zmdi-calendar-note"></i>
                                 </div>
@@ -87,8 +85,8 @@
                         </div>
                         <div class="col-md-6 col-lg-3">
                             <div class="statistic__item statistic__item--red">
-                                <h2 class="number">$1,060,386</h2>
-                                <span class="desc">total earnings</span>
+                                <h2 class="number">{{$User_Counts['ShopifyAppUser']}}</h2>
+                                <span class="desc">Total Shopify App User</span>
                                 <div class="icon">
                                     <i class="zmdi zmdi-money"></i>
                                 </div>
@@ -96,7 +94,7 @@
                         </div>
                     </div>
                 </div>
-            </section>-->
+            </section>
             <!-- END STATISTIC-->
 
             <!-- STATISTIC CHART-->

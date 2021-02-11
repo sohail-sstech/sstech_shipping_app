@@ -1,19 +1,24 @@
 <?php
 	$All_ProcessQueueDetails=$All_ProcessQueueDetails[0];
+
 	if($All_ProcessQueueDetails['type']==1){
 		$type = !empty($All_ProcessQueueDetails['type'])? 'Create Order Webhook' : '';
 	}
 	$shop_domain  = !empty($All_ProcessQueueDetails['shop_domain']) ? $All_ProcessQueueDetails['shop_domain'] : null;
 	$headers  = !empty($All_ProcessQueueDetails['headers']) ? $All_ProcessQueueDetails['headers'] : null;
 	$body  = !empty($All_ProcessQueueDetails['body']) ? $All_ProcessQueueDetails['body'] : null;
+		
 	if($All_ProcessQueueDetails['status']==0){
-		$status = !empty($All_ProcessQueueDetails['status'])? "<span class='role user'>Pending</span>" : "";
+		//$status = !empty($All_ProcessQueueDetails['status'])? "<span class='role user'>Pending</span>" : "";
+		$All_ProcessQueueDetails['status'] = "<span class='role user'>Pending</span>";
 	}
 	else if($All_ProcessQueueDetails['status']==1){
-		$status = !empty($All_ProcessQueueDetails['status'])? "<span class='role member'>Completed</span>" : '';
+		//$status = !empty($All_ProcessQueueDetails['status'])? "<span class='role member'>Completed</span>" : '';
+		$All_ProcessQueueDetails['status']="<span class='role member'>Completed</span>";
 	}
 	else if($All_ProcessQueueDetails['status']==2){
-		$status = !empty($All_ProcessQueueDetails['status'])? "<span class='role admin'>Failed</span>" : '';
+		//$status = !empty($All_ProcessQueueDetails['status'])? "<span class='role admin'>Failed</span>" : '';
+		$All_ProcessQueueDetails['status']="<span class='role admin'>Failed</span>";
 	}
 	
 	if($All_ProcessQueueDetails['is_deleted']==1){
@@ -40,7 +45,7 @@
 			<tr> 
 				<td><b> Status  </b></td>
 				<td align="center"> : </td>
-				<td><?php echo $status; ?></td>
+				<td><?php echo $All_ProcessQueueDetails['status']; ?></td>
 			</tr>
 			<tr> 
 				<td><b> Is Deleted  </b></td>

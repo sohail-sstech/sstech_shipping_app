@@ -316,6 +316,7 @@ function Manifest_consignment() {
         //connote[index] = $(this).attr("data-ConsignmentNo"); Before Consignment Number was inserted now return Id will be inserted. 19-Jan-2018
         connote[count] = $(this).attr("data-consignmentno");
         Token = $(this).attr("data-accesstoken");
+        UserId = $(this).attr("data-userid");
         count++;
     });
     $.ajax({
@@ -323,6 +324,7 @@ function Manifest_consignment() {
         data: {
         	connote_list: connote,
             token:Token,
+            userid:UserId,
         },
         //url: baseurl + "reprint_manifest/manifest_consignment",
         url: '{{ secure_asset("/sendmanifest") }}',

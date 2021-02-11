@@ -15,3 +15,11 @@
     word-break: break-all;
 }
 
+#pkg_details.table.dataTable tbody tr td {
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+
+
+
