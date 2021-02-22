@@ -43,7 +43,7 @@
 											<div class="row form-group">
 												<div class="col-md-6">	
 													<div class="form-group row">
-														<label for="store_name" class="col-sm-3 col-form-label">Store</label>
+														<label for="store_name" class="col-sm-3 col-form-label">Store <span class="required">*</span></label>
 														<div class="col-sm-9">
 														  <select name="store_name" id="store_name" class="form-control">
 															<option value="">Please select</option>
@@ -56,13 +56,13 @@
 														</div>
 													</div>
 													<div class="form-group row">
-														<label for="accesstoken" class="col-sm-3 col-form-label">Customer Access Token</label>
+														<label for="accesstoken" class="col-sm-3 col-form-label">Customer Access Token <span class="required">*</span></label>
 														<div class="col-sm-9">
 														  <input type="text" class="form-control" id="accesstoken" autocomplete="new-accesstoken" name="accesstoken" placeholder="Plase Enter Access Token.">
 														</div>
 													</div>
 													<div class="form-group row">
-														<label for="recevieremail" class="col-sm-3 col-form-label">Lable Receiver Email</label>
+														<label for="recevieremail" class="col-sm-3 col-form-label">Lable Receiver Email <span class="required">*</span></label>
 														<div class="col-sm-9">
 														<input type="email" id="recevieremail" name="recevieremail" autocomplete="new-recevieremail" class="form-control" placeholder="Plase Enter Receiver Email.">
 														</div>
@@ -87,19 +87,19 @@
 													
 													<div class="customformaddressfields" style="display:none;">
 														<div class="form-group row">
-															<label for="Name" class="col-sm-3 col-form-label">Name</label>
+															<label for="Name" class="col-sm-3 col-form-label">Name <span class="required">*</span></label>
 															<div class="col-sm-9">
 																<input type="text" id="Name" name="Name"  class="form-control" placeholder="Plase Enter Name.">
 															</div>
 														</div>
 														<div class="form-group row">
-															<label for="contactperson" class="col-sm-3 col-form-label">Contact Person</label>
+															<label for="contactperson" class="col-sm-3 col-form-label">Contact Person <span class="required">*</span></label>
 															<div class="col-sm-9">
 																<input type="text" id="contactperson" name="contactperson" class="form-control" placeholder="Plase Enter Contact Person.">
 															</div>
 														</div>
 														<div class="form-group row">
-															<label for="Address1" class="col-sm-3 col-form-label">Address1</label>
+															<label for="Address1" class="col-sm-3 col-form-label">Address1 <span class="required">*</span></label>
 															<div class="col-sm-9">
 																<input type="text" id="fromaddress1" name="fromaddress1" class="form-control" placeholder="Plase Enter Address1.">
 															</div>
@@ -111,7 +111,7 @@
 															</div>
 														</div>
 														<div class="form-group row">
-														<label for="select" class="col-sm-3 col-form-label">Country</label>
+														<label for="select" class="col-sm-3 col-form-label">Country <span class="required">*</span></label>
 														<div class="col-sm-9">
 															 <select name="countryname" id="countryname" class="form-control">
 																<option value="">Please select</option>
@@ -125,25 +125,25 @@
 														</div>
 														</div>
 														<div class="form-group row">
-															<label for="province" class="col-sm-3 col-form-label">Province</label>
+															<label for="province" class="col-sm-3 col-form-label">Province <span class="required">*</span></label>
 															<div class="col-sm-9">
 																<input type="text" id="Province" name="province" class="form-control" placeholder="Plase Enter Province.">
 															</div>
 														</div>
 														<div class="form-group row">
-															<label for="city" class="col-sm-3 col-form-label">City</label>
+															<label for="city" class="col-sm-3 col-form-label">City <span class="required">*</span></label>
 															<div class="col-sm-9">
 																<input type="text" id="city" name="city"  class="form-control" placeholder="Plase Enter City.">
 															</div>
 														</div>
 														<div class="form-group row">
-															<label for="zipcode" class="col-sm-3 col-form-label">Zip Code</label>
+															<label for="zipcode" class="col-sm-3 col-form-label">Zip Code <span class="required">*</span></label>
 															<div class="col-sm-9">
 																<input type="text" id="zipcode" name="zipcode"  class="form-control" placeholder="Plase Enter Zip Code.">
 															</div>
 														</div>
 														<div class="form-group row">
-															<label for="phone" class="col-sm-3 col-form-label">Phone</label>
+															<label for="phone" class="col-sm-3 col-form-label">Phone <span class="required">*</span></label>
 															<div class="col-sm-9">
 																<input type="number" id="phone" name="phone"  class="form-control" placeholder="Plase Enter Phone.">
 															</div>

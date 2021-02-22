@@ -60,7 +60,6 @@
                                             <th class="card-header">Store Name</th>
                                             <th class="card-header">Store Email</th>
                                             <th class="card-header">Status</th>
-                                            <th class="card-header">Is Deleted</th>
                                             <th class="card-header">Created At</th>
                                         </tr>
                                     </thead>

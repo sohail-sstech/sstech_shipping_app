@@ -19,7 +19,7 @@
 										<input type = "hidden" name ="profile_id" value = "{{$profiledata['id']}}">
 											<div class="row form-group">
                                                 <div class="col col-md-3">
-                                                    <label for="hf-name" class=" form-control-label">Name</label>
+                                                    <label for="hf-name" class=" form-control-label">Name <span class="required">*</span></label>
                                                 </div>
                                                 <div class="col-12 col-md-5">
                                                     <input type="text" id="hf-name" name="profile_name" autocomplete="new-profile_name" placeholder="Enter Name..." class="form-control" value="{{$profiledata['name']}}" required>

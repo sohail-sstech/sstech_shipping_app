@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
-class ApiLog extends Authenticatable
+class ProcessQueue extends Authenticatable
 {
-     protected $table = 'api_logs';
+     protected $table = 'process_queues';
 	 
 	  /**
      * The attributes that are mass assignable.
@@ -16,7 +16,7 @@ class ApiLog extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'user_id','api_url','request_type','request_headers','request','response_headers','response','response_code','origin_ip','response_time','created_by','created_at','is_deleted',
+        'type','shop_domain','headers','body','status','created_by','created_at','updated_by','updated_at','is_deleted'
     ];
 	public $timestamps = false;
 	

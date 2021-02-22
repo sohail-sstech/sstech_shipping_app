@@ -147,7 +147,7 @@ class CronController extends Controller
 						//echo '<pre>';print_r($available_rate_response);exit;
 						$available_rate_response_obj = json_decode($available_rate_response);
 						unset($available_rate_response_obj->Consignments[0]->OutputFiles);
-						$responsecode = empty($available_rate_response_obj->Errors)? 'Success':'Failed';
+						$responsecode = empty($available_rate_response_obj->Errors)? 'Success':'Failure';
 						$status = empty($available_rate_response_obj->Errors)? '1':'0';
 						//echo '<pre>';print_r($available_rate_response_obj->Consignments[0]);exit;
 						$originip=$_SERVER['REMOTE_ADDR'];

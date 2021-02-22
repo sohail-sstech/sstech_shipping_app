@@ -38,7 +38,7 @@
 	else{
 		$All_LabelDetails['is_deleted']="<span class='status--denied'>No</span>";
 	}
-	$is_deleted  = !empty($All_LabelDetails['is_deleted']) ? $All_LabelDetails['is_deleted'] : 'Not Available';
+	
 	
 	$commodities_details = !empty($All_LabelDetails['commodities']) ? json_decode($All_LabelDetails['commodities']) : '';
 	
@@ -54,6 +54,17 @@
 	$sender_contact = !empty($All_LabelDetails['sender_contact']) ? $All_LabelDetails['sender_contact'] : 'Not Available';
 	$sender_phone = !empty($All_LabelDetails['sender_phone']) ? $All_LabelDetails['sender_phone'] : 'Not Available';
 	$sender_email = !empty($All_LabelDetails['sender_email']) ? $All_LabelDetails['sender_email'] : 'Not Available';
+	
+	$receiver_name = !empty($All_LabelDetails['receiver_name']) ? $All_LabelDetails['receiver_name'] : 'Not Available';
+	$receiver_building = !empty($All_LabelDetails['receiver_building']) ? $All_LabelDetails['receiver_building'] : 'Not Available';
+	$receiver_street = !empty($All_LabelDetails['receiver_street']) ? $All_LabelDetails['receiver_street'] : 'Not Available';
+	$receiver_country = !empty($All_LabelDetails['receiver_country']) ? $All_LabelDetails['receiver_country'] : 'Not Available';
+	$receiver_suburb = !empty($All_LabelDetails['receiver_suburb']) ? $All_LabelDetails['receiver_suburb'] : 'Not Available';
+	$receiver_state_or_city = !empty($All_LabelDetails['receiver_state_or_city']) ? $All_LabelDetails['receiver_state_or_city'] : 'Not Available';
+	$receiver_postcode = !empty($All_LabelDetails['receiver_postcode']) ? $All_LabelDetails['receiver_postcode'] : 'Not Available';
+	$receiver_contact = !empty($All_LabelDetails['receiver_contact']) ? $All_LabelDetails['receiver_contact'] : 'Not Available';
+	$receiver_phone = !empty($All_LabelDetails['receiver_phone']) ? $All_LabelDetails['receiver_phone'] : 'Not Available';
+	$receiver_email = !empty($All_LabelDetails['receiver_email']) ? $All_LabelDetails['receiver_email'] : 'Not Available';
 	
 ?>
 <div class="col-md-12">
@@ -115,11 +126,7 @@
 				<td align="center"> : </td>
 				<td><?php echo $status; ?></td>
 			</tr>
-			<tr> 
-				<td><b> Is Deleted  </b></td>
-				<td align="center"> : </td>
-				<td><?php echo $is_deleted; ?></td>
-			</tr>
+		
 			<tr> 
 				<td><b> Created At  </b></td>
 				<td align="center"> : </td>
@@ -161,6 +168,41 @@
 			<td><?php echo $sender_contact;?></td>
 			<td><?php echo $sender_phone;?></td>
 			<td><?php echo $sender_email;?></td>
+		</tr>
+		
+		
+</table>
+</div>
+<div style="margin-bottom:15px;">
+<table class="table table-striped table-bordered table-responsive" width="100%" cellspacing="0">
+		<tr>
+		<h4 class="modal-title">Receiver Details</h4>
+		</tr>
+		<thead>
+		<tr>
+			<th>Receiver Name</th>
+			<th>Receiver Building</th>
+			<th>Receiver Street</th>
+			<th>Receiver Country</th>
+			<th>Receiver Suburb</th>
+			<th>Receiver State/City</th>
+			<th>Receiver Postcode</th>
+			<th>Receiver Contact</th>
+			<th>Receiver Phone</th>
+			<th>Receiver Email</th>
+		</tr>
+		</thead>
+		<tr>
+			<td><?php echo $receiver_name;?></td>
+			<td><?php echo $receiver_building;?></td>
+			<td><?php echo $receiver_street;?></td>
+			<td><?php echo $receiver_country;?></td>
+			<td><?php echo $receiver_suburb;?></td>
+			<td><?php echo $receiver_state_or_city;?></td>
+			<td><?php echo $receiver_postcode;?></td>
+			<td><?php echo $receiver_contact;?></td>
+			<td><?php echo $receiver_phone;?></td>
+			<td><?php echo $receiver_email;?></td>
 		</tr>
 		
 		

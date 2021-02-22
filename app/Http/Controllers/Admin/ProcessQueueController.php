@@ -3,8 +3,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Admin\ProcessQueue;
-use App\Models\Admin\User;
+use App\Models\ProcessQueue;
+use App\Models\User;
 
 use Illuminate\Support\Facades\Hash;
 
@@ -83,13 +83,6 @@ class ProcessQueueController extends Controller
 				else if($cntdata['status']==2){
 					$cntdata['status'] = "<span class='role admin'>Failed</span>";
 				}
-				if($cntdata['is_deleted']==1)
-				{
-					$cntdata['is_deleted'] = "<span class='status--process'>Yes</span>";
-				}
-				else{
-					$cntdata['is_deleted'] = "<span class='status--denied'>No</span>";
-				}
 				
 				$cntdata['Action'] = '
 				<div class="table-data-feature">
@@ -98,7 +91,7 @@ class ProcessQueueController extends Controller
 				   </button>
 				</div>';
 				
-				$raw = array($cntdata['type'],$cntdata['shop_domain'],$cntdata['status'],$cntdata['is_deleted'],$cntdata['Action']);
+				$raw = array($cntdata['type'],$cntdata['shop_domain'],$cntdata['status'],$cntdata['Action']);
 				
 				$output['aaData'][] = $raw;
 			}
@@ -116,7 +109,7 @@ class ProcessQueueController extends Controller
 	}
 	
 	/*get single record data for modal popup*/
-	public function get_row_detail($id='')
+	public function get_single_row_data($id='')
 	{
 		if(isset($id))
 		{

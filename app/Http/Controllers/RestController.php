@@ -169,7 +169,7 @@ class RestController extends Controller
 			if(!empty($available_rate_response_obj->Available)) {
 				$response_code = 'Success';
 			} else {
-				$response_code = 'Failed';	
+				$response_code = 'Failure';	
 			}
 			//$requestheader = $header;
 			$origin_ip = $_SERVER['REMOTE_ADDR'];

@@ -174,6 +174,7 @@ Route::get('/admin/role', 'Admin\RoleController@index')->name('role');
 Route::post('/admin/role/get_rolelist','Admin\RoleController@preload_rolelist');
 Route::get('/admin/role/edit/{id}','Admin\RoleController@edit_data')->name('/admin/Edit/{id}');
 Route::post('/admin/role/update','Admin\RoleController@update_data');
+Route::get('/admin/role/getrowdata/{id}','Admin\RoleController@get_single_row_data');
 
 /*For User Master routes goes here*/
 Route::get('/admin/user', 'Admin\UserController@index')->name('user');
@@ -192,27 +193,27 @@ Route::post('/admin/store/get_storelist','Admin\StoreController@preload_storelis
 /*For Api Logs routes goes here*/
 Route::get('/admin/apilog', 'Admin\ApiLogController@index')->name('apilog');
 Route::post('/admin/apilog/get_apiloglist','Admin\ApiLogController@preload_apiloglist');
-Route::get('/admin/apilog/getrowdata/{id}','Admin\ApiLogController@get_row_log_details');
+Route::get('/admin/apilog/getrowdata/{id}','Admin\ApiLogController@get_single_row_data');
 
 /*For Label Details routes goes here*/
 Route::get('/admin/label', 'Admin\LabelController@index')->name('label');
 Route::post('/admin/label/get_labellist','Admin\LabelController@preload_labellist');
-Route::get('/admin/label/getrowdata/{id}','Admin\LabelController@get_row_log_details');
+Route::get('/admin/label/getrowdata/{id}','Admin\LabelController@get_single_row_data');
 
 /*For Manifest Details routes goes here*/
 Route::get('/admin/manifest', 'Admin\ManifestController@index')->name('manifest');
 Route::post('/admin/manifest/get_manifestlist','Admin\ManifestController@preload_manifestlist');
-Route::get('/admin/manifest/getrowdata/{id}','Admin\ManifestController@get_row_log_details');
+Route::get('/admin/manifest/getrowdata/{id}','Admin\ManifestController@get_single_row_data');
 
 /*For Process Queue Details routes goes here*/
 Route::get('/admin/processqueue', 'Admin\ProcessQueueController@index')->name('processqueue');
 Route::post('/admin/processqueue/get_processqueuelist','Admin\ProcessQueueController@preload_processqueuelist');
-Route::get('/admin/processqueue/getrowdata/{id}','Admin\ProcessQueueController@get_row_detail');
+Route::get('/admin/processqueue/getrowdata/{id}','Admin\ProcessQueueController@get_single_row_data');
 
 /*For Settings Details routes goes here*/
 Route::get('/admin/settings', 'Admin\SettingsController@index')->name('settings');
 Route::post('/admin/settings/get_settingslist','Admin\SettingsController@preload_settingslist');
-Route::get('/admin/settings/getrowdata/{id}','Admin\SettingsController@get_row_detail');
+Route::get('/admin/settings/getrowdata/{id}','Admin\SettingsController@get_single_row_data');
 Route::get('/admin/settings/insert_form','Admin\SettingsController@insert_view')->name('/admin/settings/insert_form');
 Route::post('/admin/settings/insert','Admin\SettingsController@insert_data');
 Route::get('/admin/settings/edit/{id}','Admin\SettingsController@edit_data')->name('/settings/edit/{id}');

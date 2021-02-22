@@ -3,7 +3,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Admin\User;
+use App\Models\User;
 
 use Illuminate\Support\Facades\Hash;
 
@@ -57,14 +57,8 @@ class StoreController extends Controller
 				else{
 					$cntdata['status'] = "<span class='status--denied'>Deactive</span>";
 				}
-				if($cntdata['is_deleted']==1)
-				{
-					$cntdata['is_deleted'] = "Yes";
-				}
-				else{
-					$cntdata['is_deleted'] = "No";
-				}
-				$raw = array($cntdata['name'],$cntdata['email'],$cntdata['status'],$cntdata['is_deleted'],date('F d Y  h:i A',strtotime($cntdata['created_at'])));
+				
+				$raw = array($cntdata['name'],$cntdata['email'],$cntdata['status'],date('F d Y  h:i A',strtotime($cntdata['created_at'])));
 				
 				$output['aaData'][] = $raw;
 				

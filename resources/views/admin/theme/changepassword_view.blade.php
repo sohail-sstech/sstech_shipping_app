@@ -24,7 +24,7 @@
 										<input type = "hidden" name ="_token" value = "<?php echo csrf_token(); ?>">
 											<div class="row form-group">
                                                 <div class="col col-md-3">
-                                                    <label for="currentpassword" class="form-control-label">Current Password</label>
+                                                    <label for="currentpassword" class="form-control-label">Current Password <span class="required">*</span></label>
                                                 </div>
                                                 <div class="col-12 col-md-5">
 													<div class="input-group">
@@ -38,7 +38,7 @@
 											</div>	
 											<div class="row form-group">	
 												<div class="col col-md-3">
-                                                    <label for="newpassword" class=" form-control-label">New Password</label>
+                                                    <label for="newpassword" class=" form-control-label">New Password <span class="required">*</span></label>
                                                 </div>
                                                 <div class="col-12 col-md-5">
 													<div class="input-group">
@@ -52,7 +52,7 @@
 											</div>
 											<div class="row form-group">	
 												<div class="col col-md-3">
-                                                    <label for="confirmpassword" class=" form-control-label">Confirm Password</label>
+                                                    <label for="confirmpassword" class=" form-control-label">Confirm Password <span class="required">*</span></label>
                                                 </div>
                                                 <div class="col-12 col-md-5">
 													<div class="input-group">

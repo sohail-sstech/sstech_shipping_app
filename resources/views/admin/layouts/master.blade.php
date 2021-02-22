@@ -1,7 +1,10 @@
 <head>
 <!--<base href="{{URL::asset('/')}}" target="_top">-->
-	<base href="{{asset('/')}}" target="_top">
- 
+  
+  
+  <link rel="icon" type="image/jpg" href="{{asset('images/sstechshippingapp_logo.png')}}"/>
+  <!--<link rel="icon" href="{{ asset('images/sstechshippingapp_logo.png') }}" type="image/jpg" />-->
+  <base href="{{asset('/')}}" target="_top">
   <!-- Fontfaces CSS-->
   <link rel="stylesheet" href="{{ asset('css/font-face.css')}}" media="all"/>
   <link href="{{ asset('vendor/font-awesome-4.7/css/font-awesome.min.css')}}" rel="stylesheet" media="all">
@@ -34,6 +37,7 @@
   <script src="{{{ URL::asset('js/bootstrap.min.js')}}}"></script>
   <script src="{{{ URL::asset('js/theme.min.js')}}}"></script>-->
 </head>
+
 <body class="animsition1">
 <div class="page-wrapper">
   @include('admin.partials.header')

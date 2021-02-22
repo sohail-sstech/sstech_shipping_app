@@ -171,7 +171,7 @@ $('#rolegrid_dt').DataTable({
 		"paging":true,
 		"bFilter": false,
 		"columnDefs": [
-           {className: "dt-body-center", "targets": [5]}
+           {className: "dt-body-center", "targets": [4]}
         ],
 		"ajax": {
 			"url": "/admin/role/get_rolelist",
@@ -224,12 +224,14 @@ $('#storegrid_dt').DataTable({
 $('#apiloggrid_dt').DataTable({
 		serverSide:true,
 		processing: true,
-		"paging":true,
-		"bFilter": false,
+		'columnDefs': [ {
+			'targets': [0,1], /* column index */
+			'orderable': true, /* true or false */
+		}],
 		"ajax": {
 			"url": "/admin/apilog/get_apiloglist",
 			type: "POST",
-			serverSide:true,
+			serverSide:true,			
 			"processing": true,
 			"data": function(d) {
 				d.search_data = $('#search_data').val();
@@ -240,6 +242,11 @@ $('#apiloggrid_dt').DataTable({
 				d.store = $('#store option:selected').val();
 			}
 		}
+		
+		 
+		
+			
+		
 });
 
 /*label details js goes here*/

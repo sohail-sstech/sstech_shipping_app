@@ -55,7 +55,6 @@
                                             <th class="card-header">Email</th>
                                             <th class="card-header">Role</th>
                                             <th class="card-header">Status</th>
-                                            <th class="card-header">Is Deleted</th>
                                             <th class="card-header">Created At</th>
                                             <th class="card-header">Action</th>
                                         </tr>

@@ -25,15 +25,20 @@
                                           <div class="row form-group">
 												<div class="col-sm-3">
 													<label for="search_data" class="col-sm-9 col-form-label">Search</label>
-													 <input type="text" class="form-control" id="search_data" autocomplete="new-search_data" name="search_data" placeholder="ApiUrl,Request,Response,Header.">
+													 <input type="text" class="form-control" id="search_data" autocomplete="new-search_data" name="search_data" placeholder="ApiUrl, Request, Response, Header.">
 												</div>
 												<div class="col-sm-3">
 													<label for="search_data" class="col-sm-9 col-form-label">Request Type</label>
 													<select name="request_type" id="request_type" class="form-control">
                                                         <option value="0">Please select</option>
-                                                        <option value="Available Rate">Available Rate</option>
+                                                        <!--<option value="Available Rate">Available Rate</option>
                                                         <option value="Shipping Rate">Shipping Rate</option>
-                                                        <option value="Label Rate">Label Rate</option>
+                                                        <option value="Label Rate">Label Rate</option>-->
+														<option value="1">Shipping Rate Request</option>
+														<option value="2">Available Rate Request</option>
+														<option value="3">Label Request</option>
+														<option value="4">Manifest Request</option>
+														<option value="5">Label Delete Request</option>
                                                     </select> 
 												</div>
 												<div class="col-sm-3">
@@ -55,7 +60,7 @@
 													<select name="response_code" id="response_code" class="form-control">
                                                         <option value="0">Please select</option>
                                                         <option value="Success">Success</option>
-                                                        <option value="Failed">Failed</option>
+                                                        <option value="Failure">Failure</option>
                                                     </select> 
 													
 												</div>
@@ -82,10 +87,10 @@
                                     </div>
                             </div>
                             <div class="table-responsive table-responsive-data2">
-                                <table class="table table-data2" id="apiloggrid_dt" width="100%" cellspacing="0">
+                                <table class="table table-data2 " id="apiloggrid_dt" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th class="card-header" style="min-width: 100px">Id</th>
+                                            <th class="card-header" data-mdb-sort="false" style="min-width: 100px">Id</th>
 											<th class="card-header" style="min-width: 100px">Store Name</th>
                                             <th class="card-header" style="min-width: 100px">Api Url</th>
                                             <th class="card-header" style="min-width: 100px">Request Type</th>

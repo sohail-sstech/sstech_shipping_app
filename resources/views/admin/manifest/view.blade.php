@@ -70,7 +70,6 @@
 											<th class="card-header" style="min-width: 100px">Manifest File</th>
 											<th class="card-header" style="min-width: 100px">Store Name</th>
                                             <th class="card-header" style="min-width: 100px">Status</th>
-                                            <th class="card-header" style="min-width: 50px">Is Deleted</th>
 											<th class="card-header" style="min-width: 50px">Action</th>
                                         </tr>
                                     </thead>

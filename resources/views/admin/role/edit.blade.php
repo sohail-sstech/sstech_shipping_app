@@ -43,7 +43,7 @@
 											<div class="row form-group">
 												<div class="col-md-6">	
 													<div class="form-group row">
-														<label for="role_name" class="col-sm-3 col-form-label">Role Name</label>
+														<label for="role_name" class="col-sm-3 col-form-label">Role Name <span class="required">*</span></label>
 														<div class="col-sm-9">
 														  <input type="text" class="form-control" id="role_name" autocomplete="new-role_name" name="role_name" value="@if(isset($roleeditdata['name'])){{$roleeditdata['name']}}@endif">
 														</div>
@@ -52,7 +52,7 @@
 												</div>
 												<div class="col-md-6">	
 													<div class="form-group row">
-														<label for="role_description" class="col-sm-3 col-form-label">Role Description</label>
+														<label for="role_description" class="col-sm-3 col-form-label">Role Description <span class="required">*</span></label>
 														<div class="col-sm-9">
 															<textarea class="form-control" id="role_description" autocomplete="new-role_description" name="role_description">@if(isset($roleeditdata['description'])){{$roleeditdata['description']}}@endif</textarea>
 														</div>

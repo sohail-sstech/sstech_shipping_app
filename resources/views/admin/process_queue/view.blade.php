@@ -81,11 +81,11 @@
                                 <table class="table table-data2" id="processqueuegrid_dt" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th class="card-header" style="min-width: 100px">Type</th>
-											<th class="card-header" style="min-width: 100px">Shop Domain</th>
-											<th class="card-header" style="min-width: 100px">Status</th>
-                                            <th class="card-header" style="min-width: 50px">Is Deleted</th>
-											<th class="card-header" style="min-width: 50px">Action</th>
+                                            <th class="card-header">Type</th>
+											<th class="card-header">Shop Domain</th>
+											<th class="card-header">Status</th>
+											<th class="card-header">Action</th>
+											
                                         </tr>
                                     </thead>
                                 </table>

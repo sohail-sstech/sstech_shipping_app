@@ -99,12 +99,11 @@ class ShippingController extends Controller
 				);
 		}
 		echo json_encode( $output );
-		
 	}
 	
 	/*get pdf label*/
-	public function get_pdf_labeldetails() {
-
+	public function get_pdf_labeldetails() 
+	{
 		$return = array();
 		$labelid=$_POST['labelid'];
 		

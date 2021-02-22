@@ -1,4 +1,5 @@
 @extends('admin.layouts.master')
+@extends('admin.include.modal_popup')
 @section('content')
 <section class="p-t-20">
                 <div class="container">
@@ -21,7 +22,6 @@
                                             <th class="card-header">Name</th>
                                             <th class="card-header">Description</th>
                                             <th class="card-header">Status</th>
-                                            <th class="card-header">Is Deleted</th>
                                             <th class="card-header">Created At</th>
                                             <th class="card-header">Action</th>
                                         </tr>

@@ -80,7 +80,6 @@ class ManifestController extends Controller
 	public function preload_recentmanifest()
 	{
 		$recent_manifestdeatils = DB::table('manifest_details')->where('status','1')->Orderby('created_at', 'desc')->take(25)->get();
-		
 		if($recent_manifestdeatils)
 		{
 			//$inc=1;
@@ -98,7 +97,6 @@ class ManifestController extends Controller
 	
 	function manifest_consignment()
 	{
-		
 	    $connote=$_POST['connote_list'];
 	    $Access_Key=$_POST['token'];
 		$shop = Auth::user();
@@ -132,7 +130,7 @@ class ManifestController extends Controller
 							'user_id'=>$userid,
 							'manifest_no'=>$val->ManifestNumber,
 							'manifest_file'=>$filepath,
-							'Error'=>$manifest_resp->Error,
+							'manifest_error'=>$manifest_resp->Error,
 							'manifest_status_code'=>$manifest_resp->StatusCode,
 							'un_manifested_connotes'=> json_encode($manifest_resp->UnManifestedConnotes),
 							'created_by'=>$userid
@@ -165,7 +163,7 @@ class ManifestController extends Controller
 				$res_result['UnManifestedConnotes'][]=$manifest_resp->UnManifestedConnotes;
 				
 				/*api log insert data*/
-				$responsecode = empty($manifest_resp->Errors)? 'Success':'Failed';
+				$responsecode = empty($manifest_resp->Errors)? 'Success':'Failure';
 				$status = empty($manifest_resp->Errors)? '1':'0';
 				$originip=$_SERVER['REMOTE_ADDR'];
 				$apilog_insert_array=array(
@@ -182,7 +180,6 @@ class ManifestController extends Controller
 				);
 				DB::table('api_logs')->insert($apilog_insert_array);
 	       }
-			
 	   }
 	   else{
 	      $res_result['UnManifestedConnotes'][]=$manifest_resp->UnManifestedConnotes;
@@ -230,8 +227,8 @@ class ManifestController extends Controller
 	    ///// Delete consolidated connote from export_details and create_export_consignment if the delete API is success///
 		$responsecode ='';
 		$status ='';
-	    foreach(json_decode($delete_api_response['response']) as $key=>$val){
-			
+	    foreach(json_decode($delete_api_response['response']) as $key=>$val)
+		{
 	       if($val=='Deleted')
 		   {
 			    DB::table('label_details')->where('consignment_no', $key)->update(['is_deleted' => 1]);
@@ -241,28 +238,25 @@ class ManifestController extends Controller
 	       }
 		   else
 		   {
-			   $responsecode = 'Failed';	
+			   $responsecode = 'Failure';	
 			   $status = '0';
 		   }	
-		   
 		    /*api log insert data when label delete api call*/
-				$originip=$_SERVER['REMOTE_ADDR'];
-				$apilog_insert_array=array(
-					'api_url'=>$url,
-					'user_id'=>$userid,
-					'request_type'=>'5',
-					'request_headers'=> json_encode($header),
-					'request'=> $attachment,
-					'response'=> json_encode($delete_api_response['response']),
-					'response_code'=>$responsecode,
-					'origin_ip'=>$originip,
-					'status'=>$status,
-					'created_by'=>$userid
-				);
-				DB::table('api_logs')->insert($apilog_insert_array);
+			$originip=$_SERVER['REMOTE_ADDR'];
+			$apilog_insert_array=array(
+				'api_url'=>$url,
+				'user_id'=>$userid,
+				'request_type'=>'5',
+				'request_headers'=> json_encode($header),
+				'request'=> $attachment,
+				'response'=> json_encode($delete_api_response['response']),
+				'response_code'=>$responsecode,
+				'origin_ip'=>$originip,
+				'status'=>$status,
+				'created_by'=>$userid
+			);
+			DB::table('api_logs')->insert($apilog_insert_array);
 	    }
-		
-				
 	    echo $delete_api_response;
 	}
 

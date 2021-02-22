@@ -45,13 +45,13 @@
 											<div class="row form-group">
 												<div class="col-md-6">	
 													<div class="form-group row">
-														<label for="user_name" class="col-sm-3 col-form-label">User Name</label>
+														<label for="user_name" class="col-sm-3 col-form-label">User Name <span class="required">*</span></label>
 														<div class="col-sm-9">
 														  <input type="text" class="form-control" id="user_name" autocomplete="new-user_name" name="user_name" value="@if(isset($usereditdata['name'])){{$usereditdata['name']}}@endif">
 														</div>
 													</div>
 													<div class="form-group row">
-														<label for="user_role" class="col-sm-3 col-form-label">User Role</label>
+														<label for="user_role" class="col-sm-3 col-form-label">User Role <span class="required">*</span></label>
 														<div class="col-sm-9">
 														  <select name="user_role" id="select" class="form-control">
 															<option value="">Please select</option>
@@ -66,13 +66,13 @@
 												</div>
 												<div class="col-md-6">	
 													<div class="form-group row">
-														<label for="user_email" class="col-sm-3 col-form-label">User Email</label>
+														<label for="user_email" class="col-sm-3 col-form-label">User Email <span class="required">*</span></label>
 														<div class="col-sm-9">
 														  <input type="text" class="form-control" id="user_email" autocomplete="new-user_email" name="user_email" value="@if(isset($usereditdata['email'])){{$usereditdata['email']}}@endif">
 														</div>
 													</div>
 													<div class="form-group row">
-														<label for="user_password" class="col-sm-3 col-form-label">User Password</label>
+														<label for="user_password" class="col-sm-3 col-form-label">User Password </label>
 														<div class="col-sm-9">
 														  <input type="password" class="form-control" id="user_password" autocomplete="new-user_password" name="user_password" autocomplete="off">
 														</div>

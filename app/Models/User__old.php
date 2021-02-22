@@ -1,31 +1,29 @@
 <?php
+
 namespace App\Models;
+
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Model;
-
-use Illuminate\Support\Facades\DB;
-
 use Illuminate\Notifications\Notifiable;
+
 use Osiset\ShopifyApp\Contracts\ShopModel as IShopModel;
 use Osiset\ShopifyApp\Traits\ShopModel;
 
 class User extends Authenticatable implements IShopModel
-{ 
-	use Notifiable;
+{
+    use Notifiable;
     use ShopModel;
 
-     protected $table = 'users';
-	 
-	 /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','role_id',
+        'name', 'email', 'password',
     ];
-	
-	 /**
+
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
@@ -33,8 +31,8 @@ class User extends Authenticatable implements IShopModel
     protected $hidden = [
         'password', 'remember_token',
     ];
-	
-	/**
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array

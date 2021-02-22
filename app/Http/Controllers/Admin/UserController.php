@@ -3,8 +3,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Admin\User;
-use App\Models\Admin\Role;
+use App\Models\User;
+use App\Models\Role;
 
 
 use Illuminate\Support\Facades\Hash;
@@ -65,13 +65,6 @@ class UserController extends Controller
 				else{
 					$cntdata['status'] = "<span class='status--denied'>Deactive</span>";
 				}
-				if($cntdata['is_deleted']==1)
-				{
-					$cntdata['is_deleted'] = "Yes";
-				}
-				else{
-					$cntdata['is_deleted'] = "No";
-				}
 				$cntdata['Action'] = '
 				<div class="table-data-feature">
 				   <a href="admin/user/edit/'.$cntdata['id'].'" class="item" data-toggle="tooltip" data-placement="top">
@@ -81,7 +74,7 @@ class UserController extends Controller
 					<i class="zmdi zmdi-delete"></i>
 				   </a>
 				</div>';
-				$raw = array($cntdata['name'],$cntdata['email'],$cntdata['role_id'],$cntdata['status'],$cntdata['is_deleted'],date('F d Y  h:i A',strtotime($cntdata['created_at'])),$cntdata['Action']);
+				$raw = array($cntdata['name'],$cntdata['email'],$cntdata['role_id'],$cntdata['status'],date('F d Y  h:i A',strtotime($cntdata['created_at'])),$cntdata['Action']);
 				$output['aaData'][] = $raw;
 			}
 		}

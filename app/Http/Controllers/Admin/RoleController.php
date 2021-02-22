@@ -3,7 +3,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Admin\Role;
+use App\Models\Role;
 
 use Illuminate\Support\Facades\DB;
 
@@ -17,7 +17,6 @@ class RoleController extends Controller
     {
         return view('admin/role/view');
     }
-	
 	/*this is preload role grid*/
 	public function preload_rolelist(Request $request)
 	{
@@ -45,21 +44,17 @@ class RoleController extends Controller
 				{
 					$cntdata['status'] = "<span class='status--denied'>Deactive</span>";
 				}
-				if($cntdata['is_deleted']==1)
-				{
-					$cntdata['is_deleted'] = "Yes";
-				}
-				else
-				{
-					$cntdata['is_deleted'] = "No";
-				}
+				
 				$cntdata['Action'] = '
 				<div class="table-data-feature">
 				   <a href="admin/role/edit/'.$cntdata['id'].'" class="item" data-toggle="tooltip" data-placement="top">
 					<i class="zmdi zmdi-edit"></i>
 				   </a>
+				    <button type="button" onclick=get_row_detail('.$cntdata['id'].',"admin/role/getrowdata/") class="btn btn-secondary mb-1 item" data-placement="top">
+					<i class="zmdi zmdi-eye"></i>
+				   </button>
 				</div>';
-				$raw = array($cntdata['name'],$cntdata['description'],$cntdata['status'],$cntdata['is_deleted'],date('F d Y  h:i A',strtotime($cntdata['created_at'])),$cntdata['Action']);
+				$raw = array($cntdata['name'],$cntdata['description'],$cntdata['status'],date('F d Y  h:i A',strtotime($cntdata['created_at'])),$cntdata['Action']);
 				$output['aaData'][] = $raw;
 			}
 		}
@@ -85,5 +80,24 @@ class RoleController extends Controller
 				Role::where('id',$roleedit_id)->update($update_country_array); 
 			}
 		return redirect('/admin/role')->with('message', 'Role Data Update.');	
+	}
+	
+	/*get single record data for modal popup*/
+	public function get_single_row_data($id='')
+	{
+		if(isset($id))
+		{
+		
+			$roles_details = Role::select('roles.*')->where('roles.id',$id)->get()->toArray();
+			
+			if(!empty($roles_details)){
+				 $order_html = (string)view('admin.role.modal_view',array('All_RolesDetails' => $roles_details));
+			}
+			else{
+				$order_html = 'Data Not Found';
+			}
+		}
+		$array = array('details'=>$order_html,'title'=>'Role Details'); 
+		echo json_encode($array);
 	}
 }

@@ -6,7 +6,9 @@
                         <a href="{{asset('/admin/home')}}">
                             <img src="images/logo2.png" alt="CoolAdmin" />
                         </a>
+						
                     </div>
+					
                     <div class="header__navbar">
                         <ul class="list-unstyled">
                             <li class="has-sub">
@@ -40,23 +42,46 @@
                             </li>-->
 							
 							<li class="has-sub">
-                                <a href="#">
+                                <a href="javascript:void(0)">
                                     <i class="fas fa-tasks"></i>
                                     <span class="bot-line"></span>Manage
 									</a>
                                 <ul class="header3-sub-list list-unstyled">
-                                    @if(Auth::user()->role_id==1 || Auth::user()->role_id==2)
+                                    @if(Auth::user()->role_id==1 || Auth::user()->role_id==3)
 									<li>
 										<a href="{{asset('/admin/user')}}">
 											<i class="fas fa-users"></i>
 											<span class="bot-line"></span>User</a>
 									</li>
-									@endif
+									
 									<li>
 										<a href="{{asset('/admin/role')}}">
 											<i class="fas fa-user"></i>
 											<span class="bot-line"></span>Role</a>
 									</li>
+									@endif
+									<li>
+										<a href="{{asset('/admin/store')}}">
+											<i class="fas fa-building"></i>
+											<span class="bot-line"></span>Stores</a>
+									</li>
+									@if(Auth::user()->role_id==1 || Auth::user()->role_id==3)
+									<li>
+										<a href="{{asset('/admin/settings')}}">
+											<i class="fas fa-cog"></i>
+											<span class="bot-line"></span>Settings</a>
+									</li>
+									@endif
+								
+                                </ul>
+                            </li>
+							
+							<li class="has-sub">
+                                <a href="javascript:void(0)">
+                                    <i class="fas fa-list"></i>
+                                    <span class="bot-line"></span>List
+									</a>
+                                <ul class="header3-sub-list list-unstyled">
 									<li>
 										<a href="{{asset('/admin/apilog')}}">
 											<i class="fas fa-history"></i>
@@ -72,29 +97,11 @@
 											<i class="fas fa-info"></i>
 											<span class="bot-line"></span>Manifest Details</a>
 									</li>
-                                </ul>
-                            </li>
-							
-							<li class="has-sub">
-                                <a href="#">
-                                    <i class="fas fa-list"></i>
-                                    <span class="bot-line"></span>List
-									</a>
-                                <ul class="header3-sub-list list-unstyled">
-                                   <li>
-										<a href="{{asset('/admin/store')}}">
-											<i class="fas fa-building"></i>
-											<span class="bot-line"></span>Stores</a>
-									</li>
+                                 
 									<li>
 										<a href="{{asset('/admin/processqueue')}}">
 											<i class="fas fa-sync"></i>
 											<span class="bot-line"></span>Process Queues</a>
-									</li>
-									<li>
-										<a href="{{asset('/admin/settings')}}">
-											<i class="fas fa-cog"></i>
-											<span class="bot-line"></span>Settings</a>
 									</li>
 									
 									

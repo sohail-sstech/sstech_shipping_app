@@ -21,12 +21,6 @@
 		$All_ProcessQueueDetails['status']="<span class='role admin'>Failed</span>";
 	}
 	
-	if($All_ProcessQueueDetails['is_deleted']==1){
-		$is_deleted = "<span class='status--process'>Yes</span>";
-	}
-	else{
-		$is_deleted = "<span class='status--denied'>No</span>";
-	}
 	$created_at  = !empty($All_ProcessQueueDetails['created_at']) ? date('F d Y  h:i A',strtotime($All_ProcessQueueDetails['created_at'])) : "";
 ?>
 <div class="col-md-12">
@@ -46,11 +40,6 @@
 				<td><b> Status  </b></td>
 				<td align="center"> : </td>
 				<td><?php echo $All_ProcessQueueDetails['status']; ?></td>
-			</tr>
-			<tr> 
-				<td><b> Is Deleted  </b></td>
-				<td align="center"> : </td>
-				<td><?php echo $is_deleted; ?></td>
 			</tr>
 			<tr> 
 				<td><b> Created At  </b></td>

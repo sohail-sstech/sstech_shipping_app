@@ -84,7 +84,6 @@
 											<th class="card-header" style="min-width: 0px">Label Receiver Email</th>
                                             <th class="card-header" style="min-width: 0px">Is From Address</th>
                                             <th class="card-header" style="min-width: 0px">Status</th>
-                                            <th class="card-header" style="min-width: 0px">Is Deleted</th>
 											<th class="card-header" style="min-width: 0px;text-align:center!Important;">Action</th>
                                         </tr>
                                     </thead>

@@ -35,11 +35,17 @@
 	$response  = !empty($All_ApiDetails['response']) ? $All_ApiDetails['response'] : null;
 	$origin_ip  = !empty($All_ApiDetails['origin_ip']) ? $All_ApiDetails['origin_ip'] : null;
 	$storename  = !empty($All_ApiDetails['storename']) ? $All_ApiDetails['storename'] : null;
+	$id  = !empty($All_ApiDetails['Id']) ? $All_ApiDetails['Id'] : null;
 	
 ?>
 <div class="col-md-12">
 	<div class="col-md-12">
-		<table class="table">  
+		<table class="table">
+			<tr> 
+				<td><b> Id  </b></td>
+				<td align="center"> : </td>
+				<td><?php echo $id; ?></td>
+			</tr>
 			<tr> 
 				<td><b> Store Name  </b></td>
 				<td align="center"> : </td>
@@ -66,7 +72,7 @@
 				<td><?php echo $origin_ip; ?></td>
 			</tr>
 			<tr> 
-				<td><b> Time  </b></td>
+				<td><b> Created At  </b></td>
 				<td align="center"> : </td>
 				<td><?php echo $created_at; ?></td>
 			</tr>
@@ -74,42 +80,18 @@
 		<br>
 	</div>
 
-	<table class="table table-striped table-bordered  table-bordered table-dark">
-		<tr><td>Request Headers :</td></tr>
-		<tr><td><textarea name="peoplevox_request_header" style="width:100%;" rows="3"><?php echo $request_headers; ?></textarea></td></tr>
+	<table class="table table-bordered  table-bordered">
+		<tr><th class="card-header">Request Headers :</th></tr>
+		<tr><td><textarea  name="peoplevox_request_header" readonly style="width:100%;" rows="3"><?php echo $request_headers; ?></textarea></td></tr>
 		
-		<tr><td>Request Body :</td></tr>
-		<tr><td><textarea name="peoplevox_request_attachment" style="width:100%;" rows="3"><?php echo $request; ?></textarea></td></tr>
+		<tr><th class="card-header">Request Body :</th></tr>
+		<tr><td><textarea  name="peoplevox_request_attachment" readonly style="width:100%;" rows="3"><?php echo $request; ?></textarea></td></tr>
 		
-		<tr><td>Response Headers :</td></tr>
-		<tr><td><textarea name="peoplevox_request_header" style="width:100%;" rows="3"><?php echo $response_headers; ?></textarea></td></tr>
+		<tr><th class="card-header">Response Headers :</th></tr>
+		<tr><td><textarea  name="peoplevox_request_header" readonly style="width:100%;" rows="3"><?php echo $response_headers; ?></textarea></td></tr>
 		
-		<tr><td>Response Body :</td></tr>
-		<tr><td><textarea name="peoplevox_request_attachment" style="width:100%;" rows="3"><?php echo $response; ?></textarea></td></tr>
+		<tr><th class="card-header">Response Body :</th></tr>
+		<tr><td><textarea  name="peoplevox_request_attachment" readonly style="width:100%;" rows="3"><?php echo $response; ?></textarea></td></tr>
 	</table>
-	<!--<div class="col-md-12">
-		<h4><span style="font-weight:bold;">Request Headers :</span></h4>	
-		<div style="width:98%;overflow:auto;background:rgb(245,245,245);width:100%;border:2px solid #cccccc;padding:5px;">
-			<textarea name="peoplevox_request_header" style="width:100%;" rows="3"><?php echo $request_headers; ?></textarea>
-		</div>
-	</div>
-	<div class="col-md-12">
-		<h4><span style="font-weight:bold;">Request Body :</span></h4>	
-		<div style="width:98%;overflow:auto;background:rgb(245,245,245);width:100%;border:2px solid #cccccc;padding:5px;">
-			<textarea name="peoplevox_request_attachment" style="width:100%;" rows="3"><?php echo $request; ?></textarea>
-		</div>
-	</div>
-	<div class="col-md-12">
-		<h4><span style="font-weight:bold;">Response Headers :</span></h4>	
-		<div style="width:98%;overflow:auto;background:rgb(245,245,245);width:100%;border:2px solid #cccccc;padding:5px;">
-			<textarea name="peoplevox_request_header" style="width:100%;" rows="3"><?php echo $response_headers; ?></textarea>
-		</div>
-	</div>
-	<div class="col-md-12">
-		<h4><span style="font-weight:bold;">Response Body :</span></h4>	
-		<div style="width:98%;overflow:auto;background:rgb(245,245,245);width:100%;border:2px solid #cccccc;padding:5px;">
-			<textarea name="peoplevox_request_attachment" style="width:100%;" rows="3"><?php echo $response; ?></textarea>
-		</div>
-	</div> -->
 	
 </div>

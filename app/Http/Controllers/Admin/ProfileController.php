@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Hash;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Admin\User;
+use App\Models\User;
 use App\Rules\MatchOldPassword;
 
 use Illuminate\Support\Facades\DB;

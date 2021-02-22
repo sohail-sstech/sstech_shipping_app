@@ -3,9 +3,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Admin\Settings;
-use App\Models\Admin\User;
-use App\Models\Admin\Country;
+use App\Models\Settings;
+use App\Models\User;
+use App\Models\Country;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -69,13 +69,6 @@ class SettingsController extends Controller
 					$cntdata['status'] = "<span class='status--denied'>Deactive</span>";
 				}
 				
-				if($cntdata['is_deleted']==1)
-				{
-					$cntdata['is_deleted'] = "<span class='status--process'>Yes</span>";
-				}
-				else{
-					$cntdata['is_deleted'] = "<span class='status--denied'>No</span>";
-				}
 				
 				$cntdata['Action'] = '
 				<div class="table-data-feature">
@@ -90,7 +83,7 @@ class SettingsController extends Controller
 				   </button>
 				</div>';
 				
-				$raw = array($cntdata['storename'],$cntdata['label_receiver_email'],$cntdata['is_from_address'],$cntdata['status'],$cntdata['is_deleted'],$cntdata['Action']);
+				$raw = array($cntdata['storename'],$cntdata['label_receiver_email'],$cntdata['is_from_address'],$cntdata['status'],$cntdata['Action']);
 				
 				$output['aaData'][] = $raw;
 			}
@@ -200,7 +193,7 @@ class SettingsController extends Controller
 	}
 	
 	/*get single record data for modal popup*/
-	public function get_row_detail($id='')
+	public function get_single_row_data($id='')
 	{
 		if(isset($id))
 		{

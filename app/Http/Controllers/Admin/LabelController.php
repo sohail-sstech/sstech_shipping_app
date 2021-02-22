@@ -3,7 +3,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Admin\Label;
+use App\Models\Label;
 
 use Illuminate\Support\Facades\Hash;
 
@@ -85,7 +85,7 @@ class LabelController extends Controller
 	}
 	
 	/*get single record data for modal popup*/
-	public function get_row_log_details($id='')
+	public function get_single_row_data($id='')
 	{
 		if(isset($id))
 		{

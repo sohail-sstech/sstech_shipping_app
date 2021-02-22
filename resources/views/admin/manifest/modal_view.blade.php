@@ -21,43 +21,132 @@
 	else{
 		$All_ManifestDetails['is_deleted']="<span class='status--denied'>No</span>";
 	}
-	$is_deleted  = !empty($All_ManifestDetails['is_deleted']) ? $All_ManifestDetails['is_deleted'] : null;
+	$manifest_error  = !empty($All_ManifestDetails['manifest_error']) ? $All_ManifestDetails['manifest_error'] : null;
+	$manifest_statuscode  = !empty($All_ManifestDetails['manifest_status_code']) ? $All_ManifestDetails['manifest_status_code'] : null;
+	
+	$unmanifested_consignment  = !empty($All_ManifestDetails['un_manifested_connotes']) ? json_decode($All_ManifestDetails['un_manifested_connotes']) : null;
+	if(!empty($All_ManifestDetails['un_manifested_connotes'])){
+		$unmanifest_decode = json_decode($All_ManifestDetails['un_manifested_connotes']);
+		$unmanifest_impl = implode(',',$unmanifest_decode);
+	}
+	else{
+		$unmanifest_decode='';
+		$unmanifest_impl = 'null';
+	}
+	
 	$created_at = !empty($All_ManifestDetails['created_at']) ? $All_ManifestDetails['created_at'] : null;
+	
+	/*Labels details*/
+	$shopify_order_id = !empty($All_ManifestDetails['shopify_order_id']) ? $All_ManifestDetails['shopify_order_id'] : null;
+	$shopify_order_no = !empty($All_ManifestDetails['shopify_order_no']) ? $All_ManifestDetails['shopify_order_no'] : null;
+	$consignment_no = !empty($All_ManifestDetails['consignment_no']) ? $All_ManifestDetails['consignment_no'] : null;
+	$carrier_name = !empty($All_ManifestDetails['carrier_name']) ? $All_ManifestDetails['carrier_name'] : null;
+	$service_name = !empty($All_ManifestDetails['service_name']) ? $All_ManifestDetails['service_name'] : null;
+	
+	if($All_ManifestDetails['is_manifested']==1)
+	{
+		$All_ManifestDetails['is_manifested'] = "<span class='status--process'>Yes</span>";
+	}
+	else{
+		$All_ManifestDetails['is_manifested'] = "<span class='status--denied'>No</span>";
+	}
+	if($All_ManifestDetails['label_status']==1)
+	{
+		$All_ManifestDetails['label_status'] = "<span class='status--process'>Active</span>";
+	}
+	else{
+		$All_ManifestDetails['label_status'] = "<span class='status--denied'>Deactive</span>";
+	}
+	
+	
 ?>
+
 <div class="col-md-12">
 	<div class="col-md-12">
-		<table class="table table-striped table-bordered">  
+		<table class="test table table-striped table-bordered" width="100%">   
 			<tr> 
-				<td><b> Store Name  </b></td>
+				<th> Store Name  </th>
 				<td align="center"> : </td>
 				<td><?php echo $storename; ?></td>
 			</tr>
 			<tr> 
-				<td><b> Manifest No  </b></td>
+				<th> Manifest No  </th>
 				<td align="center"> : </td>
 				<td><?php echo $manifest_no; ?></td>
 			</tr>
 			<tr> 
-				<td><b> Manifest File  </b></td>
+				<th> Manifest File  </th>
 				<td align="center"> : </td>
 				<td><?php echo $manifest_file; ?></td>
 			</tr>
 			<tr> 
-				<td><b> Status  </b></td>
+				<th> Manifest Error  </th>
+				<td align="center"> : </td>
+				<td><?php echo $manifest_error; ?></td>
+			</tr>
+			<tr> 
+				<td><b> Manifest Status Code  </th>
+				<td align="center"> : </td>
+				<td><?php echo $manifest_statuscode; ?></td>
+			</tr>
+			<tr> 
+				<th> UnManifestd Consignment  </th>
+				<td align="center"> : </td>
+				<td><?php echo $unmanifest_impl; ?></td>
+			</tr>
+			<tr> 
+				<th> Status  </th>
 				<td align="center"> : </td>
 				<td><?php echo $status; ?></td>
 			</tr>
 			<tr> 
-				<td><b> Is Deleted  </b></td>
-				<td align="center"> : </td>
-				<td><?php echo $is_deleted; ?></td>
-			</tr>
-			<tr> 
-				<td><b> Created At  </b></td>
+				<th> Created At  </th>
 				<td align="center"> : </td>
 				<td><?php echo date('F d Y  h:i A',strtotime($created_at)); ?></td>
 			</tr>
 		</table>
 		<br>
+	</div>
+	<div class="col-md-12">
+		<table class="table table-striped table-bordered" width="100%">  
+			<tr>
+				<h4 class="modal-title" style="padding-bottom:10px;">Label Details</h4>
+			</tr>
+			<tr> 
+				<th> Shopify Order Id  </th>
+				<td align="center"> : </td>
+				<td><?php echo $shopify_order_id; ?></td>
+			</tr>
+			<tr> 
+				<th> Shopify Order No  </th>
+				<td align="center"> : </td>
+				<td><?php echo $shopify_order_no; ?></td>
+			</tr>
+			<tr> 
+				<th> Consignment No </th>
+				<td align="center"> : </td>
+				<td><?php echo $consignment_no; ?></td>
+			</tr>
+			<tr> 
+				<th> Carrier Name  </th>
+				<td align="center"> : </td>
+				<td><?php echo $carrier_name; ?></td>
+			</tr>
+			<tr> 
+				<th> Service Name  </th>
+				<td align="center"> : </td>
+				<td><?php echo $service_name; ?></td>
+			</tr>
+			<tr> 
+				<th> Is Manifested </th>
+				<td align="center"> : </td>
+				<td><?php echo $All_ManifestDetails['is_manifested']; ?></td>
+			</tr>
+			<tr> 
+				<th> Label Status  </th>
+				<td align="center"> : </td>
+				<td><?php echo $All_ManifestDetails['label_status']; ?></td>
+			</tr>
+		</table>
 	</div>
 </div>
