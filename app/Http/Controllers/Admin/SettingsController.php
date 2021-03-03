@@ -26,33 +26,52 @@ class SettingsController extends Controller
     }	
 	public function preload_settingslist(Request $request)
 	{
-		$store = !empty($_POST['store']) ? $_POST['store'] : '';
+		//$store = !empty($_POST['store']) ? $_POST['store'] : '';
 		$startdate = !empty(date("Y-m-d",strtotime($_POST['startdate']))) ? date("Y-m-d",strtotime($_POST['startdate'])) : '';
 		$enddate = !empty(date("Y-m-d",strtotime($_POST['enddate']))) ? date("Y-m-d",strtotime($_POST['enddate'])) : '';
 		
-		$settings_list_arr = Settings::select('Settings.*','us.name as storename')->join('users as us', 'Settings.user_id', '=','us.id')
+		/*$settings_list_arr = Settings::select('Settings.*','us.name as storename')->join('users as us', 'Settings.user_id', '=','us.id')
 			->where(function($query)
 			{
 				$query->where('custom_access_token','like',"%".$_POST['search_data']."%")->orWhere('label_receiver_email', 'like', "%".$_POST['search_data']."%")->orWhere('label_receiver_email', 'like', "%".$_POST['search_data']."%")->orWhere('us.name','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.name','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.address1','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.country','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.province','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.city','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.zip','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.phone','like', '%' .$_POST['search_data']. '%');
 			})->where('us.name','like', '%' .$store. '%')->where('is_from_address','like','%'.$_POST['isfromaddress'].'%')->where('Settings.is_deleted',0)->whereBetween('Settings.created_at', ["$startdate 00:00:00","$enddate 23:59:59"])->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();		
-		$queries = DB::getQueryLog();
+		*/
+		$query_result = Settings::select('Settings.*','us.name as storename')->join('users as us', 'Settings.user_id', '=','us.id');
+		if(!empty($_POST['search_data'])) 
+		{
+			$query_result->where(function($query)
+			{
+				$query->where('custom_access_token','like',"%".$_POST['search_data']."%")->orWhere('label_receiver_email', 'like', "%".$_POST['search_data']."%")->orWhere('label_receiver_email', 'like', "%".$_POST['search_data']."%")->orWhere('us.name','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.name','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.address1','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.country','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.province','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.city','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.zip','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.phone','like', '%' .$_POST['search_data']. '%');
+			});
+		}
+		if(!empty($_POST['store'])) {
+			$query_result = $query_result->where('us.name','like', '%' .$_POST['store']. '%');
+		}
+		if($_POST['isfromaddress']!='') {
+			$query_result = $query_result->where('is_from_address','like','%'.$_POST['isfromaddress'].'%');
+		}
+		$query_result = $query_result->where('Settings.is_deleted',0);
+		$query_result = $query_result->whereBetween('Settings.created_at', ["$startdate 00:00:00","$enddate 23:59:59"]);
+		$query_result = $query_result->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
 		
-		if($settings_list_arr)
+		//$queries = DB::getQueryLog();
+		if($query_result)
 		{
 			/*Query for to get total record count*/
-			$record_total = Settings::select('Settings.*','us.name as storename')->join('users as us', 'Settings.user_id', '=','us.id')
+			/*$record_total = Settings::select('Settings.*','us.name as storename')->join('users as us', 'Settings.user_id', '=','us.id')
 			->where(function($query)
 			{
 				$query->where('custom_access_token','like',"%".$_POST['search_data']."%")->orWhere('label_receiver_email', 'like', "%".$_POST['search_data']."%")->orWhere('label_receiver_email', 'like', "%".$_POST['search_data']."%")->orWhere('us.name','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.name','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.address1','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.country','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.province','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.city','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.zip','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.phone','like', '%' .$_POST['search_data']. '%');
 			})->where('us.name','like', '%' .$store. '%')->where('is_from_address','like','%'.$_POST['isfromaddress'].'%')->where('Settings.is_deleted',0)->whereBetween('Settings.created_at', ["$startdate 00:00:00","$enddate 23:59:59"])->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();		
-			$total_count = count($record_total);
+			*/
+			$total_count = count($query_result);
 			$output = array(
 					"sEcho" => intval($_POST['draw']),
 					"iTotalRecords" => $total_count,
 					"iTotalDisplayRecords" => $total_count,
 					"aaData" => array()
 				);
-			foreach($settings_list_arr as $cntdata)
+			foreach($query_result as $cntdata)
 			{
 				if($cntdata['is_from_address']==1)
 				{

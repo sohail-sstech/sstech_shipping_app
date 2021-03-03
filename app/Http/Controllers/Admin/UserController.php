@@ -24,18 +24,16 @@ class UserController extends Controller
 	public function preload_userlist(Request $request)
 	{
 		$search_limit = "";
-		$username ='';
-		if(isset($_POST['user_name']) && !empty($_POST['user_name'])){
-			$username = $_POST['user_name'];
+		$query_result = User::select('*');
+		if(!empty($_POST['user_name'])){
+			$query_result = $query_result->where('name','like', '%' .$_POST['user_name']. '%');	
 		}
+		$query_result = $query_result->where('is_deleted',0)->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
 		
-		$user_list_arr = User::select('users.*')->where('name','like', '%' .$username. '%')->where('is_deleted',0)->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
-	
-		if($user_list_arr)
+		if($query_result)
 		{
 			/*Query for to get total record count*/
-			$record_total = User::where('name','like', '%' .$username. '%')->where('is_deleted',0)->get()->toArray();
-			$total_count = count($record_total);
+			$total_count = count($query_result);
 			
 			$output = array(
 					"sEcho" => intval($_POST['draw']),
@@ -43,7 +41,7 @@ class UserController extends Controller
 					"iTotalDisplayRecords" => $total_count,
 					"aaData" => array()
 				);
-			foreach($user_list_arr as $cntdata)
+			foreach($query_result as $cntdata)
 			{
 			
 				if($cntdata['role_id']==1)

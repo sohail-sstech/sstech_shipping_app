@@ -93,7 +93,7 @@
                                             <th class="card-header" data-mdb-sort="false" style="min-width: 100px">Id</th>
 											<th class="card-header" style="min-width: 100px">Store Name</th>
                                             <th class="card-header" style="min-width: 100px">Api Url</th>
-                                            <th class="card-header" style="min-width: 100px">Request Type</th>
+                                            <th class="card-header" style="min-width: 200px">Request Type</th>
 											<th class="card-header" style="min-width: 100px">Response Code</th>
 											<th class="card-header" style="min-width: 100px">Created At</th>
 											<th class="card-header" style="min-width: 100px">Action</th>

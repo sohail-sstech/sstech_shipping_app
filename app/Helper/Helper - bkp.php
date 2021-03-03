@@ -1,10 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-
-
-
 /**
 * change plain number to formatted currency
 *
@@ -63,24 +58,3 @@ function call_curl($url='', $header=array(), $attachment='', $cust_data=array())
     return $return;
 }
 
-/*for get token dynamic*/
-/*function get_dynamic_token()
-{
-	$curr_logged_user = Auth::user();
-	$userid = !empty($curr_logged_user->toArray()) ? $curr_logged_user->toArray()['id'] : null;
-	//echo '<pre>';print_r($userid);exit;
-	/*$shop_request = $shop->api()->rest('GET', '/admin/shop.json');
-	$shop_domain = $shop_request->body->shop->domain;*/
-	
-	//$userid = DB::table('users')->where('name', $shop_domain)->select('id')->pluck('id')->first();
-/*	if(!empty($userid)){
-		$AccessKey = DB::table('settings')->where('user_id', $userid)->select('custom_access_token')->pluck('custom_access_token')->first();
-		if(empty($AccessKey)){
-			$AccessKey = Config::get('constants.default_access_token');	
-		}
-	}
-	else{
-		$AccessKey = Config::get('constants.default_access_token');
-	}
-	return $AccessKey;
-}*/

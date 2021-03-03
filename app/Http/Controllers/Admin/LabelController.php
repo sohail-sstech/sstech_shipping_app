@@ -17,41 +17,50 @@ class LabelController extends Controller
     }
 	public function index()
     {
+		 
 		$end_date = date("d-m-Y");
 		$start_date = date("d-m-Y",strtotime("-1 month"));
+		DB::enableQueryLog();
+		//$storedetails = Label::select('label_details.*','us.name as storename')->join('users as us', 'label_details.user_id', '=','us.id')->orderBy('id', 'desc')->get()->toArray();
 		$storedetails = Label::select('label_details.*','us.name as storename')->join('users as us', 'label_details.user_id', '=','us.id')->orderBy('id', 'desc')->get()->toArray();
+		$queries = DB::getQueryLog();
+		//print_r($queries);exit;
         return view('admin/label/view',array('store_details' => $storedetails,'start_date' => $start_date,'end_date' => $end_date));
-    }	
+    }
 	public function preload_labellist(Request $request)
 	{
-	
 		$store = !empty($_POST['store']) ? $_POST['store'] : '';
 		$startdate = !empty(date("Y-m-d",strtotime($_POST['startdate']))) ? date("Y-m-d",strtotime($_POST['startdate'])) : '';
 		$enddate = !empty(date("Y-m-d",strtotime($_POST['enddate']))) ? date("Y-m-d",strtotime($_POST['enddate'])) : '';
-		
-		DB::enableQueryLog();
-		$label_list_arr = Label::select('label_details.*','us.name as storename')->join('users as us', 'label_details.user_id', '=','us.id')
-			->where(function($query)
+		$ismanifestd = !empty($_POST['is_manifest']) ? $_POST['is_manifest'] : null;
+		$query_result = Label::select('label_details.*','us.name as storename')->join('users as us', 'label_details.user_id', '=','us.id');
+		if(!empty($_POST['search_data'])) 
+		{
+			$query_result->where(function($query)
 			{
 				$query->where('shopify_order_id','=',$_POST['search_data'])->orWhere('shopify_order_no', 'like', '%'.$_POST['search_data'].'%')->orWhere('consignment_no', '=',$_POST['search_data'])->orWhere('carrier_name', 'like', '%'.$_POST['search_data'].'%');
-			})->where('is_manifested','like','%' .$_POST['is_manifest']. '%')->where('us.name','like', '%' .$store. '%')->whereBetween('label_details.created_at', ["$startdate 00:00:00","$enddate 23:59:59"])->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
+			});
+		}
 		
-		if($label_list_arr)
+		if(($_POST['is_manifest'])!='') {
+			$query_result = $query_result->where('is_manifested','=',$_POST['is_manifest']);
+		}
+		if(!empty($_POST['store'])) {
+			$query_result = $query_result->where('us.name','=',$_POST['store']);
+		}
+		$query_result = $query_result->whereBetween('label_details.created_at', ["$startdate 00:00:00","$enddate 23:59:59"]);
+		$query_result = $query_result->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
+		if($query_result)
 		{
 			/*Query for to get total record count*/
-			 $record_total = Label::select('label_details.*','us.name as storename')->join('users as us', 'label_details.user_id', '=','us.id')
-			->where(function($query)
-			{
-				$query->where('shopify_order_id','=',$_POST['search_data'])->orWhere('shopify_order_no', 'like', '%'.$_POST['search_data'].'%')->orWhere('consignment_no', '=',$_POST['search_data'])->orWhere('carrier_name', 'like', '%'.$_POST['search_data'].'%');
-			})->where('is_manifested','like','%' .$_POST['is_manifest']. '%')->where('us.name','like', '%' .$store. '%')->whereBetween('label_details.created_at', ["$startdate 00:00:00","$enddate 23:59:59"])->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
-			$total_count = count($record_total);
+			$total_count = count($query_result);
 			$output = array(
 					"sEcho" => intval($_POST['draw']),
 					"iTotalRecords" => $total_count,
 					"iTotalDisplayRecords" => $total_count,
 					"aaData" => array()
 				);
-			foreach($label_list_arr as $cntdata)
+			foreach($query_result as $cntdata)
 			{
 				if($cntdata['is_manifested']==1)
 				{

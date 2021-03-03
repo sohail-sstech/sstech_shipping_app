@@ -25,7 +25,7 @@
                                           <div class="row form-group">
 												<div class="col-sm-3">
 													<label for="search_data" class="col-sm-9 col-form-label">Search</label>
-													 <input type="text" class="form-control" id="search_data" autocomplete="new-search_data" name="search_data" placeholder="Header,Body,Consignment,Carrier.">
+													 <input type="text" class="form-control" id="search_data" autocomplete="new-search_data" name="search_data" placeholder="ShopifyOrderId,OrderNumber,Consignment,Carrier.">
 												</div>
 												<div class="col-sm-3">
 													<label for="search_data" class="col-sm-9 col-form-label">Start Date</label>

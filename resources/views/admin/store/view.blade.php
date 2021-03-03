@@ -27,20 +27,6 @@
 													 <input type="text" class="form-control" id="store_name" autocomplete="new-store_name" name="store_name" placeholder="Plase Enter Store Name/Email.">
 												</div>
 												<div class="col-sm-3">
-													<label for="search_data" class="col-sm-9 col-form-label">Start Date</label>
-													<div class="input-group date">
-													<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-														<input id="startdate" class="form-control pull-right" name="startdate"  value="{{!empty($start_date) ? $start_date : ''}}" type="text">
-													</div>
-												</div>
-												<div class="col-sm-3">
-													<label for="search_data" class="col-sm-9 col-form-label">End Date</label>
-													<div class="input-group date">
-													<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-														<input id="enddate" class="form-control pull-right"  name="enddate" value="{{!empty($end_date) ? $end_date : ''}}" type="text">
-													</div>
-												</div>
-												<div class="col-sm-3">
 												
 												<button type="button" onclick="reload_table('storegrid_dt')" class="col-sm-6 btn btn-success btn-bg" style="margin-top:40px;">
 													<i class="fa fa-dot-circle-o"></i> Filter

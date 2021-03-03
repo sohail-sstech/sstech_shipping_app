@@ -23,35 +23,35 @@ class ManifestController extends Controller
     }	
 	public function preload_manifestlist(Request $request)
 	{
-		$store = !empty($_POST['store']) ? $_POST['store'] : '';
 		$startdate = !empty(date("Y-m-d",strtotime($_POST['startdate']))) ? date("Y-m-d",strtotime($_POST['startdate'])) : '';
 		$enddate = !empty(date("Y-m-d",strtotime($_POST['enddate']))) ? date("Y-m-d",strtotime($_POST['enddate'])) : '';
-		
-		//$label_list_arr = Manifest::select('manifest_details.*','us.name as storename','mld.label_detail_id as label_detail_id','lbl.shopify_order_id','lbl.shopify_order_no','lbl.consignment_no','lbl.carrier_name','lbl.service_name','lbl.is_manifested','lbl.status as label_status')->join('users as us', 'manifest_details.user_id', '=','us.id')->join('manifest_label_details as mld', 'manifest_details.id', '=','mld.manifest_detail_id')->join('label_details as lbl', 'mld.label_detail_id', '=','lbl.id')
-		//$label_list_arr = Manifest::select('manifest_details.*','us.name as storename')->join('users as us', 'manifest_details.user_id', '=','us.id')
-		$label_list_arr = Manifest::select('manifest_details.*','us.name as storename','mld.label_detail_id as label_detail_id','lbl.shopify_order_id','lbl.shopify_order_no','lbl.consignment_no','lbl.carrier_name','lbl.service_name','lbl.is_manifested','lbl.status as label_status')->join('users as us', 'manifest_details.user_id', '=','us.id')->join('manifest_label_details as mld', 'manifest_details.id', '=','mld.manifest_detail_id')->join('label_details as lbl', 'mld.label_detail_id', '=','lbl.id')
-			->where(function($query)
+		$query_result = Manifest::select('manifest_details.*','us.name as storename','mld.label_detail_id as label_detail_id','lbl.shopify_order_id','lbl.shopify_order_no','lbl.consignment_no','lbl.carrier_name','lbl.service_name','lbl.is_manifested','lbl.status as label_status')->join('users as us', 'manifest_details.user_id', '=','us.id')->join('manifest_label_details as mld', 'manifest_details.id', '=','mld.manifest_detail_id')->join('label_details as lbl', 'mld.label_detail_id', '=','lbl.id');
+		if(!empty($_POST['search_data'])) 
+		{
+			$query_result->where(function($query)
 			{
 				$query->where('manifest_no','=',$_POST['search_data'])->orWhere('manifest_file', 'like', '%'.$_POST['search_data'].'%');
-			})->where('us.name','like', '%' .$store. '%')->whereBetween('manifest_details.created_at', ["$startdate 00:00:00","$enddate 23:59:59"])->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
+			});
+		}
+		if(!empty($_POST['store'])) {
+			$query_result = $query_result->where('us.name','=',$_POST['store']);
+		}
+		$query_result = $query_result->whereBetween('manifest_details.created_at', ["$startdate 00:00:00","$enddate 23:59:59"]);
+		$query_result = $query_result->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
 		
-		if($label_list_arr)
+		
+		
+		if($query_result)
 		{
 			/*Query for to get total record count*/
-			//$record_total = Manifest::select('manifest_details.*','us.name as storename')->join('users as us', 'manifest_details.user_id', '=','us.id')
-			$record_total = Manifest::select('manifest_details.*','us.name as storename','mld.label_detail_id as label_detail_id','lbl.shopify_order_id','lbl.shopify_order_no','lbl.consignment_no','lbl.carrier_name','lbl.service_name','lbl.is_manifested','lbl.status as label_status')->join('users as us', 'manifest_details.user_id', '=','us.id')->join('manifest_label_details as mld', 'manifest_details.id', '=','mld.manifest_detail_id')->join('label_details as lbl', 'mld.label_detail_id', '=','lbl.id')
-			->where(function($query)
-			{
-				$query->where('manifest_no','=',$_POST['search_data'])->orWhere('manifest_file', 'like', '%'.$_POST['search_data'].'%');
-			})->where('us.name','like', '%' .$store. '%')->whereBetween('manifest_details.created_at', ["$startdate 00:00:00","$enddate 23:59:59"])->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
-			$total_count = count($record_total);
+			$total_count = count($query_result);
 			$output = array(
 					"sEcho" => intval($_POST['draw']),
 					"iTotalRecords" => $total_count,
 					"iTotalDisplayRecords" => $total_count,
 					"aaData" => array()
 				);
-			foreach($label_list_arr as $cntdata)
+			foreach($query_result as $cntdata)
 			{
 				
 				
