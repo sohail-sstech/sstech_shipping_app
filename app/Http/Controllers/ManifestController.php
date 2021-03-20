@@ -26,6 +26,11 @@ class ManifestController extends Controller
 	{
 		$where = '';
 		$searchkey_filter='';
+		$limit = '';
+		if(isset($_POST['start']) && $_POST['length'] != '-1') 
+		{
+			$limit = "LIMIT ".intval($_POST['start']).", ".intval($_POST['length']);
+		}
 		if(isset($_POST['search_key']) && !empty($_POST['search_key']))
 		{
 			$searchkey_filter = 'AND lbldt.consignment_no like ("%'.$_POST['search_key'].'%")';
@@ -39,8 +44,9 @@ class ManifestController extends Controller
 			$enddate =  $enddate. ' 23:59:59';
 			$where .= ' AND lbldt.created_at between "'.$startdate.'" and "'.$enddate.'"';
 		}
-		$manifestdata_query = DB::select('select SQL_CALC_FOUND_ROWS lbldt.* from label_details as lbldt where lbldt.is_manifested=0 '.$where.' '.$searchkey_filter.' ');
-		//echo '<pre>';print_r($where);exit;
+		
+		$manifestdata_query = DB::select('select SQL_CALC_FOUND_ROWS lbldt.* from label_details as lbldt where lbldt.is_manifested=0 '.$where.' '.$searchkey_filter.' order by lbldt.id desc '.$limit.' ');
+		
 		
 		if($manifestdata_query)
 		{
@@ -55,11 +61,15 @@ class ManifestController extends Controller
 					"aaData" => array()
 				);
 			$table = $table_data['data_found'];
-			//$AccessKey = '00BF47B1559899C7F6ED19CF40914841A9D0B8BC7C95C59C25';
-			$AccessKey = Config::get('constants.default_access_token');
+			
+			$AccessKey = get_dynamic_token();
+			
 			for($a=0; $a<count($table); $a++){
-				$checkbox = '<label class="au-checkbox" ><input type="checkbox" data-userid="'.$table[$a]->user_id.'" data-id="'.$table[$a]->id.'"  data-ConsignmentNo="'.$table[$a]->consignment_no.'" data-accesstoken="'.$AccessKey.'"><span class="au-checkmark"></span></label>';
-				$raw = array($checkbox,$table[$a]->consignment_no,$table[$a]->carrier_name,$table[$a]->created_at);
+				if(!empty($table[$a]->consignment_no))
+				{
+					$checkbox = '<label class="au-checkbox" ><input type="checkbox" data-userid="'.$table[$a]->user_id.'" data-id="'.$table[$a]->id.'"  data-ConsignmentNo="'.$table[$a]->consignment_no.'" data-accesstoken="'.$AccessKey.'"><span class="au-checkmark"></span></label>';
+					$raw = array($checkbox,$table[$a]->consignment_no,$table[$a]->carrier_name,$table[$a]->created_at);
+				}
 				$output['aaData'][] = $raw;
 			}
 		}
@@ -75,7 +85,10 @@ class ManifestController extends Controller
 		echo json_encode($output);
 	}
 	
-	
+	/*Load recent manifest view*/
+	public function recent_manifestview(){
+		return view('theme.recentmanifest_view');
+	}
 	/*recent manifest grid load*/
 	public function preload_recentmanifest()
 	{
@@ -95,10 +108,12 @@ class ManifestController extends Controller
 		echo json_encode(array('data'=>$recent_manifestdeatils),JSON_PRETTY_PRINT);
 	}
 	
-	function manifest_consignment()
+	
+	public function manifest_consignment()
 	{
 	    $connote=$_POST['connote_list'];
 	    $Access_Key=$_POST['token'];
+		
 		$shop = Auth::user();
 		$shop_request = $shop->api()->rest('GET', '/admin/shop.json');
 		$shop_domain = $shop_request->body->shop->domain;
@@ -107,6 +122,14 @@ class ManifestController extends Controller
 		$url = Config::get('constants.create_manifest_url');
 	    //$url='https://api.omniparcel.com/v2/publishmanifestv4';
 	    $header =array('Access_Key:'.$Access_Key,'Content-Type: application/json', 'charset:utf-8');
+		
+		/*
+		echo 'URL: ' . $url . '<br/>';
+		echo 'Header: ' . json_encode($header) . '<br/>';
+		echo 'Attachment: ' . $attachment . '<br/>';
+		exit();
+		*/
+
 	    $manifest_api_response = call_curl($url,$header,$attachment);
 	    $manifest_resp=json_decode($manifest_api_response['response']);
 	    $res_result=array();
@@ -136,8 +159,9 @@ class ManifestController extends Controller
 							'created_by'=>$userid
 							);
 						//DB::table('manifest_details')->insert($manifest_details);
-						$manifestdetails_id = DB::table('manifest_details')->insert($manifest_details)->lastInsertId();
-						
+						DB::table('manifest_details')->insert($manifest_details);
+						$manifestdetails_id = DB::getPdo()->lastInsertId();
+
 						foreach($val->ManifestedConnotes as $key_mc=>$val_mc)
 						{
 							/*Get label detals through the consignment no*/
@@ -150,7 +174,7 @@ class ManifestController extends Controller
 							'consignment_no'=>$val_mc,
 							'created_by'=>$userid
 							);
-							DB::table('manifest_label_details')->insert($manifest_label_details)
+							DB::table('manifest_label_details')->insert($manifest_label_details);
 							/*label details update*/
 							DB::table('label_details')->where('consignment_no',$val_mc)->update(['is_manifested' => 1]);
 						}
@@ -208,13 +232,16 @@ class ManifestController extends Controller
 	
 
 	/*delete consignment functionality*/
-	function delete_consignment()
+	public function delete_consignment()
 	{
 	    //$data = $this->general->check_currrent_session();
-	    //echo "<pre>";print_r($data);exit();
+	    //echo "<pre>";print_r($_POST);exit();
 	    $connote=$_POST['connote_list'];
 	    $accesstoken=$_POST['token'];
-	    $userid=$_POST['userid'];
+		$shop = Auth::user();
+		$shop_request = $shop->api()->rest('GET', '/admin/shop.json');
+		$shop_domain = $shop_request->body->shop->domain;
+		$userid = DB::table('users')->where('name', $shop_domain)->select('id')->pluck('id')->first();
 	    $attachment=json_encode($connote);
 	    //$attachment=json_encode(array("WRX1004265"));
 	    ///// Call Reprint API of OmniParcel ///
@@ -257,7 +284,9 @@ class ManifestController extends Controller
 			);
 			DB::table('api_logs')->insert($apilog_insert_array);
 	    }
-	    echo $delete_api_response;
+		
+	    //echo $delete_api_response;
+	    echo json_encode($delete_api_response,true);
 	}
 
 	

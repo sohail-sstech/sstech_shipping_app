@@ -2,11 +2,14 @@
 @section('content')
 <div class="container-fluid">
         <div class="row">
-           <div class="col-lg-12">
+           <div class="col-lg-12 top-campaign">
                <div class="au-card">
-                   <div class="card-header">
-                       <strong>Setting Update Form</strong> 
-                   </div>
+					<h4 class="card-header bg-dark">
+                        <strong class="card-title text-light">Setting Update </strong>
+					</h4>
+                   <!--<div class="card-header">
+                       <strong>Setting Update</strong> 
+                   </div>-->
 				<form action="{{secure_asset('/updatesettingsdata')}}" method="post">
 				 <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
 				 <input type = "hidden" name = "setting_id" value = "{{$settingdata->id}}">
@@ -38,6 +41,10 @@
                             </div>
 							
 							<div class="customformaddressfields" style="display:none;">
+									<div class="form-group">
+										<label for="company_name" class="form-control-label">Company</label>
+										<input type="text" id="company_name" name="company_name" value="{{$settingdata->company_name}}" class="form-control">
+									</div>
 									<div class="form-group">
 										<label for="Name" class="form-control-label">Name</label>
 										<input type="text" id="Name" name="Name" value="{{$settingdata->name}}" class="form-control">
@@ -81,7 +88,7 @@
 									</div>
 									<div class="form-group">
 										<label for="phone" class=" form-control-label">Phone</label>
-										<input type="number" id="phone" name="phone" value="{{$settingdata->phone}}" class="form-control">
+										<input type="text" id="phone" name="phone" value="{{$settingdata->phone}}" class="form-control">
 									</div>
 							</div>
 							

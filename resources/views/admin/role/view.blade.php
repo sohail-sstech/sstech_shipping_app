@@ -12,7 +12,7 @@
 							@endif
 						    <div class="row">
 							  <div class="col-md-10">
-								<h3 class="title-5 m-b-35">Roles Details</h3>
+								<h3 class="title-5 m-b-35">Roles</h3>
 							  </div>
 							</div>
                             <div class="table-responsive table-responsive-data2">

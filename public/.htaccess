@@ -4,7 +4,10 @@
     </IfModule>
 
     RewriteEngine On
-
+	
+	# Base Path
+	# RewriteBase /var/www/html/sstechshippingapp/public/index.php
+	
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

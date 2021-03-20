@@ -38,6 +38,7 @@ Route::get('/', function () {
     return view('theme/home');
 })->middleware(['auth.shopify'])->name('home');
 
+Route::get('/homepage','DashboardController@index')->middleware(['auth.shopify']);
 
 
 /*
@@ -50,6 +51,8 @@ Route::get('shop','ShopifyController@get_shop')->middleware(['auth.shopify']);
 Route::get('products','ShopifyController@get_products')->middleware(['auth.shopify']);
 Route::get('orders','ShopifyController@get_orders')->middleware(['auth.shopify']);
 
+/*Tax details*/
+Route::get('tax','TaxController@index')->middleware(['auth.shopify']);
 
 Route::get('create','ShopifyController@create_carrierservice')->middleware(['auth.shopify']);
 Route::get('carrierservicelist','ShopifyController@view_carrierservices')->middleware(['auth.shopify']);
@@ -81,6 +84,7 @@ Route::post('updatesettingsdata','SettingsController@update_data');
 
 /*Manifest view load*/
 Route::get('/manifest','ManifestController@index')->middleware(['auth.shopify']);
+Route::get('/recent_manifest','ManifestController@recent_manifestview')->middleware(['auth.shopify']);
 
 /*Main Manifest Data Table Load*/
 //Route::get('/get_manifestdata','ManifestController@preload_manifestdata')->middleware(['auth.shopify']);
@@ -100,14 +104,14 @@ Route::post('deleteconsignment','ManifestController@delete_consignment');
 
 /*Order Label view load*/
 Route::get('/orderlabel','ShippingController@index')->middleware(['auth.shopify']);
+/*Get order label details row wise in view*/
+Route::get('/orderlabeldetails_view/{id}','ShippingController@get_label_details');
 /*Order Label Grid*/
 Route::post('get_orderlabeldata','ShippingController@preload_orderlabeldata');
 
 /*call label pdf controller function*/
 Route::post('pdflabeldetails','ShippingController@get_pdf_labeldetails');
 //Route::get('/pdflabeldetails','ShippingController@get_pdf_labeldetails')->middleware(['auth.shopify']);
-
-
 
 /*Auth::routes();
 

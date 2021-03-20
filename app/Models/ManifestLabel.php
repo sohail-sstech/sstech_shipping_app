@@ -1,14 +1,14 @@
 <?php
-namespace App\Models\Admin;
+namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
-class Manifest extends Authenticatable
+class ManifestLabel extends Authenticatable
 {
-     protected $table = 'manifest_details';
+     protected $table = 'manifest_label_details';
 	 
 	  /**
      * The attributes that are mass assignable.
@@ -16,7 +16,7 @@ class Manifest extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'manifest_no','manifest_file','status','created_by','created_at','updated_by','updated_at','is_deleted'
+        'user_id','manifest_detail_id','label_detail_id','consignment_no','status','created_by','created_at','updated_by','updated_at','is_deleted'
     ];
 	public $timestamps = false;
 	

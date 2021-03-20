@@ -15,6 +15,7 @@ class ProcessQueueController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+		$this->middleware('user-role');
     }
 	public function index()
     {
@@ -27,6 +28,20 @@ class ProcessQueueController extends Controller
 	{
 		$startdate = !empty(date("Y-m-d",strtotime($_POST['startdate']))) ? date("Y-m-d",strtotime($_POST['startdate'])) : '';
 		$enddate = !empty(date("Y-m-d",strtotime($_POST['enddate']))) ? date("Y-m-d",strtotime($_POST['enddate'])) : '';
+		
+		$order_by_field = 'process_queues.id';
+		$order_by_field_value = 'desc';
+		$order_by_field_arr = [
+								'0' => 'process_queues.type',
+								'1' => 'process_queues.shop_domain',
+								'2' => 'process_queues.status',
+								'3' => 'process_queues.id',
+							];
+		if(isset($_POST['order'][0]['column']) && isset($_POST['order'][0]['dir'])) {
+			$order_by_field = !empty($order_by_field_arr[$_POST['order'][0]['column']])?$order_by_field_arr[$_POST['order'][0]['column']]:$order_by_field;
+			$order_by_field_value = !empty($_POST['order'][0]['dir'])?$_POST['order'][0]['dir']:$order_by_field_value;
+		}
+		
 		$query_result=ProcessQueue::select('*');
 		if(!empty($_POST['search_data'])) 
 		{
@@ -45,11 +60,12 @@ class ProcessQueueController extends Controller
 			$query_result = $query_result->where('type','like','%'.$_POST['processqueue_type'].'%');
 		}
 		$query_result = $query_result->whereBetween('created_at', ["$startdate 00:00:00","$enddate 23:59:59"]);
-		$query_result = $query_result->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
+		$total_count = $query_result->count();
+		$query_result = $query_result->take($_POST['length'])->skip(intval($_POST['start']))->orderBy($order_by_field, $order_by_field_value)->get()->toArray();
 		
 		if($query_result)
 		{
-			$total_count = count($query_result);
+			
 			$output = array(
 					"sEcho" => intval($_POST['draw']),
 					"iTotalRecords" => $total_count,

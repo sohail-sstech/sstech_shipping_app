@@ -26,8 +26,9 @@ class CronController extends Controller
 	 */
 	public function create_labels(Request $request)
 	{
-		$labeldetails_results = DB::select('select * from process_queues where status=0 ORDER BY id ASC LIMIT 2');
-		
+		$limit = 2;
+		$labeldetails_results = DB::select('select * from process_queues where status=0 ORDER BY id ASC LIMIT '.$limit);
+		$dyanmic_accesskey ='';
 		if(!empty($labeldetails_results)){
 			//$i=0;
 			foreach($labeldetails_results as $label_obj)
@@ -46,7 +47,8 @@ class CronController extends Controller
 					$carrier_methodname="SSTech Shipping";
 					if(strpos($shipping_method, $carrier_methodname) !== FALSE) 
 					{
-						$AccessKey = Config::get('constants.default_access_token'); //'00BF47B1559899C7F6ED19CF40914841A9D0B8BC7C95C59C25';
+						$AccessKey = get_dynamic_token($shop_domain);
+						//$AccessKey = Config::get('constants.default_access_token'); //'00BF47B1559899C7F6ED19CF40914841A9D0B8BC7C95C59C25';
 						$ContentType = 'application/json';
 						$url = Config::get('constants.omni_label_url'); //'https://api.omniparcel.com/labels/printcheapestcourier';
 						$header =array('Access_Key:'.$AccessKey,'Content-Type:'.$ContentType,'charset:utf-8');
@@ -122,7 +124,9 @@ class CronController extends Controller
 						$webhook_request_data['Service'] = '';
 						$webhook_request_data['outputs'] = array('LABEL_PDF');
 						$webhook_request_data['issignaturerequired'] = 'false';
-						$webhook_request_data['DeliveryReference'] =  rand(100000, 999999);
+						//$webhook_request_data['DeliveryReference'] =  rand(100000, 999999);
+						$webhook_request_data['DeliveryReference'] =  $webhook_data['name'];
+						$webhook_request_data['Reference2'] = "";
 						//$webhook_request_data['Reference3'] = 'RETAILER PAID';
 						$webhook_request_data['Reference3'] = $shop_domain;
 						$webhook_request_data['IncludeLineDetails'] = 'true';
@@ -167,17 +171,18 @@ class CronController extends Controller
 						
 						$consignmentno = !empty($available_rate_response_obj->Consignments[0]->Connote)? $available_rate_response_obj->Consignments[0]->Connote:NULL; 
 						$charges = !empty($available_rate_response_obj->Consignments[0]->Items[0]->Charge) ? $available_rate_response_obj->Consignments[0]->Items[0]->Charge : null;
+						
 						/*label details table insert data*/
 						$labeldetails_insert_array=array(
 						   'shopify_order_id'=>$webhook_data['id'],
 						   'shopify_order_no'=>$webhook_data['name'],
-						   'sender_country'=> $origin['CountryCode'],
+						   'sender_country'=> $origin_address['CountryCode'],//$origin['CountryCode'],
 						   'sender_name'=>$origin['Name'],
-						   'sender_building'=>$origin['BuildingName'],
-						   'sender_street'=>$origin['StreetAddress'],
-						   'sender_suburb'=>$origin['Suburb'],
-						   'sender_state_or_city'=>$origin['City'],
-						   'sender_postcode'=>$origin['PostCode'],
+						   'sender_building'=>$origin_address['BuildingName'],
+						   'sender_street'=>$origin_address['StreetAddress'],
+						   'sender_suburb'=>$origin_address['Suburb'],
+						   'sender_state_or_city'=>$origin_address['City'],
+						   'sender_postcode'=>$origin_address['PostCode'],
 						   'sender_contact'=>$origin['ContactPerson'],
 						   'sender_phone'=>$origin['phonenumber'],
 						   'sender_email'=>$origin['email'],
@@ -197,7 +202,7 @@ class CronController extends Controller
 						   'is_signature_required'=> $webhook_request_data['issignaturerequired'],
 						   'delivery_reference'=> $webhook_request_data['DeliveryReference'],
 						   'reference3'=> $webhook_request_data['Reference3'],
-						   'reference2'=> $webhook_request_data['Reference3'],
+						   'reference2'=> null,
 						   'charge'=> $charges,
 						   'carrier_name'=>$available_rate_response_obj->CarrierName,
 						   'consignment_no'=> $consignmentno,
@@ -208,6 +213,7 @@ class CronController extends Controller
 						   'created_by'=>$userid,
 						   'is_deleted'=>'0'
 						); 
+						//echo '<pre>';print_r($labeldetails_insert_array);exit;
 						DB::table('label_details')->insert($labeldetails_insert_array);
 						
 						$status = empty($available_rate_response_obj->Errors)? '1':'2';
@@ -338,7 +344,7 @@ class CronController extends Controller
 						$apilog_insert_array=array(
 						   'api_url'=>$url,
 						   'user_id'=>$userid,
-						   'request_type'=>'Label Rate',
+						   'request_type'=>'3',
 						   'request_headers'=> json_encode($header),
 						   'request'=> $attachment,
 						   'response'=>json_encode($available_rate_response_obj),

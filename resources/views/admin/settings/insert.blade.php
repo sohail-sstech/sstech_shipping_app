@@ -21,13 +21,13 @@
 										 <div class="col-md-12">
 												<div class="card-header">
 													 <div class="row">
-													<div class="col-md-10">
-														<p><strong>Settings Insert </strong>Form</p>
+													<div class="col-md-8">
+														<p><strong>Settings </strong>Insert</p>
 													</div>
-													<div class="col-md-2">
+													<div class="col-md-4">
 														<p style="float:right;">
 															<a href="{{asset('/admin/settings')}}" class="au-btn au-btn-icon au-btn--green au-btn--small">
-																<i class="zmdi zmdi-plus"></i> View
+																<i class="zmdi zmdi-plus"></i> View Setting
 															</a>	
 														</p>
 													</div>
@@ -58,18 +58,18 @@
 													<div class="form-group row">
 														<label for="accesstoken" class="col-sm-3 col-form-label">Customer Access Token <span class="required">*</span></label>
 														<div class="col-sm-9">
-														  <input type="text" class="form-control" id="accesstoken" autocomplete="new-accesstoken" name="accesstoken" placeholder="Plase Enter Access Token.">
+														  <input type="text" class="form-control" id="accesstoken" autocomplete="new-accesstoken" name="accesstoken" placeholder="Please Enter Access Token.">
 														</div>
 													</div>
 													<div class="form-group row">
 														<label for="recevieremail" class="col-sm-3 col-form-label">Lable Receiver Email <span class="required">*</span></label>
 														<div class="col-sm-9">
-														<input type="email" id="recevieremail" name="recevieremail" autocomplete="new-recevieremail" class="form-control" placeholder="Plase Enter Receiver Email.">
+														<input type="email" id="recevieremail" name="recevieremail" autocomplete="new-recevieremail" class="form-control" placeholder="Please Enter Receiver Email.">
 														</div>
 													</div>
 													<div class="row form-group">
 													<div class="col col-md-3">
-														<label class=" form-control-label">From Address</label>
+														<label class=" form-control-label">From Address Enabled</label>
 													</div>
 													<div class="col col-md-9">
 														<div class="form-check-inline form-check" id="radioButtonsdiv">
@@ -89,25 +89,25 @@
 														<div class="form-group row">
 															<label for="Name" class="col-sm-3 col-form-label">Name <span class="required">*</span></label>
 															<div class="col-sm-9">
-																<input type="text" id="Name" name="Name"  class="form-control" placeholder="Plase Enter Name.">
+																<input type="text" id="Name" name="Name"  class="form-control" placeholder="Please Enter Name.">
 															</div>
 														</div>
 														<div class="form-group row">
 															<label for="contactperson" class="col-sm-3 col-form-label">Contact Person <span class="required">*</span></label>
 															<div class="col-sm-9">
-																<input type="text" id="contactperson" name="contactperson" class="form-control" placeholder="Plase Enter Contact Person.">
+																<input type="text" id="contactperson" name="contactperson" class="form-control" placeholder="Please Enter Contact Person.">
 															</div>
 														</div>
 														<div class="form-group row">
 															<label for="Address1" class="col-sm-3 col-form-label">Address1 <span class="required">*</span></label>
 															<div class="col-sm-9">
-																<input type="text" id="fromaddress1" name="fromaddress1" class="form-control" placeholder="Plase Enter Address1.">
+																<input type="text" id="fromaddress1" name="fromaddress1" class="form-control" placeholder="Please Enter Address1.">
 															</div>
 														</div>
 														<div class="form-group row">
 															<label for="Address2" class="col-sm-3 col-form-label">Address2</label>
 															<div class="col-sm-9">
-																<input type="text" id="fromaddress2" name="fromaddress2" class="form-control" placeholder="Plase Enter Address2.">
+																<input type="text" id="fromaddress2" name="fromaddress2" class="form-control" placeholder="Please Enter Address2.">
 															</div>
 														</div>
 														<div class="form-group row">
@@ -127,25 +127,25 @@
 														<div class="form-group row">
 															<label for="province" class="col-sm-3 col-form-label">Province <span class="required">*</span></label>
 															<div class="col-sm-9">
-																<input type="text" id="Province" name="province" class="form-control" placeholder="Plase Enter Province.">
+																<input type="text" id="Province" name="province" class="form-control" placeholder="Please Enter Province.">
 															</div>
 														</div>
 														<div class="form-group row">
 															<label for="city" class="col-sm-3 col-form-label">City <span class="required">*</span></label>
 															<div class="col-sm-9">
-																<input type="text" id="city" name="city"  class="form-control" placeholder="Plase Enter City.">
+																<input type="text" id="city" name="city"  class="form-control" placeholder="Please Enter City.">
 															</div>
 														</div>
 														<div class="form-group row">
 															<label for="zipcode" class="col-sm-3 col-form-label">Zip Code <span class="required">*</span></label>
 															<div class="col-sm-9">
-																<input type="text" id="zipcode" name="zipcode"  class="form-control" placeholder="Plase Enter Zip Code.">
+																<input type="text" id="zipcode" name="zipcode"  class="form-control" placeholder="Please Enter Zip Code.">
 															</div>
 														</div>
 														<div class="form-group row">
 															<label for="phone" class="col-sm-3 col-form-label">Phone <span class="required">*</span></label>
 															<div class="col-sm-9">
-																<input type="number" id="phone" name="phone"  class="form-control" placeholder="Plase Enter Phone.">
+																<input type="text" id="phone" name="phone"  class="form-control" placeholder="Please Enter Phone.">
 															</div>
 														</div>
 												</div>

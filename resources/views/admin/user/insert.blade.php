@@ -21,13 +21,13 @@
 										 <div class="col-md-12">
 												<div class="card-header">
 													 <div class="row">
-													<div class="col-md-10">
-														<p><strong>User Insert </strong>Form</p>
+													<div class="col-md-8">
+														<p><strong>User </strong>Insert</p>
 													</div>
-													<div class="col-md-2">
+													<div class="col-md-4">
 														<p style="float:right;">
 															<a href="{{asset('/admin/user')}}" class="au-btn au-btn-icon au-btn--green au-btn--small">
-																<i class="zmdi zmdi-plus"></i> View
+																<i class="zmdi zmdi-plus"></i> View Users
 															</a>	
 														</p>
 													</div>
@@ -44,13 +44,13 @@
 													<div class="form-group row">
 														<label for="user_name" class="col-sm-3 col-form-label">User Name <span class="required">*</span></label>
 														<div class="col-sm-9">
-														  <input type="text" class="form-control" id="user_name" autocomplete="new-user_name" name="user_name" placeholder="Plase Enter User Name.">
+														  <input type="text" class="form-control" id="user_name" autocomplete="new-user_name" name="user_name" placeholder="Please Enter User Name.">
 														</div>
 													</div>
 													<div class="form-group row">
 														<label for="user_password" class="col-sm-3 col-form-label">User Password <span class="required">*</span></label>
 														<div class="col-sm-9">
-														  <input type="password" class="form-control" id="user_password" autocomplete="new-user_password" name="user_password" placeholder="Plase Enter User Password." autocomplete="off">
+														  <input type="password" class="form-control" id="user_password" autocomplete="new-user_password" name="user_password" placeholder="Please Enter User Password." autocomplete="off">
 														</div>
 													</div>
 													<div class="form-group row">
@@ -71,14 +71,14 @@
 													<div class="form-group row">
 														<label for="user_email" class="col-sm-3 col-form-label">User Email <span class="required">*</span></label>
 														<div class="col-sm-9">
-														  <input type="text" class="form-control" id="user_email" autocomplete="new-user_email" name="user_email" placeholder="Plase Enter User Email.">
+														  <input type="text" class="form-control" id="user_email" autocomplete="new-user_email" name="user_email" placeholder="Please Enter User Email.">
 														</div>
 													</div>
 													
 													<div class="form-group row">
 														<label for="user_password" class="col-sm-3 col-form-label">User Confirm Password</label>
 														<div class="col-sm-9">
-														  <input type="password" class="form-control" id="user_confirmpwd" autocomplete="new-user_confirmpwd" name="user_confirmpwd" placeholder="Plase Enter User Confirm Password." autocomplete="off">
+														  <input type="password" class="form-control" id="user_confirmpwd" autocomplete="new-user_confirmpwd" name="user_confirmpwd" placeholder="Please Enter User Confirm Password." autocomplete="off">
 														</div>
 													</div>
 													

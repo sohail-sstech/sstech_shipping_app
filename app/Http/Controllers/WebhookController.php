@@ -64,6 +64,14 @@ class WebhookController extends Controller
 	 */
 	public function app_uninstalled() {
 		
+		if(!empty($_SERVER['X-Shopify-Shop-Domain']))
+		{
+			$userid = DB::table('users')->where('name',$_SERVER['X-Shopify-Shop-Domain'])->select('id')->pluck('id')->first();
+			if(!empty($userid)){
+				$update_user_array = array('is_deleted'=>'1','status'=>'0');
+				DB::table('users')->where('id', $userid)->update($update_user_array); 
+			}
+		}
 	}
    
 }

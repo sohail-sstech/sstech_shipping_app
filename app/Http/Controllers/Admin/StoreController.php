@@ -14,6 +14,7 @@ class StoreController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+		$this->middleware('user-role');
     }
 	public function index()
     {
@@ -21,6 +22,20 @@ class StoreController extends Controller
     }	
 	public function preload_storelist(Request $request)
 	{
+		/*start logic for order by*/
+		$order_by_field = 'id';
+		$order_by_field_value = 'desc';
+		$order_by_field_arr = [
+								'0' => 'name',
+								'1' => 'email',
+								'2' => 'status',
+								'3' => 'created_at',
+							];
+		if(isset($_POST['order'][0]['column']) && isset($_POST['order'][0]['dir'])) {
+			$order_by_field = !empty($order_by_field_arr[$_POST['order'][0]['column']])?$order_by_field_arr[$_POST['order'][0]['column']]:$order_by_field;
+			$order_by_field_value = !empty($_POST['order'][0]['dir'])?$_POST['order'][0]['dir']:$order_by_field_value;
+		}
+		
 		$query_result = User::select('*');
 		if(!empty($_POST['store_name']))
 		{
@@ -31,12 +46,11 @@ class StoreController extends Controller
 		}
 		$query_result = $query_result->where('role_id','=',3);
 		$query_result = $query_result->where('is_deleted','=',0);
-		$query_result = $query_result->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
+		$total_count = $query_result->count();
+		$query_result = $query_result->take($_POST['length'])->skip(intval($_POST['start']))->orderBy($order_by_field, $order_by_field_value)->get()->toArray();
 			
 		if($query_result)
 		{
-			/*Query for to get total record count*/
-			$total_count = count($query_result);
 			
 			$output = array(
 					"sEcho" => intval($_POST['draw']),

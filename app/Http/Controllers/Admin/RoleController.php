@@ -12,6 +12,7 @@ class RoleController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+		$this->middleware('user-role');
     }
 	public function index()
     {
@@ -21,11 +22,30 @@ class RoleController extends Controller
 	public function preload_rolelist(Request $request)
 	{
 		$search_limit = "";
-		$role_list_arr = Role::select('roles.*')->where('is_deleted',0)->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
-		if($role_list_arr)
+		
+		$order_by_field = 'id';
+		$order_by_field_value = 'desc';
+		$order_by_field_arr = [
+								'0' => 'name',
+								'1' => 'description',
+								'2' => 'status',
+								'3' => 'created_at',
+								'4' => 'id',
+							];
+		if(isset($_POST['order'][0]['column']) && isset($_POST['order'][0]['dir'])) {
+			$order_by_field = !empty($order_by_field_arr[$_POST['order'][0]['column']])?$order_by_field_arr[$_POST['order'][0]['column']]:$order_by_field;
+			$order_by_field_value = !empty($_POST['order'][0]['dir'])?$_POST['order'][0]['dir']:$order_by_field_value;
+		}
+		
+		$query_result = Role::select('roles.*');
+		$query_result = $query_result->where('is_deleted',0);
+		$total_count = $query_result->count();
+		$query_result = $query_result->take($_POST['length'])->skip(intval($_POST['start']))->orderBy($order_by_field, $order_by_field_value)->get()->toArray();
+		
+		if($query_result)
 		{
-			$record_total = Role::all();
-			$total_count = $record_total->count();
+			//$record_total = Role::all();
+			//$total_count = $record_total->count();
 			
 			$output = array(
 					"sEcho" => intval($_POST['draw']),
@@ -33,7 +53,7 @@ class RoleController extends Controller
 					"iTotalDisplayRecords" => $total_count,
 					"aaData" => array()
 				);
-			foreach($role_list_arr as $cntdata)
+			foreach($query_result as $cntdata)
 			{
 				
 				if($cntdata['status']==1)
@@ -57,6 +77,14 @@ class RoleController extends Controller
 				$raw = array($cntdata['name'],$cntdata['description'],$cntdata['status'],date('F d Y  h:i A',strtotime($cntdata['created_at'])),$cntdata['Action']);
 				$output['aaData'][] = $raw;
 			}
+		}
+		else{
+			$output = array(
+						"sEcho" => intval($_POST['draw']),
+						"iTotalRecords" => '0',
+						"iTotalDisplayRecords" => '0',
+						"aaData" => array()
+					 );
 		}
 		return $output;
 	}

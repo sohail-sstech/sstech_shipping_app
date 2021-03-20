@@ -22,13 +22,13 @@
 										 <div class="col-md-12">
 												<div class="card-header">
 													 <div class="row">
-													<div class="col-md-10">
-														<p><strong>User Edit </strong>Form</p>
+													<div class="col-md-8">
+														<p><strong>User </strong>Edit</p>
 													</div>
-													<div class="col-md-2">
+													<div class="col-md-4">
 														<p style="float:right;">
 															<a href="{{asset('/admin/user')}}" class="au-btn au-btn-icon au-btn--green au-btn--small">
-																<i class="zmdi zmdi-plus"></i> View
+																<i class="zmdi zmdi-plus"></i> View Users
 															</a>	
 														</p>
 													</div>

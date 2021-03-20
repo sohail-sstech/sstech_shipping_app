@@ -43,7 +43,7 @@
 	$commodities_details = !empty($All_LabelDetails['commodities']) ? json_decode($All_LabelDetails['commodities']) : '';
 	
 	$packages_details = !empty($All_LabelDetails['packages']) ? json_decode($All_LabelDetails['packages']) : '';
-	
+
 	$sender_name = !empty($All_LabelDetails['sender_name']) ? $All_LabelDetails['sender_name'] : 'Not Available';
 	$sender_building = !empty($All_LabelDetails['sender_building']) ? $All_LabelDetails['sender_building'] : 'Not Available';
 	$sender_street = !empty($All_LabelDetails['sender_street']) ? $All_LabelDetails['sender_street'] : 'Not Available';
@@ -97,7 +97,7 @@
 			</tr>
 			
 			<tr> 
-				<td><b> Is Signature Rquired  </b></td>
+				<td><b> Signature Rquired  </b></td>
 				<td align="center"> : </td>
 				<td><?php echo $is_signature_required; ?></td>
 			</tr>
@@ -117,7 +117,7 @@
 				<td><?php echo $service_name; ?></td>
 			</tr>
 			<tr> 
-				<td><b> Is Manifested  </b></td>
+				<td><b> Manifested  </b></td>
 				<td align="center"> : </td>
 				<td><?php echo $is_manifested; ?></td>
 			</tr>
@@ -208,31 +208,33 @@
 		
 </table>
 </div>
+<?php 
+/*echo '<pre>Package';print_r($All_LabelDetails['packages']).'<br>';
+echo '<pre>commodities';print_r($All_LabelDetails['commodities']).'<br>';exit;*/
+?>
 <div style="margin-bottom: 15px;">
 <table class="table table-striped table-bordered" id="pkg_details" width="100%" cellspacing="0">
 		<tr>
 		<h4 class="modal-title">Packages Details</h4>
 		</tr>
 		<tr>
-			<th>Description</th>
-			<th>HarmonizedCode</th>
-			<th>Units</th>
-			<th>UnitValue</th>
-			<th>UnitKg</th>
-			<th>Currency</th>
-			<th>Country</th>
+			<th>Height</th>
+			<th>Length</th>
+			<th>Width</th>
+			<th>Kg</th>
+			<th>Name</th>
+			<th>Type</th>
 		</tr>
-		<?php if(!empty($packages_details)) { 
+		<?php if(!empty($packages_details)) {  
 			foreach($packages_details as $pkg_val){ 
 		?>
 		<tr>
-			<td><?php echo $pkg_val->Description;?></td>
-			<td><?php echo $pkg_val->HarmonizedCode;?></td>
-			<td><?php echo $pkg_val->Units;?></td>
-			<td><?php echo $pkg_val->UnitValue;?></td>
-			<td><?php echo $pkg_val->UnitKg;?></td>
-			<td><?php echo $pkg_val->Currency;?></td>
-			<td><?php echo $pkg_val->Country;?></td>
+			<td><?php if(isset($pkg_val->Height))echo $pkg_val->Height;?></td>
+			<td><?php if(isset($pkg_val->Length))echo $pkg_val->Length;?></td>
+			<td><?php if(isset($pkg_val->Width))echo $pkg_val->Width;?></td>
+			<td><?php if(isset($pkg_val->Kg))echo $pkg_val->Kg;?></td>
+			<td><?php if(isset($pkg_val->Name))echo $pkg_val->Name;?></td>
+			<td><?php if(isset($pkg_val->Type))echo $pkg_val->Type;?></td>
 		</tr>
 		<?php } } else {?>
 		<tr> <td colspan="7" align="center"> Data Not Available </td></tr>
@@ -245,25 +247,29 @@
 		<h4 class="modal-title">Commodities Details</h4>
 		</tr>
 		<tr>
-			<th>Height</th>
-			<th>Length</th>
-			<th>Width</th>
-			<th>Kg</th>
-			<th>Name</th>
-			<th>Type</th>
+			<th>Description</th>
+			<th>HarmonizedCode</th>
+			<th>Units</th>
+			<th>UnitValue</th>
+			<th>UnitKg</th>
+			<th>Currency</th>
+			<th>Country</th>
 		</tr>
-		<?php if(!empty($commodities_details)) { 
-			foreach($commodities_details as $comm_val){ 
+		<?php if(!empty($commodities_details)) {  
+			foreach($commodities_details as $comm_val){  
 		?>
 		<tr>
-			<td><?php echo $comm_val->Height;?></td>
-			<td><?php echo $comm_val->Length;?></td>
-			<td><?php echo $comm_val->Width;?></td>
-			<td><?php echo $comm_val->Kg;?></td>
-			<td><?php echo $comm_val->Name;?></td>
-			<td><?php echo $comm_val->Type;?></td>
+			<td><?php if(isset($comm_val->Description))echo $comm_val->Description;?></td>
+			<td><?php if(isset($comm_val->HarmonizedCode))echo $comm_val->HarmonizedCode;?></td>
+			<td><?php if(isset($comm_val->Units))echo $comm_val->Units;?></td>
+			<td><?php if(isset($comm_val->UnitValue))echo $comm_val->UnitValue;?></td>
+			<td><?php if(isset($comm_val->UnitKg))echo $comm_val->UnitKg;?></td>
+			<td><?php if(isset($comm_val->Currency))echo $comm_val->Currency;?></td>
+			<td><?php if(isset($comm_val->Country))echo $comm_val->Country;?></td>
+			
+			
 		</tr>
-		<?php } } else {?>
+		<?php } } else { ?>
 		<tr> <td colspan="6" align="center"> Data Not Available </td></tr>
 		<?php } ?>
 </table>

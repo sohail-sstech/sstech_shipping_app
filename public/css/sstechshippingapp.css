@@ -27,6 +27,34 @@
 	text-align:center!important;
 }
 
+#processqueue_filter_data .setting_height{
+	margin-top:40px;
+}
+@media only screen and (min-device-width: 1px) and (max-device-width: 800px)
+{
+	#processqueue_filter_data .setting_height{
+		margin-top:62px!important;
+	}
+}
+@media only screen and (device-width: 768px) {
+       #processqueue_filter_data .setting_height{
+		margin-top:62px!important;
+	}
+}
+/*@media only screen and (min-width: 960px) {
+      #processqueue_filter_data .setting_height{
+		margin-top:62px!important;
+	}
+}*/
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape) {
+       #processqueue_filter_data .setting_height{
+		margin-top:62px!important;
+	}
+}
+
+
+
+
 
 
 

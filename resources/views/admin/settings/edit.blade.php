@@ -12,6 +12,11 @@
 											{{ session()->get('message') }}
 										</div>
 									@endif
+									@if(session()->has('message_failed'))
+										<div class="alert alert-danger">
+											{{ session()->get('message_failed') }}
+										</div>
+									@endif
 									@foreach ($errors->all() as $error)
 										<div class="alert alert-danger">
 											{{ $error }}
@@ -22,13 +27,13 @@
 										 <div class="col-md-12">
 												<div class="card-header">
 													 <div class="row">
-													<div class="col-md-10">
-														<p><strong>Settings Edit </strong>Form</p>
+													<div class="col-md-8">
+														<p><strong>Settings  </strong>Edit</p>
 													</div>
-													<div class="col-md-2">
+													<div class="col-md-4">
 														<p style="float:right;">
 															<a href="{{asset('/admin/settings')}}" class="au-btn au-btn-icon au-btn--green au-btn--small">
-																<i class="zmdi zmdi-plus"></i> View
+																<i class="zmdi zmdi-plus"></i> View Setting
 															</a>	
 														</p>
 													</div>
@@ -71,7 +76,7 @@
 													</div>
 													<div class="row form-group">
 													<div class="col col-md-3">
-														<label class=" form-control-label">From Address</label>
+														<label class=" form-control-label">From Address Enabled</label>
 													</div>
 													<div class="col col-md-9">
 														<div class="form-check-inline form-check" id="radioButtonsdiv">
@@ -147,7 +152,7 @@
 														<div class="form-group row">
 															<label for="phone" class="col-sm-3 col-form-label">Phone <span class="required">*</span></label>
 															<div class="col-sm-9">
-																<input type="number" id="phone" name="phone"  class="form-control" value="{{ $settingseditdata['phone'] }}">
+																<input type="text" id="phone" name="phone"  class="form-control" value="{{ $settingseditdata['phone'] }}">
 															</div>
 														</div>
 												</div>

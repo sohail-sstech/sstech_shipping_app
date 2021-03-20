@@ -1,6 +1,21 @@
 @extends('layouts.master')
 @section('content')
-
+<?php
+$label_count="";
+$manifest_count="";
+$shop = !empty(Auth::user()->toArray()) ? Auth::user()->toArray() : null;
+if(!empty($shop))
+{
+	if($shop['role_id']==3)
+	{
+		$label_count = DB::select('SELECT COUNT(ldt.id) as total_label from label_details as ldt where ldt.consignment_no!="" ');
+		$label_count = !empty($label_count) ? $label_count[0]->total_label : null;
+		$manifest_count = DB::select('SELECT COUNT(mnf.id) as total_manifest from manifest_details as mnf');
+		$manifest_count = !empty($manifest_count) ? $manifest_count[0]->total_manifest : null;
+	}
+}
+//print_r($label_count[0]->total_label);exit;
+?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 /*Check that carrier service is created or not*/
@@ -69,16 +84,17 @@ function slideupslidedown_failed(){
 </script>
 <div class="container-fluid">
                 
-                <div class="row">
+            <div class="row">
                     <div class="col-md-12">
                         <div class="overview-wrap">
                             <h2 class="title-1">overview</h2>
                             <!--<button class="au-btn au-btn-icon au-btn--blue"><i class="zmdi zmdi-plus"></i>add item</button>-->
                         </div>
                     </div>
-                </div>
-               <div id="carriermsg_success" class="alert alert-success" role="alert" style="display:none;"></div>
-               <div id="carriermsg_fail" class="alert alert-danger carrierserviceslide" role="alert" style="display:none;"></div>
+            </div>
+			<div class="row m-t-25">
+            <div id="carriermsg_success" class="alert alert-success" role="alert" style="display:none;"></div>
+            <div id="carriermsg_fail" class="alert alert-danger carrierserviceslide" role="alert" style="display:none;"></div>
 			   
                 <div id="carrierserivce_div"  style="display:none;" class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                     Please create carrier service to work with carrier.
@@ -88,10 +104,11 @@ function slideupslidedown_failed(){
                     <span aria-hidden="true">×</span>
                     </button>-->
                 </div>
+            </div>
                 
-                <!--
+              
                 <div class="row m-t-25">
-                    <div class="col-sm-6 col-lg-3">
+                    <div class="col-sm-6 col-lg-6">
                         <div class="overview-item overview-item--c1">
                             <div class="overview__inner">
                                 <div class="overview-box clearfix">
@@ -99,16 +116,40 @@ function slideupslidedown_failed(){
                                         <i class="zmdi zmdi-account-o"></i>
                                     </div>
                                     <div class="text">
-                                        <h2>10368</h2>
-                                        <span>members online</span>
+                                        <h2>{{$label_count}}</h2>
+                                        <span>Total Label</span>
+                                    </div>
+                                </div>
+								<div class="overview-chart">
+                                  
+                                </div>
+                            </div>
+                        </div>
+                   </div> 
+				   <div class="col-sm-6 col-lg-6">
+                        <div class="overview-item overview-item--c2">
+                            <div class="overview__inner">
+                                <div class="overview-box clearfix">
+                                    <div class="icon">
+                                        <i class="zmdi zmdi-shopping-cart"></i>
+                                    </div>
+                                    <div class="text">
+                                         <h2>{{$manifest_count}}</h2>
+                                        <span>Total Manifest</span>
                                     </div>
                                 </div>
                                 <div class="overview-chart">
-                                    <canvas id="widgetChart1"></canvas>
+                                  
                                 </div>
                             </div>
                         </div>
                     </div>
+				</div>  
+				
+				
+				
+				   <!--
+                      <!--
                     <div class="col-sm-6 col-lg-3">
                         <div class="overview-item overview-item--c2">
                             <div class="overview__inner">

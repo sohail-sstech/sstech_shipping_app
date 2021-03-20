@@ -68,6 +68,7 @@ class SettingsController extends Controller
 		$fromaddress = $request->input('fromaddress');
 		if($fromaddress==1)
 		{
+			$company_name = $request->input('company_name');
 			$Name = $request->input('Name');
 			$contactperson = $request->input('contactperson');
 			$fromaddress1 = $request->input('fromaddress1');
@@ -79,7 +80,7 @@ class SettingsController extends Controller
 			$phone = $request->input('phone');
 		}
 		else{
-			$Name='';$contactperson='';$fromaddress1='';$fromaddress2='';$countryname='';$province='';$city='';$zipcode='';$phone='';$fromaddress='0';
+			$company_name='';$Name='';$contactperson='';$fromaddress1='';$fromaddress2='';$countryname='';$province='';$city='';$zipcode='';$phone='';$fromaddress='0';
 		}
 		
 		$shop_domain = '';
@@ -98,6 +99,7 @@ class SettingsController extends Controller
 					   'custom_access_token'=>$accesstoken,
 					   'label_receiver_email'=> $recevieremail,
 					   'is_from_address'=> $fromaddress,
+					   'company_name'=> $company_name,
 					   'name'=> $Name,
 					   'contact_person'=> $contactperson,
 					   'address1'=> $fromaddress1,
@@ -123,6 +125,7 @@ class SettingsController extends Controller
 		$fromaddress = $request->input('fromaddress');
 		if($fromaddress==1)
 		{
+			$company_name = $request->input('company_name');
 			$Name = $request->input('Name');
 			$contactperson = $request->input('contactperson');
 			$fromaddress1 = $request->input('fromaddress1');
@@ -133,7 +136,7 @@ class SettingsController extends Controller
 			$zipcode = $request->input('zipcode');
 			$phone = $request->input('phone');
 		}else{
-			$Name='';$contactperson='';$fromaddress1='';$fromaddress2='';$countryname='';$province='';$city='';$zipcode='';$phone='';$fromaddress='0';
+			$company_name='';$Name='';$contactperson='';$fromaddress1='';$fromaddress2='';$countryname='';$province='';$city='';$zipcode='';$phone='';$fromaddress='0';
 		}
 		
 		$setting_id = $request->input('setting_id');
@@ -143,6 +146,7 @@ class SettingsController extends Controller
 					   'custom_access_token'=>$accesstoken,
 					   'label_receiver_email'=> $recevieremail,
 					   'is_from_address'=> $fromaddress,
+					   'company_name'=> $company_name,
 					   'name'=> $Name,
 					   'contact_person'=> $contactperson,
 					   'address1'=> $fromaddress1,

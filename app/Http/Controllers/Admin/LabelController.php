@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Label;
-
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Support\Facades\DB;
@@ -14,17 +14,14 @@ class LabelController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+		$this->middleware('user-role');
     }
 	public function index()
     {
-		 
+		$storedetails='';
 		$end_date = date("d-m-Y");
 		$start_date = date("d-m-Y",strtotime("-1 month"));
-		DB::enableQueryLog();
-		//$storedetails = Label::select('label_details.*','us.name as storename')->join('users as us', 'label_details.user_id', '=','us.id')->orderBy('id', 'desc')->get()->toArray();
-		$storedetails = Label::select('label_details.*','us.name as storename')->join('users as us', 'label_details.user_id', '=','us.id')->orderBy('id', 'desc')->get()->toArray();
-		$queries = DB::getQueryLog();
-		//print_r($queries);exit;
+		$storedetails = User::select('users.name as storename')->where('role_id',3)->orderBy('id', 'desc')->get()->toArray();
         return view('admin/label/view',array('store_details' => $storedetails,'start_date' => $start_date,'end_date' => $end_date));
     }
 	public function preload_labellist(Request $request)
@@ -33,6 +30,23 @@ class LabelController extends Controller
 		$startdate = !empty(date("Y-m-d",strtotime($_POST['startdate']))) ? date("Y-m-d",strtotime($_POST['startdate'])) : '';
 		$enddate = !empty(date("Y-m-d",strtotime($_POST['enddate']))) ? date("Y-m-d",strtotime($_POST['enddate'])) : '';
 		$ismanifestd = !empty($_POST['is_manifest']) ? $_POST['is_manifest'] : null;
+		
+		$order_by_field = 'label_details.id';
+		$order_by_field_value = 'desc';
+		$order_by_field_arr = [
+								'0' => 'label_details.shopify_order_id',
+								'1' => 'label_details.shopify_order_no',
+								'2' => 'label_details.consignment_no',
+								'3' => 'label_details.carrier_name',
+								'4' => 'storename',
+								'5' => 'label_details.is_manifested',
+								'6' => 'label_details.id',
+							];
+		if(isset($_POST['order'][0]['column']) && isset($_POST['order'][0]['dir'])) {
+			$order_by_field = !empty($order_by_field_arr[$_POST['order'][0]['column']])?$order_by_field_arr[$_POST['order'][0]['column']]:$order_by_field;
+			$order_by_field_value = !empty($_POST['order'][0]['dir'])?$_POST['order'][0]['dir']:$order_by_field_value;
+		}
+		
 		$query_result = Label::select('label_details.*','us.name as storename')->join('users as us', 'label_details.user_id', '=','us.id');
 		if(!empty($_POST['search_data'])) 
 		{
@@ -49,11 +63,10 @@ class LabelController extends Controller
 			$query_result = $query_result->where('us.name','=',$_POST['store']);
 		}
 		$query_result = $query_result->whereBetween('label_details.created_at', ["$startdate 00:00:00","$enddate 23:59:59"]);
-		$query_result = $query_result->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
+		$total_count = $query_result->count();
+		$query_result = $query_result->take($_POST['length'])->skip(intval($_POST['start']))->orderBy($order_by_field, $order_by_field_value)->get()->toArray();
 		if($query_result)
 		{
-			/*Query for to get total record count*/
-			$total_count = count($query_result);
 			$output = array(
 					"sEcho" => intval($_POST['draw']),
 					"iTotalRecords" => $total_count,
@@ -99,8 +112,9 @@ class LabelController extends Controller
 		if(isset($id))
 		{
 			$label_details = Label::select('label_details.*','us.name as storename')->join('users as us', 'label_details.user_id', '=','us.id')->where('label_details.id',$id)->get()->toArray();
-			
+
 			if(!empty($label_details)){
+				
 				 $order_html = (string)view('admin.label.modal_view',array('All_LabelDetails' => $label_details));
 			}
 			else{

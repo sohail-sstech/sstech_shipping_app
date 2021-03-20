@@ -21,13 +21,13 @@
 										 <div class="col-md-12">
 												<div class="card-header">
 													 <div class="row">
-													<div class="col-md-10">
-														<p><strong>Role Edit </strong>Form</p>
+													<div class="col-md-8">
+														<p><strong>Role  </strong>Edit</p>
 													</div>
-													<div class="col-md-2">
+													<div class="col-md-4">
 														<p style="float:right;">
 															<a href="{{asset('/admin/role')}}" class="au-btn au-btn-icon au-btn--green au-btn--small">
-																<i class="zmdi zmdi-plus"></i> View
+																<i class="zmdi zmdi-plus"></i> View Roles
 															</a>	
 														</p>
 													</div>
@@ -43,18 +43,18 @@
 											<div class="row form-group">
 												<div class="col-md-6">	
 													<div class="form-group row">
-														<label for="role_name" class="col-sm-3 col-form-label">Role Name <span class="required">*</span></label>
+														<label for="role_name" class="col-sm-3 col-form-label">Name <span class="required">*</span></label>
 														<div class="col-sm-9">
-														  <input type="text" class="form-control" id="role_name" autocomplete="new-role_name" name="role_name" value="@if(isset($roleeditdata['name'])){{$roleeditdata['name']}}@endif">
+														  <input type="text" class="form-control" id="role_name" autocomplete="new-role_name" placeholder="Please enter role name" name="role_name" value="@if(isset($roleeditdata['name'])){{$roleeditdata['name']}}@endif">
 														</div>
 													</div>
 													
 												</div>
 												<div class="col-md-6">	
 													<div class="form-group row">
-														<label for="role_description" class="col-sm-3 col-form-label">Role Description <span class="required">*</span></label>
+														<label for="role_description" class="col-sm-3 col-form-label">Description <span class="required">*</span></label>
 														<div class="col-sm-9">
-															<textarea class="form-control" id="role_description" autocomplete="new-role_description" name="role_description">@if(isset($roleeditdata['description'])){{$roleeditdata['description']}}@endif</textarea>
+															<textarea class="form-control" id="role_description" placeholder="Please enter role description" autocomplete="new-role_description" name="role_description">@if(isset($roleeditdata['description'])){{$roleeditdata['description']}}@endif</textarea>
 														</div>
 													</div>
 												</div>

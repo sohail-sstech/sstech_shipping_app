@@ -1,15 +1,43 @@
+<?php
+/*$shop_name ='';
+$shop_domain ='';
+$shop_email ='';
+$logout ='';
+$shop_inner ='';
+$shop_request ='';
+$shop = Auth::user()->toArray();
+if(!empty($shop)){
+	if($shop['role_id']==3)
+	{
+		$shop_inner = Auth::user();
+		
+		$shop_request = $shop_inner->api()->rest('GET', '/admin/shop.json');
+		$shop_domain = !empty($shop_request->body->shop) ? $shop_request->body->shop:'';
+		$shop_name = !empty($shop_domain->name) ? $shop_domain->name : null;
+		$shop_email = !empty($shop_domain->email) ? $shop_domain->email : null;
+		//echo '<pre>';print_r($shop_domain);exit;
+
+		$shopify_domain = !empty($shop_request->body->shop->domain)?$shop_request->body->shop->domain:'';
+		//$logout = 'https://'.$shopify_domain.'/account/logout';
+	}
+} */
+?>
 <header class="header-desktop">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
-                        <!--<div class="header-wrap">
+						
+                        <div class="header-wrap">
+						
                             <form class="form-header" action="" method="POST">
-                                <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for datas &amp; reports..." />
-                                <button class="au-btn--submit" type="submit">
-                                    <i class="zmdi zmdi-search"></i>
-                                </button>
+                                <!--<input class="au-input au-input--xl" type="text" name="search" placeholder="Search for datas &amp; reports..." />-->
+                                 <button type="button" id="sidebarCollapse" class="navbar-btn">
+							<span></span>
+							<span></span>
+							<span></span>
+							</button>
                             </form>
                             <div class="header-button">
-                                <div class="noti-wrap">
+                                <!--<div class="noti-wrap">
                                     <div class="noti__item js-item-menu">
                                         <i class="zmdi zmdi-comment-more"></i>
                                         <span class="quantity">1</span>
@@ -120,14 +148,16 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="account-wrap">
+                                </div>-->
+								
+								<!-- for Header HTML -->
+                                <!--<div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
                                             <img src="images/icon/avatar-01.jpg" alt="John Doe" />
                                         </div>
                                         <div class="content">
-                                            <a class="js-acc-btn" href="#">john doe</a>
+                                            <a class="js-acc-btn" href="#"></a>
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">
@@ -138,34 +168,25 @@
                                                 </div>
                                                 <div class="content">
                                                     <h5 class="name">
-                                                        <a href="#">john doe</a>
+                                                        <a href="#">john</a>
                                                     </h5>
-                                                    <span class="email">johndoe@example.com</span>
+                                                    <span class="email">john@gmail.com</span>
                                                 </div>
                                             </div>
-                                            <div class="account-dropdown__body">
-                                                <div class="account-dropdown__item">
-                                                    <a href="#">
-                                                        <i class="zmdi zmdi-account"></i>Account</a>
-                                                </div>
-                                                <div class="account-dropdown__item">
-                                                    <a href="#">
-                                                        <i class="zmdi zmdi-settings"></i>Setting</a>
-                                                </div>
-                                                <div class="account-dropdown__item">
-                                                    <a href="#">
-                                                        <i class="zmdi zmdi-money-box"></i>Billing</a>
-                                                </div>
-                                            </div>
+											
+                                        
                                             <div class="account-dropdown__footer">
                                                 <a href="#">
                                                     <i class="zmdi zmdi-power"></i>Logout</a>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
+								
+								
+								
                             </div>
-                        </div> -->
+                        </div> 
                     </div>
                 </div>
             </header>

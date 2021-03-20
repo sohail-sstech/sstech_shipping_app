@@ -24,7 +24,7 @@
                 <!--<div class="user-data m-b-30">-->
 				
                     <h3 class="card-header bg-dark">
-                        <strong class="card-title text-light">Manifest Details</strong>
+                        <strong class="card-title text-light">Manifests</strong>
 					</h3>
 					<form method="post" name="manifestfilterform" id="manifestfilterform">
 					 <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
@@ -68,12 +68,13 @@
 						</div>
 					</form>
 					
-                    <div class="top-campaign table-responsive table--no-card m-b-30">
+                    <div class="top-campaign table-responsive table--no-card m-b-30" >
                         <!--<table id="mainmanifest_details" class="table table-bordered table-hover table table-borderless table-striped table-earning" width="100%" cellspacing="0">-->
+						
                         <table id="mainmanifest_details" class="table table-bordered table-hover" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
-                                    <th width="7%" style="vertical-align: text-top;">
+                                    <th width="10%" style="vertical-align: text-top;">
 									   <!--<input class="au-checkbox" type="checkbox" name="select_chkbox" id="select_chkbox"  /><span class="au-checkmark">  All</span>-->
                                         <label class="au-checkbox">
                                             <input type="checkbox" name="select_chkbox" id="select_chkbox"/>
@@ -100,24 +101,7 @@
                 <!--</div>-->
                 <!-- END Manifest DATA-->
             </div>
-            <div class="col-lg-12">
-                <!-- TOP recent manifest-->
-                <div class="top-campaign">
-                    <h3 class="card-header bg-dark"><strong class="card-title text-light">Recent Manifest Details</strong></h3>
-                    <div class="top-campaign table-responsive table--no-card m-b-30">
-                        <table id="recentmanifest_details" class="table table-bordered table-hover" width="100%" cellspacing="0">
-						 <thead>
-                                <tr>
-                                    <th style="text-align:center;">MANIFEST NUMBER</th>
-                                    <th style="text-align:center;">GENERATED DATE</th>
-                                </tr>
-                            </thead>
-                           
-                        </table>
-                    </div>
-                </div>
-                <!--  END TOP recent manifest-->
-            </div>
+           
     </div>
 </div>
 
@@ -126,17 +110,24 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <style>
-#manifest_processing {
+<!--#manifest_processing {
    background: url("{{secure_asset('images/ring-alt.gif')}}") 	no-repeat scroll 0 0; !important;
    height: 100%;
    margin: 0 auto;
    z-index: 1000;
+}-->
+#mainmanifest_details_processing {
+   background: url("{{secure_asset('images/ring-alt.gif')}}") 	no-repeat scroll 0 0; !important;
+   height: 100%;
+   z-index: 1000;
+   border:none;
 }
-#recentmanifest_details tr td {text-align:center;}
+
 </style>
 <script>
 
 function reload_table(table){
+	$("#mainmanifest_details_processing").text('');
 	$('#'+table).DataTable().ajax.reload();
 }
 
@@ -144,9 +135,13 @@ $(function(){
 	
 	
 $('#mainmanifest_details').DataTable({
+		columnDefs: [
+    { orderable: false, targets: 0 }
+  ],
 		serverSide:true,
 		processing: true,
 		"bFilter": false,
+		
 	"ajax": {
 		"url": "{{secure_asset('/get_manifestdata')}}",
 		type: "POST",
@@ -158,7 +153,9 @@ $('#mainmanifest_details').DataTable({
 			d.enddate = $('#enddate').val();
 		}
 	}
+
 });
+$("#mainmanifest_details_processing").text('');
 $.fn.dataTable.ext.errMode = 'none';
 	/*manifest main grid load data table*/
 	/*$('#mainmanifest_details').dataTable({	
@@ -178,13 +175,6 @@ $.fn.dataTable.ext.errMode = 'none';
 		
 	});*/
 
-$(document).ready(function(){
-	//load_manifest_table();
-});
-
-$('#manifestfilterform #cr_search').click(function() { 
-	//load_manifest_table();
-});	
 /*function load_manifest_table() {	
 	
 	$('#mainmanifest_details11').dataTable({
@@ -223,26 +213,6 @@ $('#manifestfilterform #cr_search').click(function() {
             
         });
 }*/
-	
-	
-	/*manifest recent grid load data table*/
-	$('#recentmanifest_details').dataTable({	
-		"processing": true,
-		"serverSide": false,
-		//"dom": 'lBfrtip',
-		 "order": [
-					[ 0, 'desc' ], 
-					[ 1, 'desc' ]
-				  ],
-		"ajax": "{{secure_asset('/recentmanifest')}}",
-		"columns": 
-		[
-			{ "data": "manifestlink"},
-			{ "data": "created_at"}
-		]
-	});
-	//$.fn.dataTable.ext.errMode = 'none';
-			
 		
 	/*Date Picker*/	
 	if ($('#startdate').val()) {
@@ -316,73 +286,78 @@ function Manifest_consignment() {
         //connote[index] = $(this).attr("data-ConsignmentNo"); Before Consignment Number was inserted now return Id will be inserted. 19-Jan-2018
         connote[count] = $(this).attr("data-consignmentno");
         Token = $(this).attr("data-accesstoken");
-        UserId = $(this).attr("data-userid");
+        //UserId = $(this).attr("data-userid");
         count++;
     });
-    $.ajax({
-        type: "POST",
-        data: {
-        	connote_list: connote,
-            token:Token,
-            userid:UserId,
-        },
-        //url: baseurl + "reprint_manifest/manifest_consignment",
-        url: '{{ secure_asset("/sendmanifest") }}',
-		beforeSend: function(msg) {
-            $("#manifest_processing").show();
-        },
-        success: function(data) {
-        	var data_json=JSON.parse(data);
-        	//console.log(data_json);
-        	if (typeof data_json.ManifestedConnotes !== 'undefined') {
-		        	var msg='<div class="alert alert-success" role="alert"><strong>Manifest [ ';
-		        	//alert(msg);
-		        	len=Object.keys(data_json.ManifestedConnotes).length;
-		        	i=1;
-		        	//alert(len);
-		        	$.each(data_json.ManifestedConnotes, function( key, value ) {
-		        		 //alert( key + ": " + value );
-		        		if(i<len){msg = msg+' '+key+ ',';}
-		        		else{msg = msg+' '+key;}
-		        		//while($i<=$len){$msg=$msg+' '+key+ ',';}
-		        		i++;
-		        		});
-		        	msg+= ' ] generated and sent.</strong></div>';
-		        	//alert(msg);
-	        	 	$("#msgmanifest").html(msg);
-	            	$("#msgmanifest").show();
-	                if ($.fn.DataTable.isDataTable('#mainmanifest_details')) {
-	            	        $('#mainmanifest_details').DataTable().ajax.reload(function() {});
-	            	    }
-	                if ($.fn.DataTable.isDataTable('#recentmanifest_details')) {
-            	        $('#recentmanifest_details').DataTable().ajax.reload(function() {});
-            	    }
-        	}
-        	if (typeof data_json.UnManifestedConnotes !== 'undefined' && data_json.UnManifestedConnotes!='') {
-        		var msg1='<div class="alert alert-danger" role="alert"><strong>';
-	        	$.each(data_json.UnManifestedConnotes, function( key, value ) {
-	        		 	msg1 = msg1+' '+value+' ';
-	        		});
-	        	msg1+= '</strong></div>';
-	        	//alert(msg);
-        	 	$("#msgmanifest_er").html(msg1);
-            	$("#msgmanifest_er").show();
-            	if ($.fn.DataTable.isDataTable('#mainmanifest_details')) {
-        	        $('#mainmanifest_details').DataTable().ajax.reload(function() {});
-        	    }
-            	if ($.fn.DataTable.isDataTable('#recentmanifest_details')) {
-        	        $('#recentmanifest_details').DataTable().ajax.reload(function() {});
-        	    }
-        	}
-        	if ((typeof data_json.ManifestedConnotes == 'undefined') && ((typeof data_json.UnManifestedConnotes == 'undefined') || (data_json.UnManifestedConnotes=='')))
-        	{
-        		$("#msgmanifest_er").html('<div class="alert alert-danger" role="alert"><strong>No Record Found</strong></div>');
-            	$("#msgmanifest_er").show();
-        	}
-			$("#manifest_processing").hide();
-			slideupslidedown_event();
-        }
-    });
+	if(Token!='' && connote!=''){
+		$.ajax({
+			type: "POST",
+			data: {
+				connote_list: connote,
+				token:Token,
+				//userid:UserId,
+			},
+			//url: baseurl + "reprint_manifest/manifest_consignment",
+			url: '{{ secure_asset("/sendmanifest") }}',
+			beforeSend: function(msg) {
+				$("#mainmanifest_details_processing").text('');
+				$("#mainmanifest_details_processing").show();
+			},
+			success: function(data) {
+				var data_json=JSON.parse(data);
+				//console.log(data_json);
+				$("#msgmanifest").html('');
+				if (typeof data_json.ManifestedConnotes !== 'undefined') {
+						var msg='<div class="alert alert-success" role="alert"><strong>Manifest [ ';
+						//alert(msg);
+						len=Object.keys(data_json.ManifestedConnotes).length;
+						i=1;
+						//alert(len);
+						$.each(data_json.ManifestedConnotes, function( key, value ) {
+							 //alert( key + ": " + value );
+							if(i<len){msg = msg+' '+key+ ',';}
+							else{msg = msg+' '+key;}
+							//while($i<=$len){$msg=$msg+' '+key+ ',';}
+							i++;
+							});
+						msg+= ' ] generated and sent.</strong></div>';
+						//alert(msg);
+						$("#msgmanifest").html(msg);
+						$("#msgmanifest").show();
+						if ($.fn.DataTable.isDataTable('#mainmanifest_details')) {
+								$('#mainmanifest_details').DataTable().ajax.reload(function() {});
+							}
+						if ($.fn.DataTable.isDataTable('#recentmanifest_details')) {
+							$('#recentmanifest_details').DataTable().ajax.reload(function() {});
+						}
+				}
+				if (typeof data_json.UnManifestedConnotes !== 'undefined' && data_json.UnManifestedConnotes!='') {
+					var msg1='<div class="alert alert-danger" role="alert"><strong>';
+					$.each(data_json.UnManifestedConnotes, function( key, value ) {
+							msg1 = msg1+' '+value+' ';
+						});
+					msg1+= '</strong></div>';
+					//alert(msg);
+					$("#msgmanifest_er").html(msg1);
+					$("#msgmanifest_er").show();
+					if ($.fn.DataTable.isDataTable('#mainmanifest_details')) {
+						$('#mainmanifest_details').DataTable().ajax.reload(function() {});
+					}
+					if ($.fn.DataTable.isDataTable('#recentmanifest_details')) {
+						$('#recentmanifest_details').DataTable().ajax.reload(function() {});
+					}
+				}
+				if ((typeof data_json.ManifestedConnotes == 'undefined') && ((typeof data_json.UnManifestedConnotes == 'undefined') || (data_json.UnManifestedConnotes=='')))
+				{
+					$("#msgmanifest_er").html('<div class="alert alert-danger" role="alert"><strong>No Record Found</strong></div>');
+					$("#msgmanifest_er").show();
+				}
+				$("#mainmanifest_details_processing").hide();
+				slideupslidedown_event();
+			}
+		});
+	
+	}
 }
 
 /* function for getting checked connote details to delete consignment API request */
@@ -395,34 +370,53 @@ function Delete_consignment() {
         //connote[index] = $(this).attr("data-ConsignmentNo"); Before Consignment Number was inserted now return Id will be inserted. 19-Jan-2018
         connote[count] = $(this).attr("data-consignmentno");
         Token = $(this).attr("data-accesstoken");
+		//UserId = $(this).attr("data-userid");
         count++;
     	});
-    $.ajax({
-        type: "POST",
-        data: {
-        	connote_list: connote,
-            token:Token,
-        },
-        //url: baseurl + "reprint_manifest/delete_consignment",
-        url: '{{ secure_asset("/deleteconsignment") }}',
-        success: function(data) {
-        	var data_json=JSON.parse(data);
-        	//console.log(data_json);
-        	var msg='<div class="alert alert-success" role="alert"><strong>';
-        	$.each(data_json, function( key, value ) {
-					//alert( key + ": " + value );
-					msg = msg + ' ' + key +': '+ value+'<br>';
-        		});
-        	msg+='</strong></div>';
-        	//alert(msg);
-    	 	$("#msgmanifest").html(msg);
-        	$("#msgmanifest").show();
-        	if ($.fn.DataTable.isDataTable('#mainmanifest_details')) {
-     	        $('#mainmanifest_details').DataTable().ajax.reload(function() {});
-     	    }
-			slideupslidedown_event();
-        }
-    });
+	if(Token!='' && connote!=''){	
+		$.ajax({
+			type: "POST",
+			data: {
+				connote_list: connote,
+				token:Token,
+				//userid:UserId,
+			},
+			beforeSend: function(msg) {
+				$("#mainmanifest_details_processing").text('');
+				$("#mainmanifest_details_processing").show();
+			},
+			//url: baseurl + "reprint_manifest/delete_consignment",
+			url: '{{ secure_asset("/deleteconsignment") }}',
+			success: function(data) {
+				var data_json=JSON.parse(data);
+				
+				var msg='<div class="alert alert-success" role="alert"><strong>';
+				$.each(data_json, function( key, value ) {
+						//alert( key + ": " + value );
+						
+						  if(data_json.response!='Deleted' || data_json.response=='undefined'){
+							$("#msgmanifest_er").html('');
+							msg1 =  '<div class="alert alert-danger" role="alert"><strong>'+data_json.response+'</strong></div>'; 
+						  }
+						  else{
+							msg = msg + ' ' + key +': '+ value+'<br>';
+						  }
+					});
+				msg+='</strong></div>';
+				
+				$("#msgmanifest").html(msg);
+				$("#msgmanifest").html(msg1);
+				$("#msgmanifest").show();
+				
+				if ($.fn.DataTable.isDataTable('#mainmanifest_details')) {
+					$('#mainmanifest_details').DataTable().ajax.reload(function() {});
+				}
+				slideupslidedown_event();
+				$("#mainmanifest_details_processing").hide();
+			}
+		});
+	}
+	
 }
 
 /*trigger function slide up and slide down*/

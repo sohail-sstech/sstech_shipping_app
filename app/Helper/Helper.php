@@ -64,23 +64,15 @@ function call_curl($url='', $header=array(), $attachment='', $cust_data=array())
 }
 
 /*for get token dynamic*/
-/*function get_dynamic_token()
+function get_dynamic_token($shop_domain=null)
 {
-	$curr_logged_user = Auth::user();
-	$userid = !empty($curr_logged_user->toArray()) ? $curr_logged_user->toArray()['id'] : null;
-	//echo '<pre>';print_r($userid);exit;
-	/*$shop_request = $shop->api()->rest('GET', '/admin/shop.json');
-	$shop_domain = $shop_request->body->shop->domain;*/
-	
-	//$userid = DB::table('users')->where('name', $shop_domain)->select('id')->pluck('id')->first();
-/*	if(!empty($userid)){
-		$AccessKey = DB::table('settings')->where('user_id', $userid)->select('custom_access_token')->pluck('custom_access_token')->first();
-		if(empty($AccessKey)){
-			$AccessKey = Config::get('constants.default_access_token');	
+	$access_key = Config::get('constants.default_access_token');
+	if(!empty($shop_domain)){ //echo 'else if';
+		$access_key = DB::table('users')->leftJoin('settings', 'users.id', '=', 'settings.user_id')->where('users.name', $shop_domain)->select('settings.custom_access_token')->pluck('settings.custom_access_token')->first();
+		if(empty($access_key)) {
+			$access_key = Config::get('constants.default_access_token');
 		}
 	}
-	else{
-		$AccessKey = Config::get('constants.default_access_token');
-	}
-	return $AccessKey;
-}*/
+	//print_r($access_key);exit;
+	return $access_key;
+}

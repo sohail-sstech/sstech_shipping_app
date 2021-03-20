@@ -1,8 +1,8 @@
 <head>
 <!--<base href="{{URL::asset('/')}}" target="_top">-->
   
-  
-  <link rel="icon" type="image/jpg" href="{{asset('images/sstechshippingapp_logo.png')}}"/>
+  <title> SSTECHSHIPPING APP</title>  
+ <link rel="shortcut icon" href="{{ secure_asset('images/mobile_logo.png') }}">
   <!--<link rel="icon" href="{{ asset('images/sstechshippingapp_logo.png') }}" type="image/jpg" />-->
   <base href="{{asset('/')}}" target="_top">
   <!-- Fontfaces CSS-->

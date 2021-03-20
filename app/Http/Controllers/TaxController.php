@@ -16,8 +16,7 @@ class TaxController extends Controller
      * @return Response
      */
     public function index(Request $request) {
-        echo 'TaxController@index';
-        exit();
+		return view('theme.tax_view');
     }
    
 }

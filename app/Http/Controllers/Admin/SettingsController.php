@@ -16,32 +16,43 @@ class SettingsController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+		$this->middleware('user-role');
     }
 	public function index()
     {
+		$storedetails='';
 		$end_date = date("d-m-Y");
 		$start_date = date("d-m-Y",strtotime("-1 month"));
-		$storedetails = Settings::select('settings.*','us.name as storename')->join('users as us', 'settings.user_id', '=','us.id')->orderBy('id', 'desc')->get()->toArray();
+		$storedetails = User::select('users.name as storename')->where('role_id',3)->orderBy('id', 'desc')->get()->toArray();
         return view('admin/settings/view',array('store_details' => $storedetails,'start_date' => $start_date,'end_date' => $end_date));
     }	
 	public function preload_settingslist(Request $request)
 	{
-		//$store = !empty($_POST['store']) ? $_POST['store'] : '';
+		
 		$startdate = !empty(date("Y-m-d",strtotime($_POST['startdate']))) ? date("Y-m-d",strtotime($_POST['startdate'])) : '';
 		$enddate = !empty(date("Y-m-d",strtotime($_POST['enddate']))) ? date("Y-m-d",strtotime($_POST['enddate'])) : '';
+
+		//Start: Order by logic
+		$order_by_field = 'settings.id';
+		$order_by_field_value = 'desc';
+		$order_by_field_arr = [
+								'0' => 'storename',
+								'1' => 'settings.label_receiver_email',
+								'2' => 'settings.is_from_address',
+								'3' => 'settings.status',
+								'4' => 'settings.id',
+							];
+		if(isset($_POST['order'][0]['column']) && isset($_POST['order'][0]['dir'])) {
+			$order_by_field = !empty($order_by_field_arr[$_POST['order'][0]['column']])?$order_by_field_arr[$_POST['order'][0]['column']]:$order_by_field;
+			$order_by_field_value = !empty($_POST['order'][0]['dir'])?$_POST['order'][0]['dir']:$order_by_field_value;
+		}
 		
-		/*$settings_list_arr = Settings::select('Settings.*','us.name as storename')->join('users as us', 'Settings.user_id', '=','us.id')
-			->where(function($query)
-			{
-				$query->where('custom_access_token','like',"%".$_POST['search_data']."%")->orWhere('label_receiver_email', 'like', "%".$_POST['search_data']."%")->orWhere('label_receiver_email', 'like', "%".$_POST['search_data']."%")->orWhere('us.name','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.name','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.address1','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.country','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.province','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.city','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.zip','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.phone','like', '%' .$_POST['search_data']. '%');
-			})->where('us.name','like', '%' .$store. '%')->where('is_from_address','like','%'.$_POST['isfromaddress'].'%')->where('Settings.is_deleted',0)->whereBetween('Settings.created_at', ["$startdate 00:00:00","$enddate 23:59:59"])->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();		
-		*/
-		$query_result = Settings::select('Settings.*','us.name as storename')->join('users as us', 'Settings.user_id', '=','us.id');
+		$query_result = Settings::select('settings.*','us.name as storename')->join('users as us', 'settings.user_id', '=','us.id');
 		if(!empty($_POST['search_data'])) 
 		{
 			$query_result->where(function($query)
 			{
-				$query->where('custom_access_token','like',"%".$_POST['search_data']."%")->orWhere('label_receiver_email', 'like', "%".$_POST['search_data']."%")->orWhere('label_receiver_email', 'like', "%".$_POST['search_data']."%")->orWhere('us.name','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.name','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.address1','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.country','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.province','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.city','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.zip','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.phone','like', '%' .$_POST['search_data']. '%');
+				$query->where('custom_access_token','like',"%".$_POST['search_data']."%")->orWhere('label_receiver_email', 'like', "%".$_POST['search_data']."%")->orWhere('label_receiver_email', 'like', "%".$_POST['search_data']."%")->orWhere('us.name','like', '%' .$_POST['search_data']. '%')->orWhere('settings.name','like', '%' .$_POST['search_data']. '%')->orWhere('settings.address1','like', '%' .$_POST['search_data']. '%')->orWhere('settings.country','like', '%' .$_POST['search_data']. '%')->orWhere('settings.province','like', '%' .$_POST['search_data']. '%')->orWhere('settings.city','like', '%' .$_POST['search_data']. '%')->orWhere('settings.zip','like', '%' .$_POST['search_data']. '%')->orWhere('settings.phone','like', '%' .$_POST['search_data']. '%');
 			});
 		}
 		if(!empty($_POST['store'])) {
@@ -50,21 +61,13 @@ class SettingsController extends Controller
 		if($_POST['isfromaddress']!='') {
 			$query_result = $query_result->where('is_from_address','like','%'.$_POST['isfromaddress'].'%');
 		}
-		$query_result = $query_result->where('Settings.is_deleted',0);
-		$query_result = $query_result->whereBetween('Settings.created_at', ["$startdate 00:00:00","$enddate 23:59:59"]);
-		$query_result = $query_result->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();
+		$query_result = $query_result->where('settings.is_deleted',0);
+		$query_result = $query_result->whereBetween('settings.created_at', ["$startdate 00:00:00","$enddate 23:59:59"]);
+		$total_count = $query_result->count();
+		$query_result = $query_result->take($_POST['length'])->skip(intval($_POST['start']))->orderBy($order_by_field, $order_by_field_value)->get()->toArray();
 		
-		//$queries = DB::getQueryLog();
 		if($query_result)
 		{
-			/*Query for to get total record count*/
-			/*$record_total = Settings::select('Settings.*','us.name as storename')->join('users as us', 'Settings.user_id', '=','us.id')
-			->where(function($query)
-			{
-				$query->where('custom_access_token','like',"%".$_POST['search_data']."%")->orWhere('label_receiver_email', 'like', "%".$_POST['search_data']."%")->orWhere('label_receiver_email', 'like', "%".$_POST['search_data']."%")->orWhere('us.name','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.name','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.address1','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.country','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.province','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.city','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.zip','like', '%' .$_POST['search_data']. '%')->orWhere('Settings.phone','like', '%' .$_POST['search_data']. '%');
-			})->where('us.name','like', '%' .$store. '%')->where('is_from_address','like','%'.$_POST['isfromaddress'].'%')->where('Settings.is_deleted',0)->whereBetween('Settings.created_at', ["$startdate 00:00:00","$enddate 23:59:59"])->take($_POST['length'])->skip(intval($_POST['start']))->orderBy('id', 'desc')->get()->toArray();		
-			*/
-			$total_count = count($query_result);
 			$output = array(
 					"sEcho" => intval($_POST['draw']),
 					"iTotalRecords" => $total_count,
@@ -131,7 +134,7 @@ class SettingsController extends Controller
 	{
 		$Authentication_data = Auth::User()->toArray();
 		//echo '<pre>';print_r($Authentication_data['id']);exit;
-		Settings::create(
+		$settings_data =  Settings::create(
 			array(
 				'user_id' => $request->input('store_name'),
 				'custom_access_token' => $request->input('accesstoken'),
@@ -148,11 +151,12 @@ class SettingsController extends Controller
 				'phone' => $request->input('phone'),
 				'created_by' => $Authentication_data['id']
 			));
-			return redirect('/admin/settings')->with('message', 'Data inserted successfully.');	
-		
-		/*else{
-			return redirect()->back()->with('message_failed', 'This User already exist.Please try again.');
-		}*/
+		if($settings_data)	{
+			return redirect('/admin/settings')->with('message', 'You have successfully added settings.');	
+		}
+		else{
+			return redirect()->back()->with('message_failed', 'Something went wrong while adding settings.');
+		}
 	}
 	
 	/*Settings Form Edit Data function*/
@@ -168,27 +172,32 @@ class SettingsController extends Controller
 	{
 		$Authentication_data = Auth::User()->toArray();
 		$settingsedit_id = $request->input('settingsedit_id');
-			if(isset($settingsedit_id))
-			{ 
-				$update_user_array = array(
-				    'user_id' => $request->input('store_name'),
-					'custom_access_token' => $request->input('accesstoken'),
-					'label_receiver_email' => $request->input('recevieremail'),
-					'is_from_address' => $request->input('fromaddress'),
-					'name' => $request->input('Name'),
-					'contact_person' => $request->input('contactperson'),
-					'address1' => $request->input('fromaddress1'),
-					'address2' => $request->input('fromaddress2'),
-					'city' => $request->input('city'),
-					'province' => $request->input('province'),
-					'country' => $request->input('countryname'),
-					'zip' => $request->input('zipcode'),
-					'phone' => $request->input('phone'),
-					'created_by' => $Authentication_data['id']
-				); 
-				Settings::where('id',$settingsedit_id)->update($update_user_array); 
-			}
-		return redirect('/admin/settings')->with('message', 'Settings Data Updated.');	
+		if(!empty($settingsedit_id))
+		{ 
+			$update_user_array = array(
+			    'user_id' => $request->input('store_name'),
+				'custom_access_token' => $request->input('accesstoken'),
+				'label_receiver_email' => $request->input('recevieremail'),
+				'is_from_address' => $request->input('fromaddress'),
+				'name' => $request->input('Name'),
+				'contact_person' => $request->input('contactperson'),
+				'address1' => $request->input('fromaddress1'),
+				'address2' => $request->input('fromaddress2'),
+				'city' => $request->input('city'),
+				'province' => $request->input('province'),
+				'country' => $request->input('countryname'),
+				'zip' => $request->input('zipcode'),
+				'phone' => $request->input('phone'),
+				'created_by' => $Authentication_data['id']
+			); 
+			Settings::where('id',$settingsedit_id)->update($update_user_array); 
+			return redirect('/admin/settings')->with('message', 'You have successfully updated settings.');
+		}
+		else{
+			//return redirect('/admin/settings')->with('message_failed', 'Something went wrong while adding settings.');
+			return redirect()->back()->with('message_failed', 'Something went wrong while adding settings.');
+		}
+		
 	}
 	
 	public function delete_data(Request $request,$id)
@@ -216,8 +225,8 @@ class SettingsController extends Controller
 	{
 		if(isset($id))
 		{
-			$settings_details = Settings::select('Settings.*','us.name as storename')->join('users as us', 'Settings.user_id', '=','us.id')
-			->where('Settings.id',$id)->get()->toArray();
+			$settings_details = Settings::select('settings.*','us.name as storename')->join('users as us', 'settings.user_id', '=','us.id')
+			->where('settings.id',$id)->get()->toArray();
 			
 			if(!empty($settings_details)){
 				 $order_html = (string)view('admin.settings.modal_view',array('All_SettingsDetails' => $settings_details));

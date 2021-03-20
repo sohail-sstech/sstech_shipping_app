@@ -1,10 +1,14 @@
- <?php 
-							/*$shop = Auth::user();
-							$shop_request = $shop->api()->rest('GET', '/admin/shop.json');
-							$shop_domain = $shop_request->body->shop->domain;
-							$shopify_shopurl =  'https://'.$shop_domain.'/admin';
-							*/
-							$shopify_shopurl ='';
+ <?php 		$shopify_shopurl ='';
+			$shop_inner ='';
+			$shop = Auth::user()->toArray();
+			if(!empty($shop)){
+				if($shop['role_id']==3){
+				$shop_inner = !empty(Auth::user())? Auth::user(): '';
+				$shop_request = !empty($shop_inner->api()->rest('GET', '/admin/shop.json')) ? $shop_inner->api()->rest('GET', '/admin/shop.json'):'';
+				$shop_domain = !empty($shop_request->body->shop->domain)?$shop_request->body->shop->domain:'';
+				$shopify_shopurl =  'https://'.$shop_domain.'/admin';
+				}
+			}
 							
 						?>
  <!-- MENU SIDEBAR-->
@@ -36,55 +40,72 @@
                             </ul>
                         </li>-->
 						<li>
-                            <a href="{{secure_asset('/')}}"><i class="fas fa-chart-bar"></i>Dashboard</a>
+                            <a href="{{secure_asset('/')}}"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
                         </li>
                         <li>
-                            <a href="{{secure_asset('/orderlabel')}}"><i class="fas fa-chart-bar"></i>Order Labels</a>
+                            <a href="{{secure_asset('/orderlabel')}}"><i class="fab fa-first-order"></i>Order Labels</a>
                         </li>
 						
                         <li>
-                            <a href="{{$shopify_shopurl}}" target="_blank"><i class="fas fa-table"></i>Store Admin</a>
+                            <a href="{{$shopify_shopurl}}" target="_blank"><i class="fas fa-shopping-cart"></i>Store Admin</a>
                         </li>
                         <li>
-                            <a href="#"><i class="far fa-check-square"></i>Tax</a>
+                            <a href="{{secure_asset('/tax')}}"><i class="fas fa-calculator"></i></i>Tax</a>
                         </li>
-                        <li>
-                            <a href="{{secure_asset('/manifest')}}"><i class="fas fa-calendar-alt"></i>Manifest</a>
-                        </li>
-                        <li>
-                            <a href="{{secure_asset('/settingview')}}"><i class="fas fa-map-marker-alt"></i>Settings</a>
-                        </li>
-                        <li class="has-sub">
-                            <a class="js-arrow" href="#"><i class="fas fa-copy"></i>Carrier Service</a>
+						
+						 <li class="has-sub">
+                            <a class="js-arrow" href="#"><i class="fas fa-check-square"></i>Manifest</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list">
                                 <li>
-                                    <a href="{{secure_asset('/create')}}">Create Carrier Service</a>
+                                    <a href="{{secure_asset('/manifest')}}"><i class="fas fa-rocket"></i>Send Manifest</a>
                                 </li>
                                 <li>
-                                    <a href="{{secure_asset('/carrierdelete_view')}}">Delete Carrier Service</a>
+                                    <a href="{{secure_asset('/recent_manifest')}}"><i class="fas fa-history"></i>Recent Manifest</a>
+                                </li>
+                            </ul>
+                        </li>
+						
+                        <!--<li>
+                            <a href="{{secure_asset('/manifest')}}"><i class="fas fa-calendar-alt"></i>Manifest</a>
+                        </li>-->
+						
+                        <li>
+                            <a href="{{secure_asset('/settingview')}}"><i class="fas fa-cog"></i>Settings</a>
+                        </li>
+						
+                        <li class="has-sub">
+                            <a class="js-arrow" href="#"><i class="fa fa-wrench"></i>Carrier Service</a>
+                            <ul class="list-unstyled navbar__sub-list js-sub-list">
+                                <li>
+                                    <a href="{{secure_asset('/create')}}"><i class="fa fa-plus"></i>Create Carrier Service</a>
                                 </li>
                                 <li>
-                                    <a href="{{secure_asset('/carrierservicelist')}}">List Carrier Service</a>
+                                    <a href="{{secure_asset('/carrierdelete_view')}}"><i class="fa fa-remove"></i>Delete Carrier Service</a>
+                                </li>
+                                <li>
+                                    <a href="{{secure_asset('/carrierservicelist')}}"><i class="fa fa-list"></i>List Carrier Service</a>
                                 </li>
                             </ul>
                         </li>
 						 <li class="has-sub">
-                            <a class="js-arrow" href="#"><i class="fas fa-copy"></i>Webhook</a>
+                            <a class="js-arrow" href="#"><i class="fas fa-globe"></i>Webhook</a>
 							<ul class="list-unstyled navbar__sub-list js-sub-list">
 								<li>
-									<a href="{{secure_asset('/createwebhook')}}">Create Webhook</a>
+									<a href="{{secure_asset('/createwebhook')}}"><i class="fa fa-plus"></i>Create Webhook</a>
 								</li>
 								<li>
-									<a href="{{secure_asset('/webhookdelete')}}">Delete Webhook</a>
+									<a href="{{secure_asset('/webhookdelete')}}"><i class="fa fa-remove"></i>Delete Webhook</a>
 								</li>
 								<li>
-									<a href="{{secure_asset('/webhooklist')}}">List Webhook</a>
+									<a href="{{secure_asset('/webhooklist')}}"><i class="fa fa-list"></i>List Webhook</a>
 								</li>
 							</ul>
                         </li>
 						<li>
                             <a href="{{secure_asset('shopdetails')}}"><i class="fas fa-map-marker-alt"></i>Shop Data</a>
-                        </li>
+                        </li> 
+						
+						
                         <!--<li class="has-sub">
                             <a class="js-arrow" href="#">
                                 <i class="fas fa-desktop"></i>UI Elements</a>

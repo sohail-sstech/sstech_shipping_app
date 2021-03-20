@@ -123,7 +123,7 @@ $('#settings_form').validate({
 /*dynamic function for delete data*/
 function delete_data(deleteid,url,table)
 {
-	if(confirm("Are You sure want to delete !"))
+	if(confirm("Are you sure want to delete ?"))
 		{
           $.ajax({
               type: "get",
@@ -132,7 +132,7 @@ function delete_data(deleteid,url,table)
               success: function (data) {
 				  if(data.success==1)
 				  {
-						$("#custommsg").html('<div class="alert alert-success" id="success">Selected Data Deleted Succesfully.</div>');
+						$("#custommsg").html('<div class="alert alert-success" id="success">You have successfully deleted data.</div>');
 						  //$(window).scrollTop(0); 
 						  $("html, body").animate({ scrollTop: 0 }, 1000);
 						  setTimeout(function(){ 
@@ -145,7 +145,7 @@ function delete_data(deleteid,url,table)
 							
 				  }
 				  else{
-					  $("#custommsg").html('<div class="alert alert-success" id="success">Error Occured in Delete Data.</div>');
+					  $("#custommsg").html('<div class="alert alert-success" id="success">Something went wrong while deleted data.</div>');
 					  $("html, body").animate({ scrollTop: 0 }, 1000);
 					   setTimeout(function(){ 
 								$(".alert-danger").fadeTo(5000, 500).slideUp(500, function()
@@ -189,9 +189,9 @@ $('#usergrid_dt').DataTable({
 		processing: true,
 		"paging":true,
 		"bFilter": false,
-		"columnDefs": [
+		/*"columnDefs": [
           {className: "dt-body-center", "targets": [5]}
-        ],
+        ],*/
 		"ajax": {
 			"url": "/admin/user/get_userlist",
 			type: "POST",
@@ -224,6 +224,8 @@ $('#storegrid_dt').DataTable({
 $('#apiloggrid_dt').DataTable({
 		serverSide:true,
 		processing: true,
+		"bFilter": false,
+		"responsive": true,
 		'columnDefs': [ {
 			'targets': [0,1], /* column index */
 			'orderable': true, /* true or false */
@@ -292,6 +294,9 @@ $('#manifestgrid_dt').DataTable({
 
 /*process queue details js goes here*/
 $('#processqueuegrid_dt').DataTable({
+		"columnDefs": [
+          {className: "dt-body-center", "targets": [3]}
+        ],
 		serverSide:true,
 		processing: true,
 		"paging":true,

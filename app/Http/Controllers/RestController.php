@@ -29,22 +29,33 @@ class RestController extends Controller
 	{
 		$apache_request_headers = apache_request_headers();
 		$shop_domain = (isset($apache_request_headers['X-Shopify-Shop-Domain'])) ? $apache_request_headers['X-Shopify-Shop-Domain'] : NULL;
-		/*if(isset($_GET['store_domain'])) {
-			$shop_domain = $_GET['store_domain'];
-		}*/
 		$user_id = DB::table('users')->where('name', $shop_domain)->select('id')->pluck('id')->first();
 		$shopify_header = json_encode(getallheaders());
 		$shopify_request = file_get_contents('php://input');
 		$request_data = json_decode($shopify_request,true);
-		//echo '<pre>';print_r($request_data);exit;
 		
+		if(!empty($user_id))
+		{
+			$settingdata = DB::table('settings')->where('user_id',$user_id)->get()->first();
+			if(isset($settingdata) && $settingdata->is_from_address==1)
+			{
+						//$settingdata = !empty($settingdata[0])? $settingdata[0] : null;
+						$country_data = !empty($settingdata->country) ? explode('-',$settingdata->country) : null;
+						$country_code = !empty($country_data[1]) ? $country_data[1] : null;
+			}
+		}
+		
+		$dyanmic_accesskey='';
 		$resp = null;
 		if(!empty($request_data)) {
-			$access_key = Config::get('constants.default_access_token'); //'00BF47B1559899C7F6ED19CF40914841A9D0B8BC7C95C59C25';
+			
+			//echo $shop_domain; exit();
+			$AccessKey = get_dynamic_token($shop_domain);
+			
 			$content_type = 'application/json';
 			$url = Config::get('constants.omni_rate_url'); //'https://api.omniparcel.com/labels/availablerateswithvalidation';
 			$header = array(	
-				'Access_Key: '.$access_key,
+				'Access_Key: '.$AccessKey,
 				'Content-Type: '.$content_type,
 				'charset: utf-8'
 			);
@@ -71,24 +82,45 @@ class RestController extends Controller
 			);
 			*/
 			$shopify_request_data = [];
-			$shopify_request_data['DeliveryReference'] = rand(100000, 999999);
+			//$shopify_request_data['DeliveryReference'] = rand(100000, 999999);
+			$shopify_request_data['DeliveryReference'] = "";
 			$shopify_request_data['Reference2'] = "";
-			$shopify_request_data['Reference3'] = "";
-			//origin data
+			$shopify_request_data['Reference3'] = $shop_domain;
+			
 			$origin = [];
-			$origin['Name'] = !empty($request_data['rate']['origin']['company_name'])?$request_data['rate']['origin']['company_name']:NULL;
-			$origin['ContactPerson'] = !empty($request_data['rate']['origin']['name'])?$request_data['rate']['origin']['name']:NULL;
-			$origin['PhoneNumber'] = !empty($request_data['rate']['origin']['phone'])?$request_data['rate']['origin']['phone']:NULL;
-			$origin['Email'] = !empty($request_data['rate']['origin']['email'])?$request_data['rate']['origin']['email']:NULL;
-			$origin_address = [];
-			$origin_address['BuildingName'] = !empty($request_data['rate']['origin']['address2'])?$request_data['rate']['origin']['address2']:NULL;
-			$origin_address['StreetAddress'] = !empty($request_data['rate']['origin']['address1'])?$request_data['rate']['origin']['address1']:NULL;
-			$origin_address['Suburb'] = !empty($request_data['rate']['origin']['city'])?$request_data['rate']['origin']['city']:NULL;
-			$origin_address['City'] = !empty($request_data['rate']['origin']['province'])?$request_data['rate']['origin']['province']:NULL;
-			$origin_address['PostCode'] = !empty($request_data['rate']['origin']['postal_code'])?$request_data['rate']['origin']['postal_code']:NULL;
-			$origin_address['CountryCode'] = !empty($request_data['rate']['origin']['country'])?$request_data['rate']['origin']['country']:NULL;
+			if(isset($settingdata) && $settingdata->is_from_address==1){
+				//setting origin data	
+				$origin['Name'] = !empty($settingdata->company_name)?$settingdata->company_name:NULL;
+				$origin['ContactPerson'] = !empty($settingdata->name)?$settingdata->name:NULL;
+				$origin['PhoneNumber'] = !empty($settingdata->phone)?$settingdata->phone:NULL;
+				$origin['Email'] = !empty($settingdata->label_receiver_email)?$settingdata->label_receiver_email:NULL;
+				$origin_address = [];
+				$origin_address['BuildingName'] = !empty($settingdata->address2)?$settingdata->address2:NULL;
+				$origin_address['StreetAddress'] = !empty($settingdata->address1)?$settingdata->address1:NULL;
+				$origin_address['Suburb'] = !empty($settingdata->city)?$settingdata->city:NULL;
+				$origin_address['City'] = !empty($settingdata->province)?$settingdata->province:NULL;
+				$origin_address['PostCode'] = !empty($settingdata->zip)?$settingdata->zip:NULL;
+				$origin_address['CountryCode'] = !empty($country_code)?$country_code:NULL;
+				
+			}
+			else{
+				//origin data
+				$origin['Name'] = !empty($request_data['rate']['origin']['company_name'])?$request_data['rate']['origin']['company_name']:NULL;
+				$origin['ContactPerson'] = !empty($request_data['rate']['origin']['name'])?$request_data['rate']['origin']['name']:NULL;
+				$origin['PhoneNumber'] = !empty($request_data['rate']['origin']['phone'])?$request_data['rate']['origin']['phone']:NULL;
+				$origin['Email'] = !empty($request_data['rate']['origin']['email'])?$request_data['rate']['origin']['email']:NULL;
+				$origin_address = [];
+				$origin_address['BuildingName'] = !empty($request_data['rate']['origin']['address2'])?$request_data['rate']['origin']['address2']:NULL;
+				$origin_address['StreetAddress'] = !empty($request_data['rate']['origin']['address1'])?$request_data['rate']['origin']['address1']:NULL;
+				$origin_address['Suburb'] = !empty($request_data['rate']['origin']['city'])?$request_data['rate']['origin']['city']:NULL;
+				$origin_address['City'] = !empty($request_data['rate']['origin']['province'])?$request_data['rate']['origin']['province']:NULL;
+				$origin_address['PostCode'] = !empty($request_data['rate']['origin']['postal_code'])?$request_data['rate']['origin']['postal_code']:NULL;
+				$origin_address['CountryCode'] = !empty($request_data['rate']['origin']['country'])?$request_data['rate']['origin']['country']:NULL;
+				
+			}
 			$origin['Address'] = $origin_address;
 			$shopify_request_data['Origin'] = $origin;
+			
 			//destination data
 			$destination = [];
 			$destination['Name'] = !empty($request_data['rate']['destination']['company_name'])?$request_data['rate']['destination']['company_name']:NULL;
@@ -177,7 +209,7 @@ class RestController extends Controller
 			$apilog_insert_array=array(
 				'user_id' => $user_id,
 				'api_url' => $url,
-				'request_type' => 'Available Rate',
+				'request_type' => '2',
 				'request_headers'=> json_encode($header),
 				'request' => $attachment,
 				'response' => $available_rate_response,
@@ -188,7 +220,7 @@ class RestController extends Controller
 	    	DB::table('api_logs')->insert($apilog_insert_array);
 		}
 		//JSON encode data
-		$available_rate_response_obj = json_decode($available_rate_response);
+		$available_rate_response_obj = !empty($available_rate_response)?json_decode($available_rate_response):'[]';
 		$shipping_rates_arr = array();
 		if(!empty($available_rate_response_obj->Available)) {
 			$i=0; $service_name_arr = [];
@@ -209,23 +241,24 @@ class RestController extends Controller
 					);
 				$i++;		
 			}
+			
+			$shipping_rates_response_str = json_encode($shipping_rates_arr);
+			$response_code = 'Success';
+			$origin_ip = $_SERVER['REMOTE_ADDR'];
+			$apilog_insert_array=array (
+				'user_id' => $user_id,
+				'api_url' => NULL,
+				'request_type'=>'1',
+				'request_headers'=> $shopify_header,
+				'request'=> $shopify_request,
+				'response' => $shipping_rates_response_str,
+				'response_code' => $response_code,
+				'origin_ip' => $origin_ip,
+				'created_by' => $user_id
+			);
+			DB::table('api_logs')->insert($apilog_insert_array);
+			//$response_arr = json_decode($item);
 		}
-		$shipping_rates_response_str = json_encode($shipping_rates_arr);
-		$response_code = 'Success';
-		$origin_ip = $_SERVER['REMOTE_ADDR'];
-		$apilog_insert_array=array (
-			'user_id' => $user_id,
-			'api_url' => NULL,
-			'request_type'=>'Shipping Rate',
-			'request_headers'=> $shopify_header,
-			'request'=> $shopify_request,
-			'response' => $shipping_rates_response_str,
-			'response_code' => $response_code,
-			'origin_ip' => $origin_ip,
-			'created_by' => $user_id
-		);
-	    DB::table('api_logs')->insert($apilog_insert_array);
-		//$response_arr = json_decode($item);
 		$response = \Response::json($shipping_rates_arr, 200);
 		//echo '<pre>';print_r($response);exit;
 		return $response;
@@ -274,7 +307,7 @@ class RestController extends Controller
 		$apilog_insert_array = array(
 			'user_id'=>'123',
 			'api_url'=>null,
-			'request_type'=>'Shipping Rate',
+			'request_type'=>'1',
 			'request_headers'=> $shopify_header,
 			'request'=> $shopify_request,
 			'response'=> json_encode(json_decode($item)),

@@ -37,13 +37,13 @@
 	$created_at = !empty($All_ManifestDetails['created_at']) ? $All_ManifestDetails['created_at'] : null;
 	
 	/*Labels details*/
-	$shopify_order_id = !empty($All_ManifestDetails['shopify_order_id']) ? $All_ManifestDetails['shopify_order_id'] : null;
-	$shopify_order_no = !empty($All_ManifestDetails['shopify_order_no']) ? $All_ManifestDetails['shopify_order_no'] : null;
-	$consignment_no = !empty($All_ManifestDetails['consignment_no']) ? $All_ManifestDetails['consignment_no'] : null;
-	$carrier_name = !empty($All_ManifestDetails['carrier_name']) ? $All_ManifestDetails['carrier_name'] : null;
-	$service_name = !empty($All_ManifestDetails['service_name']) ? $All_ManifestDetails['service_name'] : null;
+	//$shopify_order_id = !empty($All_ManifestDetails['shopify_order_id']) ? $All_ManifestDetails['shopify_order_id'] : null;
+	//$shopify_order_no = !empty($All_ManifestDetails['shopify_order_no']) ? $All_ManifestDetails['shopify_order_no'] : null;
+	//$consignment_no = !empty($All_ManifestDetails['consignment_no']) ? $All_ManifestDetails['consignment_no'] : null;
+	//$carrier_name = !empty($All_ManifestDetails['carrier_name']) ? $All_ManifestDetails['carrier_name'] : null;
+	//$service_name = !empty($All_ManifestDetails['service_name']) ? $All_ManifestDetails['service_name'] : null;
 	
-	if($All_ManifestDetails['is_manifested']==1)
+	/*if($All_ManifestDetails['is_manifested']==1)
 	{
 		$All_ManifestDetails['is_manifested'] = "<span class='status--process'>Yes</span>";
 	}
@@ -56,7 +56,7 @@
 	}
 	else{
 		$All_ManifestDetails['label_status'] = "<span class='status--denied'>Deactive</span>";
-	}
+	}*/
 	
 	
 ?>
@@ -112,41 +112,25 @@
 			<tr>
 				<h4 class="modal-title" style="padding-bottom:10px;">Label Details</h4>
 			</tr>
-			<tr> 
+			<tr>
 				<th> Shopify Order Id  </th>
-				<td align="center"> : </td>
-				<td><?php echo $shopify_order_id; ?></td>
-			</tr>
-			<tr> 
 				<th> Shopify Order No  </th>
-				<td align="center"> : </td>
-				<td><?php echo $shopify_order_no; ?></td>
+				<th> Consignment No  </th>
 			</tr>
-			<tr> 
-				<th> Consignment No </th>
-				<td align="center"> : </td>
-				<td><?php echo $consignment_no; ?></td>
-			</tr>
-			<tr> 
-				<th> Carrier Name  </th>
-				<td align="center"> : </td>
-				<td><?php echo $carrier_name; ?></td>
-			</tr>
-			<tr> 
-				<th> Service Name  </th>
-				<td align="center"> : </td>
-				<td><?php echo $service_name; ?></td>
-			</tr>
-			<tr> 
-				<th> Is Manifested </th>
-				<td align="center"> : </td>
-				<td><?php echo $All_ManifestDetails['is_manifested']; ?></td>
-			</tr>
-			<tr> 
-				<th> Label Status  </th>
-				<td align="center"> : </td>
-				<td><?php echo $All_ManifestDetails['label_status']; ?></td>
-			</tr>
+			<tbody>
+			
+			<?php
+			if(!empty($MultiLabelConsignment_Details)){
+			foreach($MultiLabelConsignment_Details as $val){ ?>
+			<tr>
+				<td><?php if(isset($val['shopify_order_id']))echo $val['shopify_order_id'];?> </td>
+				<td><?php if(isset($val['shopify_order_no']))echo $val['shopify_order_no'];?> </td>
+				<td><?php if(isset($val['consignment_no']))echo $val['consignment_no'];?> </td>
+			</tr>	
+			<?php } } else {?>
+			 <tr> <td colspan="3" align="center"> No data available in table</td> </tr>
+			<?php } ?>
+			</tbody>
 		</table>
 	</div>
 </div>

@@ -1,5 +1,6 @@
 @extends('layouts.master')
 @section('content')
+
 <div class="container-fluid">            
     <!--<div class="row">
         <div class="col-lg-12">
@@ -18,13 +19,13 @@
                 </div>
             </div>
         </div>-->
-            <div class="col-lg-12">
+            <div class="col-lg-12 top-campaign">
 				
                 <!-- MANIFEST DATA-->
-                <div class="user-data m-b-30">
+                <!--<div class="user-data m-b-30">-->
 				
                     <h3 class="card-header bg-dark">
-                        <strong class="card-title text-light">Order Label Details </strong>
+                        <strong class="card-title text-light">Order Labels </strong>
 					</h3>
 					<form method="post" name="manifestfilterform" id="manifestfilterform">
 					 <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
@@ -57,7 +58,7 @@
 											<input id="lbldtsearch" class="form-control pull-right" placeholder="OrderNumber/Consignment" name="lbldtsearch" value="" type="text">
                                         </div>
 										<div class="col-md-4">
-                                            <label for="ismanifest" class="control-label col-md-6" style="padding-left:0px;">Is Manifest</label>
+                                            <label for="ismanifest" class="control-label col-md-6" style="padding-left:0px;">Manifested</label>
 											<select name="ismanifest" id="ismanifest" class="form-control">
                                                         <option value="">Please select</option>
                                                         <option value="1">Yes</option>
@@ -81,12 +82,13 @@
                                     <th>Carrier</th>
                                     <th>Download Label</th>
 									<th>Tracking</th>
-									<th>Is Manifest</th>
+									<th>Manifested</th>
+									<th>Action</th>
                                 </tr>
                             </thead>
                         </table>
                     </div>
-                </div>
+                <!--</div>-->
             </div>
     </div>
 </div>
@@ -104,6 +106,10 @@ function reload_table(table){
 
 $(function(){
 $('#orderlabel_details').DataTable({
+		columnDefs: [
+		{ className: 'text-center', targets: [3,4] },
+	  ],
+	  
 		serverSide:true,
 		processing: true,
 		"bFilter": false,
@@ -236,3 +242,13 @@ function download(filename, content) {
 
 }
 </script>
+<style>
+#orderlabel_details.table.dataTable tbody tr td {
+    word-wrap: break-word;
+    word-break: break-all;
+	text-align:center!important;
+}
+#orderlabel_details.table thead th{
+	text-align:center!important;
+}
+</style>

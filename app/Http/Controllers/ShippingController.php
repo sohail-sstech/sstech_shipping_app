@@ -27,10 +27,17 @@ class ShippingController extends Controller
 		$where = '';
 		$searchkey_filter='';
 		$ismanifest_filter='';
+		$limit = '';
+		if(isset($_POST['start']) && $_POST['length'] != '-1') 
+		{
+			$limit = "LIMIT ".intval($_POST['start']).", ".intval($_POST['length']);
+		}
 		if(isset($_POST['search_key']) && !empty($_POST['search_key'])){
 			$searchkey_filter = 'AND lbldt.shopify_order_no like ("%'.$_POST['search_key'].'%") OR lbldt.consignment_no like ("%'.$_POST['search_key'].'%")';
 		}
-		if(isset($_POST['ismanifest']) && !empty($_POST['ismanifest'])){
+		
+		//if(isset($_POST['ismanifest']) && !empty($_POST['ismanifest'])){
+		if($_POST['ismanifest']!=''){
 			$ismanifest_filter = 'AND lbldt.is_manifested IN ("'.$_POST['ismanifest'].'") ';
 		}
 		if (isset($_POST['startdate']) && isset($_POST['enddate'])) {
@@ -43,13 +50,16 @@ class ShippingController extends Controller
 			
 			$where .= ' AND lbldt.created_at between "'.$startdate.'" and "'.$enddate.'"';
 		}
-		$orderlabel_query = DB::select('select SQL_CALC_FOUND_ROWS lbldt.* from label_details as lbldt where lbldt.status=1 '.$where.' '.$searchkey_filter.' '.$ismanifest_filter.' ');
+		//DB::enableQueryLog();
+		$orderlabel_query = DB::select('select SQL_CALC_FOUND_ROWS lbldt.* from label_details as lbldt where lbldt.status=1 '.$where.' '.$searchkey_filter.' '.$ismanifest_filter.' order by lbldt.id desc '.$limit.' ');
+		//$queries = DB::getQueryLog();
+		//print_r($queries);exit;
+
 		//echo '<pre>';print_r($where);exit;
 		
 		if($orderlabel_query)
 		{
 			$query2 = DB::select('SELECT FOUND_ROWS() as totalcount');
-			
 			$total_count = $query2[0]->totalcount;
 			$table_data = array('data_found'=>$orderlabel_query,'total_count'=>$total_count);
 			
@@ -60,33 +70,47 @@ class ShippingController extends Controller
 					"aaData" => array()
 				);
 			$table = $table_data['data_found'];
+			$raw = array();
 			//$AccessKey = '00BF47B1559899C7F6ED19CF40914841A9D0B8BC7C95C59C25';
 			for($a=0; $a<count($table); $a++)
 			{
-				
-				if($table[$a]->is_manifested=='1')
-				{
-					$ismanifest = 'Yes';
-				}
-				else
-				{
-					$ismanifest = 'No';
-				}
 				if(!empty($table[$a]->consignment_no))
 				{
-					//$tackingurl =  '<a href="http://track.omniparcel.com/'.$table[$a]->consignment_no.'" target="_blank">Tracking ConsignmentNo</a>'; 
-					$tackingurl =  '<a href="http://track.omniparcel.com/'.$table[$a]->consignment_no.'" target="_blank" style="cursor:pointer;"><img src="images/tracking_icon.png" alt="Track Consignment" style="height:auto;width:64%;"></a>'; 
-					//$pdf_label =  '<a href="javascript:void(0);" target="_blank" onclick=get_pdf_label('.$table[$a]->id.')>Download Label</a>';
-					$pdf_label =  '<span style="cursor:pointer;" onclick=get_pdf_label('.$table[$a]->id.')><img src="images/pdf_icon.png" alt="Download Label" style="height:auto;width:64%;"></span>';
-				}
-				else
-				{
-					$pdf_label = 'Not available';
-					$tackingurl = 'Not available';
-				}
+					if($table[$a]->is_manifested=='1')
+					{
+						$ismanifest = 'Yes';
+					}
+					else
+					{
+						$ismanifest = 'No';
+					}
+					if(!empty($table[$a]->consignment_no))
+					{
+						//$tackingurl =  '<a href="http://track.omniparcel.com/'.$table[$a]->consignment_no.'" target="_blank">Tracking ConsignmentNo</a>'; 
+						//$tackingurl =  '<a href="http://track.omniparcel.com/'.$table[$a]->consignment_no.'" target="_blank" style="cursor:pointer;"><img src="images/tracking_icon.png" alt="Track Consignment" style="height:auto;width:64%;"></a>'; 
+						$tackingurl =  '<a href="http://track.omniparcel.com/'.$table[$a]->consignment_no.'" target="_blank" style="cursor:pointer;"><i class="fa fa-truck fa-sm" style="color:#666;"></i></a>'; 
+						//$pdf_label =  '<a href="javascript:void(0);" target="_blank" onclick=get_pdf_label('.$table[$a]->id.')>Download Label</a>';
+						//$pdf_label =  '<span style="cursor:pointer;" onclick=get_pdf_label('.$table[$a]->id.')><img src="images/pdf_icon.png" alt="Download Label" style="height:auto;width:64%;"></span>';
+						$pdf_label =  '<span style="cursor:pointer;" onclick=get_pdf_label('.$table[$a]->id.')><i class="fas fa-download fa-sm"></i></span>';
+						
+					}
+					else
+					{
+						$pdf_label = 'Not available';
+						$tackingurl = 'Not available';
+					}
+				
+				$table[$a]->Action = '
+				<div class="table-data-feature1">
+					<a href="orderlabeldetails_view/'.$table[$a]->id.'" class="btn btn-secondary mb-1 item" data-toggle="tooltip" data-placement="top">
+					<i class="zmdi zmdi-eye"></i>
+				    </a>
+				</div>';		
 				//$checkbox = '<label class="au-checkbox" ><input type="checkbox" data-id="'.$table[$a]->id.'"  data-ConsignmentNo="'.$table[$a]->consignment_no.'" data-accesstoken="'.$AccessKey.'"><span class="au-checkmark"></span></label>';
 				//$raw = array(table[$a]->shopify_order_no,$table[$a]->consignment_no,$table[$a]->carrier_name,$pdf_label,$tackingurl,$ismanifest);
-				$raw = array($table[$a]->shopify_order_no,$table[$a]->consignment_no,$table[$a]->carrier_name,$pdf_label,$tackingurl,$ismanifest);
+				$raw = array($table[$a]->shopify_order_no,$table[$a]->consignment_no,$table[$a]->carrier_name,$pdf_label,$tackingurl,$ismanifest,$table[$a]->Action);
+				
+				}
 				$output['aaData'][] = $raw;
 			}
 		}
@@ -104,10 +128,14 @@ class ShippingController extends Controller
 	/*get pdf label*/
 	public function get_pdf_labeldetails() 
 	{
+		$shop = Auth::user();
+		$shop_request = $shop->api()->rest('GET', '/admin/shop.json');
+		$shop_domain = !empty($shop_request->body->shop->domain) ? $shop_request->body->shop->domain : null;
+		
 		$return = array();
 		$labelid=$_POST['labelid'];
-		
-		$AccessKey = Config::get('constants.default_access_token');
+		$dyanmic_accesskey='';
+		$AccessKey = get_dynamic_token($shop_domain);
 		//$get_return_data = $this->return_model->get_return_data_for_label($return_id);
 		$get_label_data = DB::select('select * from label_details where id='.$labelid.' ');
 		
@@ -137,6 +165,35 @@ class ShippingController extends Controller
 		echo json_encode($return);
 		exit();
 	}
+	
+	
+	/*row wise data get for front order label grid*/
+	public function get_label_details($id='')
+	{
+		if(isset($id))
+		{
+			$labeldetails_results = DB::select('select lbldt.*,us.name as storename from label_details as lbldt
+			left join users as us ON lbldt.user_id=us.id where lbldt.id='.$id.' ');
+			
+			//echo '<pre>';print_r($labeldetails_results);exit;
+			
+			//$label_details = Label::select('label_details.*','us.name as storename')->join('users as us', 'label_details.user_id', '=','us.id')->where('label_details.id',$id)->get()->toArray();
+
+			if(!empty($labeldetails_results)){
+				
+				//$orderlabel_html = (string)view('admin.label.modal_view',array('All_LabelDetails' => $label_details));
+				 $orderlabel_details = !empty($labeldetails_results[0]) ? $labeldetails_results[0] : null;
+			}
+			else{
+				 $orderlabel_details = 'Data Not Found';
+			}
+		}
+		return view('theme.orderlabeldetails_view',array('LabelDetails' => $orderlabel_details));
+		//$array = array('details'=>$order_html,'title'=>'Label Details'); 
+		//echo json_encode($array);
+		
+	}
+	
 	
 		/*call curl for manifest api*/
 	/*public function call_curl($url='', $header=array(), $attachment='', $cust_data=array()) {

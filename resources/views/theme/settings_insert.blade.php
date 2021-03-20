@@ -2,11 +2,14 @@
 @section('content')
 <div class="container-fluid">            
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-12 top-campaign">
             <div class="au-card">
-                <div class="card-header">
+                <!--<div class="card-header">
                     <strong>Setting Insert Form</strong> 
-                </div>
+                </div>-->
+				<h4 class="card-header bg-dark">
+                        <strong class="card-title text-light">Setting Insert </strong>
+				</h4>
 				<form action="{{secure_asset('/insertsettingsdata')}}" method="post">
 					 <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
 						<div class="card-body card-block">
@@ -39,6 +42,10 @@
 								
 								
 								<div class="customformaddressfields" style="display:none;">
+									<div class="form-group">
+										<label for="company_name" class="form-control-label">Company</label>
+										<input type="text" id="company_name" name="company_name" placeholder="Enter Company Name.." class="form-control">
+									</div>
 									<div class="form-group">
 										<label for="Name" class="form-control-label">Name</label>
 										<input type="text" id="Name" name="Name" placeholder="Enter Name.." class="form-control">
@@ -82,7 +89,7 @@
 									</div>
 									<div class="form-group">
 										<label for="phone" class=" form-control-label">Phone</label>
-										<input type="number" id="phone" name="phone" placeholder="Enter Phone.." class="form-control">
+										<input type="text" id="phone" name="phone" placeholder="Enter Phone.." class="form-control">
 									</div>
 								</div>
 								

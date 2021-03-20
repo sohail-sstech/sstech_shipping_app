@@ -22,6 +22,7 @@ class TestController extends Controller
     {
 		
        echo 'TestController@index';
+	   
         exit();
     }
 
@@ -30,6 +31,9 @@ class TestController extends Controller
      */
     public function test_constants(Request $request)
     {
+		
+		/*$app_url = config('app.url');
+		echo '<pre>';print_r($app_url);exit;*/
 		$temp = new Temp;
 		//$abc = $temp::select('select * from webhook_queues where status='.$status.' ORDER BY id ASC LIMIT 2');
 		$flights = $temp::where('status', 1)
