@@ -1,3 +1,9 @@
+$(function() {
+	if($('.apply_select2').length > 0) {
+		$('.apply_select2').select2();
+	}
+});
+
 /*Role master DataTable*/
 $(function(){
 /*Role Edit form jQuery Validation*/
@@ -29,6 +35,33 @@ $('#userinsert_form').validate({
 		user_confirmpwd: {
 			required: true,
 			equalTo : "#user_password",
+		},
+		user_country: {
+			required: true,
+		},
+		user_state: {
+			required: true,
+		},
+		user_city: {
+			required: true,
+		},
+		user_mobile: {
+			required: true,
+		},
+		user_company: {
+			required: true,
+		},
+		user_address1: {
+			required: true,
+		},
+		user_address2: {
+			required: true,
+		},
+		user_pincode: {
+			required: true,
+		},
+		user_phone: {
+			required: true,
 		}
     },
 	messages:{
@@ -45,6 +78,33 @@ $('#useredit_form').validate({
 			required: true,
 		},
 		user_role: {
+			required: true,
+		},
+		user_country: {
+			required: true,
+		},
+		user_state: {
+			required: true,
+		},
+		user_city: {
+			required: true,
+		},
+		user_mobile: {
+			required: true,
+		},
+		user_company: {
+			required: true,
+		},
+		user_address1: {
+			required: true,
+		},
+		user_address2: {
+			required: true,
+		},
+		user_pincode: {
+			required: true,
+		},
+		user_phone: {
 			required: true,
 		}
     }

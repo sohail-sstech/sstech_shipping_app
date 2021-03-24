@@ -28,6 +28,7 @@ Route::post('orders_create','WebhookController@orders_create');
 
 /*for test purpose*/
 Route::post('createlabel','CronController@create_labels');
+Route::get('createlabel','CronController@create_labels');
 
 Route::get('app_uninstalled','WebhookController@app_uninstalled');
 Route::post('app_uninstalled','WebhookController@app_uninstalled');

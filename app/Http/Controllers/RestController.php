@@ -93,7 +93,7 @@ class RestController extends Controller
 				$origin['Name'] = !empty($settingdata->company_name)?$settingdata->company_name:NULL;
 				$origin['ContactPerson'] = !empty($settingdata->name)?$settingdata->name:NULL;
 				$origin['PhoneNumber'] = !empty($settingdata->phone)?$settingdata->phone:NULL;
-				$origin['Email'] = !empty($settingdata->label_receiver_email)?$settingdata->label_receiver_email:NULL;
+				$origin['Email'] = !empty($settingdata->label_receiver_email)?$settingdata->label_receiver_email:$request_data['rate']['origin']['email'];
 				$origin_address = [];
 				$origin_address['BuildingName'] = !empty($settingdata->address2)?$settingdata->address2:NULL;
 				$origin_address['StreetAddress'] = !empty($settingdata->address1)?$settingdata->address1:NULL;

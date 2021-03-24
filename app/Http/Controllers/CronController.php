@@ -26,6 +26,7 @@ class CronController extends Controller
 	 */
 	public function create_labels(Request $request)
 	{
+		$show_response = [];
 		$limit = 2;
 		$labeldetails_results = DB::select('select * from process_queues where status=0 ORDER BY id ASC LIMIT '.$limit);
 		$dyanmic_accesskey ='';
@@ -219,10 +220,19 @@ class CronController extends Controller
 						$status = empty($available_rate_response_obj->Errors)? '1':'2';
 						$webhookid = !empty($label_obj->id) ? $label_obj->id : null;
 						DB::table('process_queues')->where('id',$webhookid)->update(['status' => $status]);
+						$show_response[] = "{$consignmentno} generated for order number {$webhook_data['name']}.";
+					} else {
+						$show_response[] = "Carrier method doesn't match with shipping method.";
 					}
+				} else {
+					$show_response[] = "Webhook data not properly formatted.";
 				}
 			}
+		} else {
+			$show_response[] = "No data found to process.";
 		}
+		echo json_encode($show_response);
+		exit;
 	}
 	
 		 
