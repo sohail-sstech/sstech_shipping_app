@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Temp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
 use DB;
 use Config;
 use Log;
@@ -20,11 +19,24 @@ class TestController extends Controller
      */
     public function index(Request $request)
     {
-		
-       echo 'TestController@index';
-	   
-        exit();
+       echo 'TestController@index';exit();
     }
+	public function get_shopify_offline_data()
+	{
+		$shopify_domain = 'smart-bicycles.myshopify.com';
+		$access_token = DB::table('users')->where('name', $shopify_domain)->select('password')->pluck('password')->first();
+		$api_version = \Config::get('shopify-app.api_version');
+		$url = "https://{$shopify_domain}/admin/api/{$api_version}/shop.json";
+		$header = array('X-Shopify-Access-Token:'.$access_token,'Content-Type: application/json','charset:utf-8');
+		$cust_data = array('method' => 'GET');
+		$api_response = call_curl($url, $header, '', $cust_data);
+		if($api_response['response_info']['http_code']==200){
+			return $api_response['response'];
+		}
+		else{
+			return $api_response['response'];
+		}
+	}
 
     /**
      * Test constants
