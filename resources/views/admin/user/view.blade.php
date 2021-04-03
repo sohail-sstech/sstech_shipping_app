@@ -1,4 +1,5 @@
 @extends('admin.layouts.master')
+@extends('admin.include.modal_popup')
 @section('content')
 <section class="p-t-20">
                 <div class="container">
@@ -51,7 +52,7 @@
                                 <table class="table table-data2" id="usergrid_dt" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th class="card-header" >Name</th>
+                                            <th class="card-header">Name</th>
                                             <th class="card-header">Email</th>
                                             <th class="card-header">Role</th>
                                             <th class="card-header">Status</th>

@@ -28,7 +28,6 @@ class SettingsController extends Controller
     }	
 	public function preload_settingslist(Request $request)
 	{
-		
 		$startdate = !empty(date("Y-m-d",strtotime($_POST['startdate']))) ? date("Y-m-d",strtotime($_POST['startdate'])) : '';
 		$enddate = !empty(date("Y-m-d",strtotime($_POST['enddate']))) ? date("Y-m-d",strtotime($_POST['enddate'])) : '';
 
@@ -105,7 +104,7 @@ class SettingsController extends Controller
 				   </button>
 				</div>';
 				
-				$raw = array($cntdata['storename'],$cntdata['label_receiver_email'],$cntdata['is_from_address'],$cntdata['status'],$cntdata['Action']);
+				$raw = array($cntdata['storename'],$cntdata['label_receiver_email'],$cntdata['is_from_address'],$cntdata['Action']);
 				
 				$output['aaData'][] = $raw;
 			}

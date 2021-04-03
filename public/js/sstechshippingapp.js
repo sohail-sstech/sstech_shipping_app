@@ -1,3 +1,4 @@
+/*For select2 dropdown js goes here*/
 $(function() {
 	if($('.apply_select2').length > 0) {
 		$('.apply_select2').select2();
@@ -45,22 +46,10 @@ $('#userinsert_form').validate({
 		user_city: {
 			required: true,
 		},
-		user_mobile: {
-			required: true,
-		},
-		user_company: {
-			required: true,
-		},
 		user_address1: {
 			required: true,
 		},
-		user_address2: {
-			required: true,
-		},
 		user_pincode: {
-			required: true,
-		},
-		user_phone: {
 			required: true,
 		}
     },
@@ -89,22 +78,11 @@ $('#useredit_form').validate({
 		user_city: {
 			required: true,
 		},
-		user_mobile: {
-			required: true,
-		},
-		user_company: {
-			required: true,
-		},
 		user_address1: {
 			required: true,
 		},
-		user_address2: {
-			required: true,
-		},
+		
 		user_pincode: {
-			required: true,
-		},
-		user_phone: {
 			required: true,
 		}
     }
@@ -140,12 +118,11 @@ $('#changepassword_form').validate({
     });
 
 /*Settings Form jQuery Validation*/
-$('#settings_form').validate({ 
+$('#settings_form').validate({
 		rules: {
             store_name: {
 				required: true,
 			},
-		
 			accesstoken: {
 				required: true,
 			},
@@ -172,11 +149,9 @@ $('#settings_form').validate({
 			},
 			zipcode: {
 				required: true,
-			},
-			phone: {
-				required: true,
 			}
-        }
+        },
+		
     });
 });
 
@@ -429,6 +404,7 @@ $(document).ready(function()
 	 if(editradiobutton_values==1){
 		 $('.customformaddressfields').css('display','block');
 		 $('.customformaddressfields').find("input[type=text],input[type=number],textarea,select").attr('required', 'required');
+		 $('#phone').removeAttr('required');
 	 }
 	else{
 		$('.customformaddressfields').find("input[type=text],input[type=number],textarea,select").removeAttr('required');
@@ -482,14 +458,34 @@ $(function(){
         var enddate = new Date();
     }
 
-    $('#startdate').daterangepicker({
+    /*$('#startdate').daterangepicker({
         singleDatePicker: true,
         locale: {
             format: 'DD-MM-YYYY'
         },
         startDate: startdate,
         maxDate: new Date()
+		
     }).on('apply.daterangepicker', function(ev, picker) {
+		
+    });*/
+	 
+	$('#startdate').daterangepicker({
+        singleDatePicker: true,
+        locale: {
+            format: 'DD-MM-YYYY'
+        },
+        startDate: startdate,
+		//maxDate: new Date()
+        //maxDate: $("#enddate").daterangepicker("option","minDate", selected)
+		/*onSelect: function(selected) {
+          minDate: $("#enddate").daterangepicker("option","minDate", selected)
+		  //minDate: $("#enddate").daterangepicker("option","minDate", selected)
+        }*/
+		onSelect: function(selected) {
+        maxDate: $("#enddate").daterangepicker("option","minDate", selected)
+		  //  maxDate: $("#startdate").daterangepicker("option","maxDate", selected)
+        }
     });
     $('#enddate').daterangepicker({
         singleDatePicker: true,
@@ -497,7 +493,11 @@ $(function(){
             format: 'DD-MM-YYYY'
         },
         startDate: enddate,
-        maxDate: new Date()
+        //maxDate: new Date()
+		onSelect: function(selected) {
+        maxDate: $("#startdate").daterangepicker("option","maxDate", selected)
+		  //  maxDate: $("#startdate").daterangepicker("option","maxDate", selected)
+        }
     });
 	
 	

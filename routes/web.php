@@ -188,6 +188,7 @@ Route::post('/admin/user/insert','Admin\UserController@insert_data');
 Route::get('/admin/user/edit/{id}','Admin\UserController@edit_data')->name('/admin/Edit/{id}');
 Route::post('/admin/user/update','Admin\UserController@update_data');
 Route::get('/admin/user/delete/{id}','Admin\UserController@delete_data');
+Route::get('/admin/user/getrowdata/{id}','Admin\UserController@get_single_row_data');
 
 
 /*For Store Master routes goes here*/
